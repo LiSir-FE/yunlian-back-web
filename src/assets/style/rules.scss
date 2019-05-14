@@ -1,0 +1,229 @@
+.wetuc-page-content {
+    padding: 8px 16px 24px;
+}
+
+.wetuc-page-content * {
+    font-size: 12px !important;
+}
+
+.wetuc-page-content .el-input__inner, .wetuc-page-content .el-button, .wetuc-page-content .el-textarea__inner {
+    border-radius: 0 !important;
+}
+
+.el-button {
+    border-radius: 0 !important;
+}
+
+.dialog-input-col2{
+    width: 195px !important;
+}
+
+.wetuc-input-col2 {
+
+    width: 252px !important;
+}
+
+.wetuc-input-col3 {
+
+    width: 352px !important;
+}
+
+.wetuc-input3-col3{
+    width: 220px !important;
+}
+.dialog-input-col2{
+    width: 195px !important;
+}
+
+//title 加分割线
+
+.wetuc-page-header {
+    margin: 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #c2c2c2;
+}
+
+.wetuc-page-header p {
+
+    font-size: 14px !important;
+    color: #383838;
+}
+
+// 分页 在分页外包个div 应用在div上
+.wetuc-page-content .wetuc-pagination-panel {
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: right;
+}
+
+//覆盖disabled 禁止样式
+.el-input.is-disabled .el-input__inner {
+    cursor: default!important;
+}
+
+.wetuc-page-content .wetuc-router-link {
+    color: #20a0ff;
+}
+
+.wetuc-page-content .wetuc-router-link:hover {
+    color: #4db3ff;
+}
+
+.wetuc-page-content .wetuc-textBtn:after{
+    content: '|';
+    margin-left:12px;
+    color:#999;
+}
+
+.wetuc-page-content .wetuc-textBeforeBtn:before{
+    content: '|';
+    margin-right:12px;
+    color:#999;
+}
+
+.wetuc-page-content  .wetuc-input-readonly-color input {
+    background-color: #eef1f6 !important;
+    border-color: #d1dbe5;
+    color: #bbb !important;
+}
+.wetuc-page-content .breadcrumb-con{
+    margin-top: 7px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+//主页面‘添加’按钮外部div类名
+.wetuc-page-content .wetuc-addbtn-panel{
+    margin-top: -10px !important;
+    padding-bottom: 10px !important;
+}
+
+.wetuc-page-content .wetuc-textbtn-danger{
+    color:#ff0000;
+}
+.wetuc-page-content .wetuc-textbtn-danger:hover{
+    color:#ff6d6d;
+}
+
+.wetuc-page-content .el-dialog__title {
+    font-size: 16px!important;
+}
+
+.wetuc-page-content .el-select-dropdown__item {
+    font-size: 14px;
+}
+.wetuc-adaption{
+
+    .xcms-header .header .logo a{
+        font-size: 16px !important;
+    }
+
+    .wetuc-fl {
+        float: left;
+    }
+    max-width: 1150px;
+}
+//样式优化
+
+//input框表单间距变小
+.el-form-item {
+    margin-bottom: 10px !important;
+}
+//错误信息撑开文本流
+.el-form-item__error {
+    padding-bottom:4px;
+    position: static !important;
+}
+.is-error{
+    margin-bottom:0!important;
+}
+.el-form{
+    margin-top:10px;
+}
+//表格中cell间距减小
+.el-table .cell, .el-table th>div{
+    padding-left:10px!important;
+    padding-right:10px!important;
+}
+
+.input-220{
+    width:220px!important;
+}
+.input-104{
+    width:104px!important;
+}
+
+.el-form--inline .el-form-item{
+    margin-right:9px;
+}
+.wetuc-btn-group{
+    margin-left:2px;
+}
+//.el-input__inner::-webkit-input-placeholder{color:#666!important}
+//单选多选按钮高度减小
+.radio-group{
+    margin-bottom:8px!important;
+}
+.radio-group .el-form-item__content{
+    line-height:20px;
+}
+.radio-group .el-form-item__label{
+    padding:5px 12px 5px 0;
+}
+
+.el-tabs{
+    margin-top:10px;
+}
+.el-tabs--border-card>.el-tabs__content{
+    padding-top:10px!important;
+}
+
+//四种大小的弹窗宽度
+.tiny .el-dialog{
+    width:450px!important;
+}
+.small .el-dialog{
+    width:550px!important;
+}
+.middle .el-dialog{
+    width:850px!important;
+}
+.big .el-dialog{
+    width:950px!important;
+}
+
+.el-dialog__title{
+    font-size:16px!important;
+}
+.el-dialog__body{
+    padding:20px 20px 0px!important;
+}
+
+.paddingLeftNone .el-tabs__content{
+    padding-left:0!important;
+}
+.margin-top-10{
+    margin-top:10px;
+}
+.margin-top-20{
+    margin-top:20px;
+}
+.margin-top{
+    margin-top: -10px;
+}
+
+
+.table-btn{
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.el-input__icon+.el-input__inner{
+    padding-right: 32px!important;
+}
+//返回按钮
+.wetuc-return {
+    margin-top: 10px !important;
+}
+
