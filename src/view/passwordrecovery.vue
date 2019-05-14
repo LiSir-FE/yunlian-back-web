@@ -18,7 +18,7 @@
                     </div>
                 </el-form-item>
                 <el-form-item prop="newPassWord">
-                    <el-input type="password" v-model="ruleForm.newPassWord" placeholder="新密码"></el-input>
+                    <el-input type="password" v-model="ruleForm.newPassWord" placeholder="新密码" show-password></el-input>
                 </el-form-item>
                 <el-form-item style="width:100%;">
                     <el-button type="primary" style="width:100%;" @click="handleSubmit('ruleForm')"

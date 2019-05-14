@@ -9,7 +9,7 @@
                 </el-form-item>
                 <el-form-item prop="checkPass">
                     <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"
-                              placeholder="密码"></el-input>
+                              placeholder="密码" show-password></el-input>
                 </el-form-item>
                 <div id="captcha-box"></div>
                 <el-button type="text" class="remember rememberLeft" @click="passwordrecoveryFn">忘记密码</el-button>

@@ -68,6 +68,15 @@ export const loginService = {
     deleteRoles: function (params) {
         return axios.delete(apis + '/roles' + this.getParams(params));
     },
+    
+    
+    
+    
+    // 获取账号列表
+    getAccounts: function (params) {
+        return axios.get(apis + '/accounts' + this.getParams(params));
+    },
+   
     /*  个人中心设置退出 接口 */
     myExit: function () {
         return axios.delete(apis + 'tokens')

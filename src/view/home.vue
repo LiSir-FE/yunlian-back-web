@@ -94,13 +94,13 @@
         <el-dialog title="修改密码" :visible.sync="passWorddialogVisible" width="30%">
             <el-form ref="passInfo" :model="passInfo" label-width="80px" :rules="rules">
                 <el-form-item label="原始密码" prop="originalPassword">
-                    <el-input type="password" v-model="passInfo.originalPassword" placeholder="请输入原始密码" class=""></el-input>
+                    <el-input type="password" v-model="passInfo.originalPassword" placeholder="请输入原始密码" show-password></el-input>
                 </el-form-item>
                 <el-form-item label="新密码" prop="newPassword">
-                    <el-input type="password" v-model="passInfo.newPassword" placeholder="请输入新密码" class=""></el-input>
+                    <el-input type="password" v-model="passInfo.newPassword" placeholder="请输入新密码" show-password></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="confirmPassword">
-                    <el-input type="password" v-model="passInfo.confirmPassword" placeholder="请再次输入新密码" class=""></el-input>
+                    <el-input type="password" v-model="passInfo.confirmPassword" placeholder="请再次输入新密码" show-password></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

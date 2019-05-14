@@ -47,7 +47,7 @@ export default new Router({
             hidden: true
         },
         {
-            path: '/home',
+            path: '/passwordrecovery',
             component: passwordrecovery,
             name: 'passwordrecovery',
             hidden: true
