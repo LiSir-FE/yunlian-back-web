@@ -9,6 +9,7 @@ import passwordrecovery from '../view/passwordrecovery'
 // 系统管理
 import roleManagement from '../view/systemManagement/roleManagement'
 import accountManagement from '../view/systemManagement/accountManagement'
+import classifiedManagement from '../view/systemManagement/classifiedManagement'
 // 总体管理
 import allArticles from '../view/overallManagement/allArticles'
 //功能
@@ -65,6 +66,10 @@ export default new Router({
                 path: '/accountManagement',
                 component: accountManagement,
                 name: '账号管理'
+            },{
+                path: '/classifiedManagement',
+                component: classifiedManagement,
+                name: '分类管理'
             }]
         },
         {

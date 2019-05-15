@@ -23,7 +23,7 @@ export const loginService = {
     },
     //修改密码
     putAccountspassword: function(params) {
-        return axios.put(apis + '/accounts/password', qs.stringify(params));
+        return axios.put(apis + 'accounts/password', qs.stringify(params));
     },
     // 获取个人信息
     getAdmin: function (params) {
@@ -31,42 +31,42 @@ export const loginService = {
     },
     // 上传头像
     getPolicy: function (params) {
-        return axios.get(apis + `/oss/policy`)
+        return axios.get(apis + `oss/policy`)
     },
     // 账号设置
     postAdminInfo: function (params) {
-        return axios.put(apis + '/admins/'+ this.getParams(params));
+        return axios.put(apis + 'admins/'+ this.getParams(params));
     },
     // 修改密码
     postPassword: function (params) {
-        return axios.put(apis + '/admins/password'+ this.getParams(params));
+        return axios.put(apis + 'admins/password'+ this.getParams(params));
     },
     /* 管理员信息 */
     getAdminInfo: function () {
-        return axios.get(apis + '/admins');
+        return axios.get(apis + 'admins');
     },
     
     
     // 获取角色列表
     getRoles: function (params) {
-        return axios.get(apis + '/roles' + this.getParams(params));
+        return axios.get(apis + 'roles' + this.getParams(params));
     },
     
     // 获取权限树
     getPermissions: function (params) {
-        return axios.get(apis + '/permissions/tree' + this.getParams(params));
+        return axios.get(apis + 'permissions/tree' + this.getParams(params));
     },
     // 获取单个角色信息
     getRolesid: function (id) {
-        return axios.get(apis + '/roles/' + id);
+        return axios.get(apis + 'roles/' + id);
     },
     // 新建角色
     postRoles: function (params) {
-        return axios.post(apis + '/roles' + this.getParams(params));
+        return axios.post(apis + 'roles' + this.getParams(params));
     },
     // 删除角色
     deleteRoles: function (params) {
-        return axios.delete(apis + '/roles' + this.getParams(params));
+        return axios.delete(apis + 'roles' + this.getParams(params));
     },
     
     
@@ -74,12 +74,49 @@ export const loginService = {
     
     // 获取账号列表
     getAccounts: function (params) {
-        return axios.get(apis + '/accounts' + this.getParams(params));
+        return axios.get(apis + 'accounts' + this.getParams(params));
     },
-   
+    // 验证账号
+    getAccountsvalite: function (params) {
+        return axios.get(apis + 'accounts/valite' + this.getParams(params));
+    },
+    // 新增账号列表
+    postAccounts: function (params) {
+        return axios.post(apis+ 'accounts', qs.stringify(params));
+    },
+    // 编辑账号列表
+    putAccounts: function (params) {
+        return axios.put(apis + 'accounts', qs.stringify(params));
+    },
+    // 获取单个账号
+    getAccountsid: function (id) {
+        return axios.get(apis + `accounts/${id}`);
+    },
+    // 删除账号列表
+    deleteAccounts: function (params) {
+        return axios.delete(apis+ 'accounts' + this.getParams(params));
+    },
     /*  个人中心设置退出 接口 */
     myExit: function () {
         return axios.delete(apis + 'tokens')
+    },
+    
+    
+    
+    //获取账户审核
+    getVarifys: function (params) {
+        return axios.get(apis + 'varifys' + this.getParams(params));
+    },
+    
+    // 获取认证审核列表
+    getAdminscertificationlist: function (params) {
+        return axios.get(apis + 'admins/certification/list' + this.getParams(params));
+    },
+    
+    
+    //文章分类
+    getDictionaryslist: function (params) {
+        return axios.get(apis + 'dictionarys/list' + this.getParams(params));
     },
     getParams: function (param) {
         let url = ''

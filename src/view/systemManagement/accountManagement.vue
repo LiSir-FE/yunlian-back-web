@@ -15,7 +15,8 @@
                         <el-form-item>
                             <el-input v-model="accListInfo.accName" placeholder="搜索账号/名称" class="wetuc-input3-col3"
                                       @keyup.enter.native="queryAccListData(accListInfo.seleList)">
-                                <i slot="suffix" class="el-input__icon el-icon-search" @click="queryAccListData(accListInfo.seleList)" style="cursor: pointer"></i>
+                                <i slot="suffix" class="el-input__icon el-icon-search"
+                                   @click="queryAccListData(accListInfo.seleList)" style="cursor: pointer"></i>
                             </el-input>
                         </el-form-item>
                         <el-form-item>
@@ -31,7 +32,7 @@
                         </el-form-item>
                         <el-form-item v-if="accListInfo.seleList === ''">
                             <el-select v-model="accListInfo.seleAll" placeholder="全部"
-                                       @change="seleAllChange(accListInfo.seleAll)">
+                                       @change="seleAllChange(accListInfo.seleAll)" class="wetuc-input3-col3">
                                 <el-option
                                     v-for="item in seleAllOptionsList"
                                     :key="item.id"
@@ -41,7 +42,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary">新建账号</el-button>
+                            <el-button type="primary" @click="addAccDialoadBtnFn(addAccDialogId)">新建账号</el-button>
                         </el-form-item>
                     </el-form>
 
@@ -78,13 +79,14 @@
                                          v-if="accListInfo.seleList === '2' || accListInfo.seleList === '3'"></el-table-column>
                         <el-table-column label="创建时间" min-width="100" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <span>{{scope.row.createTime}}</span>
+                                <span>{{scope.row.createTime | stampFormate}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column fixed="right" label="操作" min-width="120" align="right">
                             <template slot-scope="scope">
-                                <el-button type="text" size="small">编辑</el-button>
-                                <el-button type="text" size="small">删除</el-button>
+                                <el-button type="text" size="small" v-if="accListInfo.seleList === '4'">详情</el-button>
+                                <el-button type="text" size="small" @click="getAccountsid(scope.row.id)" v-if="accListInfo.seleList !== '4'">编辑</el-button>
+                                <el-button type="text" size="small" @click="deleteAccounts(scope.row.id)" v-if="accListInfo.seleList !== '4'">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -102,19 +104,104 @@
                         </el-pagination>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="账号审核" name="examine">账号审核</el-tab-pane>
-                <el-tab-pane label="认证审核" name="authentication">认证审核</el-tab-pane>
+                <el-tab-pane label="账号审核" name="examine">
+                    <to-examine :queryPlaceHolder="accountPlaceHolder" :accounType="accountNum" v-if="accountNum === 'examine'"></to-examine>
+                </el-tab-pane>
+                <el-tab-pane label="认证审核" name="authentication">
+                    <to-examine :queryPlaceHolder="authenPlaceHolder" :accounType="accountNum" v-if="accountNum === 'authentication'"></to-examine>
+                </el-tab-pane>
             </el-tabs>
         </div>
+
+
+        <el-dialog title="新建账号" :visible.sync="addAccDiaload" width="35%" min-width="35%" :close-on-click-modal="false"
+                   :close-on-press-escape="false" @close="addAccDialoadCloseFn">
+            <el-form ref="addAccDialogInfo" :model="addAccDialogInfo" label-width="100px" :rules="addAccDialogRules">
+                <el-form-item label="选择角色" prop="roleSele">
+                    <el-select v-model="addAccDialogInfo.roleSele" placeholder="请选择角色" multiple :multiple-limit="5"
+                               style="width: 100%">
+                        <el-option
+                            v-for="item in roleSeleList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="账号" prop="accountNum">
+                    <el-input type="text" v-model="addAccDialogInfo.accountNum" placeholder="请输入账号"
+                              class="" :disabled="accountNumFlag"></el-input>
+                </el-form-item>
+                <el-form-item label="名称" prop="name">
+                    <el-input type="text" v-model="addAccDialogInfo.name" placeholder="请输入名称"
+                              class=""></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input type="password" v-model="addAccDialogInfo.password" placeholder="请输入密码" show-password
+                              class=""></el-input>
+                </el-form-item>
+                <el-form-item label="联系人" prop="contacts">
+                    <el-input type="text" v-model="addAccDialogInfo.contacts" placeholder="请输入联系人"
+                              class=""></el-input>
+                </el-form-item>
+                <el-form-item label="联系人手机号" prop="contactsPhone">
+                    <el-input type="text" v-model="addAccDialogInfo.contactsPhone" placeholder="请输入联系人手机号"
+                              class=""></el-input>
+                </el-form-item>
+                <el-form-item label="是否启用">
+                    <el-switch v-model="addAccDialogInfo.enabled" active-color="#13ce66" inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
+                <el-form-item label="设置启用时间段" prop="time" v-if="addAccDialogInfo.enabled">
+                    <el-date-picker
+                        style="width: 100%"
+                        v-model="addAccDialogInfo.time"
+                        type="daterange"
+                        align="right"
+                        unlink-panels
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        format="yyyy-MM-dd"
+                        value-format="timestamp"
+                        :picker-options="pickerOptions">
+                    </el-date-picker>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="addAccDiaload = false">取 消</el-button>
+                <el-button type="primary" @click="addAccDialogFn('addAccDialogInfo', addAccDialogId)">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 
 </template>
 
 <script>
     import {loginService} from '../../service/loginService'
+    import {stampFormate} from '../../filter/index'
+    import toExamine from '../../components/toExamine'
 
     export default {
         data () {
+            let validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入账号!'))
+                } else {
+                    if (!this.addAccDialogId) {
+                        loginService.getAccountsvalite({account: value}).then(function (res) {
+                            if (res.data.datas === false) {
+                                callback(new Error('该账号已存在，不能重复创建!'))
+                            } else {
+                                callback()
+                            }
+                        })
+                    } else {
+                        callback()
+                    }
+                }
+            }
             return {
                 accountNum: 'accountList',
                 accListInfo: {
@@ -142,8 +229,65 @@
                     pageSize: 5,
                     total: 0,
                 },
-                seleAllOptionsList: []
+                seleAllOptionsList: [],
+                addAccDiaload: false,
+                addAccDialogInfo: {
+                    roleSele: '',
+                    accountNum: '',
+                    name: '',
+                    password: '',
+                    contacts: '',
+                    contactsPhone: '',
+                    enabled: true,
+                    time: []
+                },
+                addAccDialogId: '',
+                accountNumFlag: false,
+                roleSeleList: [],
+                addAccDialogRules: {
+                    accountNum: [{required: true, message: '请输入账号', trigger: 'blur'},
+                        {validator: validatePass, trigger: 'blur'}],
+                    name: [{required: true, message: '请输入名称!', trigger: 'blur'}],
+                    password: [{required: true, message: '请输入密码!', trigger: 'blur'}],
+                    contacts: [{required: true, message: '请输入联系人!', trigger: 'blur'}],
+                    contactsPhone: [{required: true, message: '请输入联系人手机号!', trigger: 'blur'},
+                        {pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号码'}],
+                },
+
+                accountPlaceHolder: '可输入账号/名称/联系人',
+                authenPlaceHolder: '可输入账号/名称',
+
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick (picker) {
+                            const end = new Date()
+                            const start = new Date()
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+                            picker.$emit('pick', [start, end])
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick (picker) {
+                            const end = new Date()
+                            const start = new Date()
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+                            picker.$emit('pick', [start, end])
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick (picker) {
+                            const end = new Date()
+                            const start = new Date()
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+                            picker.$emit('pick', [start, end])
+                        }
+                    }]
+                }
             }
+        },
+        components: {
+            toExamine
         },
         mounted () {
             this.queryAccListData(this.accListInfo.seleList)
@@ -179,9 +323,9 @@
                     view: true
                 }).then(res => {
                     if (res.data.success) {
-                        console.log(res)
                         let result = res.data.datas
                         that.seleAllOptionsList = result
+                        that.roleSeleList = result
                     }
                 }).catch(err => {
                     console.log(err)
@@ -189,6 +333,140 @@
             },
             seleAllChange (val) {
                 this.queryAccListData(val)
+            },
+            // 新增按钮
+            addAccDialoadBtnFn (id) {
+                let that = this
+                that.accountNumFlag = false;
+                that.addAccDiaload = true;
+                that.addAccDialogInfo = {
+                    roleSele: '',
+                    accountNum: '',
+                    name: '',
+                    password: '',
+                    contacts: '',
+                    contactsPhone: '',
+                    enabled: true,
+                    time: []
+                }
+            },
+            // 关闭按钮
+            addAccDialoadCloseFn() {
+                this.addAccDialogId = '';
+            },
+            // 新增账号
+            addAccDialogFn (formName, addAccDialogId) {
+                let that = this
+                that.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        // 编辑单个
+                        if (addAccDialogId) {
+                            loginService.putAccounts({
+                                id: addAccDialogId,
+                                roles: that.addAccDialogInfo.roleSele,
+                                account: that.addAccDialogInfo.accountNum,
+                                hostCompany: that.addAccDialogInfo.contacts,
+                                hostPhone: that.addAccDialogInfo.contactsPhone,
+                                password: that.addAccDialogInfo.password,
+                                hostName: that.addAccDialogInfo.name,
+                                startTime: that.addAccDialogInfo.time[0],
+                                endTime: that.addAccDialogInfo.time[1],
+                                accountStatus: that.addAccDialogInfo.enabled ? 'enabled' : 'disabled',
+                                activeTimeStatus: 'timeOff'
+                            }).then(res => {
+                                if (res.data.success) {
+                                    that.$message({
+                                        type: 'success',
+                                        message: '编辑成功!'
+                                    })
+                                    that.addAccDiaload = false
+                                    that.queryAccListData(that.accListInfo.seleList)
+                                }
+                            }).catch(err => {
+                                console.log(err)
+                            })
+
+                        } else {
+                            // 新增
+                            that.addAccDialogId = ''
+                            loginService.postAccounts({
+                                roles: that.addAccDialogInfo.roleSele,
+                                account: that.addAccDialogInfo.accountNum,
+                                hostCompany: that.addAccDialogInfo.contacts,
+                                hostPhone: that.addAccDialogInfo.contactsPhone,
+                                password: that.addAccDialogInfo.password,
+                                hostName: that.addAccDialogInfo.name,
+                                startTime: that.addAccDialogInfo.time[0],
+                                endTime: that.addAccDialogInfo.time[1],
+                                accountStatus: that.addAccDialogInfo.enabled ? 'enabled' : 'disabled',
+                                activeTimeStatus: 'timeOff'
+                            }).then(res => {
+                                if (res.data.success) {
+                                    that.$message({
+                                        type: 'success',
+                                        message: '添加成功!'
+                                    })
+                                    that.addAccDiaload = false
+                                    that.queryAccListData(that.accListInfo.seleList)
+                                }
+                            }).catch(err => {
+                                console.log(err)
+                            })
+                        }
+                    } else {
+                        console.log('error submit!!')
+                        return false
+                    }
+                })
+            },
+            // 获取单个账户信息
+            getAccountsid (id) {
+                let that = this
+                that.addAccDiaload = true
+                that.accountNumFlag = true
+                loginService.getAccountsid(id, {}).then(res => {
+                    if (res.data.success) {
+                        let ruslt = res.data.datas
+                        that.addAccDialogId = id
+                        that.addAccDialogInfo.name = ruslt.hostName
+                        that.addAccDialogInfo.roleSele = ruslt.roles
+                        that.addAccDialogInfo.accountNum = ruslt.account
+                        that.addAccDialogInfo.contacts = ruslt.hostCompany
+                        that.addAccDialogInfo.contactsPhone = ruslt.hostPhone
+                        that.addAccDialogInfo.roleSele = ruslt.roles
+                        // that.addAccDialogInfo.password = ruslt.password
+                        that.addAccDialogInfo.enabled = ruslt.accountStatus === 'enabled' ? true : false
+                        that.addAccDialogInfo.time = [ruslt.startTime, ruslt.endTime]
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+            // 删除单个账户信息
+            deleteAccounts(id) {
+                let that = this;
+                that.$confirm('确定删除吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    loginService.deleteAccounts({
+                        adminId: id
+                    }).then(res => {
+                        if(res.data.success) {
+                            that.$message({type: 'success', message: '删除成功!'});
+                            that.queryAccListData(that.accListInfo.seleList)
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    })
+                })
+
             },
             handleClick (tab, event) {
                 console.log(tab, event)
