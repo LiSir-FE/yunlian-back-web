@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import QRCode from 'qrcodejs2'
 import axios from 'axios'
 import router from './router'
 import App from './App'
@@ -40,7 +41,7 @@ axios.interceptors.response.use(function (response) {
         if (isClient) {
             localStorage.clear()
             localStorage.redirectUrl = location.href
-            location.href = location.origin + '/login/'
+            location.href = location.origin
         }
     }
     return response

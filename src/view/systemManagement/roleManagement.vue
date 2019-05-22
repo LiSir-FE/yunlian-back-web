@@ -18,7 +18,7 @@
                 <el-table-column prop="name" label="角色名称" min-width="150"></el-table-column>
                 <el-table-column prop="permissionNum" label="功能权限数" min-width="180"></el-table-column>
                 <el-table-column prop="userNum" label="成员数量" min-width="160"></el-table-column>
-                <el-table-column fixed="right" label="操作" min-width="200" align="right">
+                <el-table-column fixed="right" label="操作" min-width="100" align="right">
                     <template slot-scope="scope">
                         <el-button type="text" size="small" @click="editFn(scope.row.id)">编辑</el-button>
                         <el-button type="text" size="small" v-if="scope.row.init !== true"

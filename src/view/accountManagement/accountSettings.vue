@@ -25,6 +25,12 @@
                             </el-upload>
                         </el-form-item>
 
+                        <el-form-item label="微信绑定" prop="qrCodeUrl">
+                            <div id="qrCodeCanvas" class="qrCodeCanvas" v-show="qrCodeFlag"></div>
+                            <el-input v-model="setPageInfo.qrCodeInput" :disabled="true" v-show="!qrCodeFlag"
+                                      class="wetuc-input-col3"></el-input>
+                        </el-form-item>
+
                         <el-form-item label="账号" prop="accountNum">
                             <el-input type="text" v-model="setPageInfo.accountNum" class="wetuc-input-col3"
                                       :disabled="true"></el-input>
@@ -57,6 +63,7 @@
 
 <script>
     import {loginService} from '../../service/loginService'
+    import QRCode from 'qrcodejs2'
 
     export default {
         data () {
@@ -85,6 +92,8 @@
                 actionUrl: process.env.API_ROOT + `oss/policy`,
                 setPageInfo: {
                     accountNum: '',
+                    qrCodeInput: '已认证',
+                    qrCodeUrl: '',
                     imageUrl: '',
                     name: '',
                     contacts: '',
@@ -92,6 +101,7 @@
                     mailbox: '',
                     briefIntroduction: ''
                 },
+                qrCodeFlag: false,
                 rules: {
                     imageUrl: [{required: true, message: '请上传头像!', trigger: 'change'}],
                     name: [{required: true, message: '请输入名称!', trigger: 'blur'},
@@ -109,6 +119,11 @@
             getsettPageInfo () {
                 let that = this
                 loginService.getAdminInfo({}).then(res => {
+                    if (res.data.datas.wechatBind) {
+                        that.qrCodeFlag = false
+                    } else {
+                        that.qrCodeFlag = true
+                    }
                     that.setPageInfo.imageUrl = process.env.IMG_URL + res.data.datas.hostLogo
                     that.setPageInfo.accountNum = res.data.datas.account
                     that.setPageInfo.name = res.data.datas.hostCompany
@@ -116,32 +131,55 @@
                     that.setPageInfo.phone = res.data.datas.hostPhone
                     that.setPageInfo.mailbox = res.data.datas.hostEmail
                     that.setPageInfo.briefIntroduction = res.data.datas.hostDesc
+                    if (that.qrCodeFlag) {
+                        that.getWechaturl()
+                    }
                 }).catch(err => {
                     console.log(err)
                 })
             },
-            // 上传
-            handleAvatarSuccess(res, file) {
-                this.setPageInfo.imageUrl = URL.createObjectURL(file.raw);
+            // 二维码
+            getWechaturl () {
+                loginService.getWechaturl({}).then(res => {
+                    if (res.data.success) {
+                        this.setPageInfo.qrCodeUrl = res.data.datas
+                        this.getQRCode(res.data.datas)
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+
             },
-            beforeAvatarUpload(file) {
-                console.log(file)
-                const isJPG = file.type === 'image/jpeg';
-                const isPNG = file.type === 'image/png';
-                const isGIF = file.type === 'image/gif';
-                const isBMP = file.type === 'image/bmp';
-                const isLt2M = file.size / 1024 / 1024 < 2;
+            getQRCode (url) {
+                let qrCodeCanvas = new QRCode('qrCodeCanvas', url, (error) => {
+                    width: 100
+                    height: 100
+                    if (error) {
+                    } else {
+                    }
+                })
+            },
+            // 上传
+            handleAvatarSuccess (res, file) {
+                this.setPageInfo.imageUrl = URL.createObjectURL(file.raw)
+            },
+            beforeAvatarUpload (file) {
+                const isJPG = file.type === 'image/jpeg'
+                const isPNG = file.type === 'image/png'
+                const isGIF = file.type === 'image/gif'
+                const isBMP = file.type === 'image/bmp'
+                const isLt2M = file.size / 1024 / 1024 < 2
                 if (!isJPG && !isGIF && !isPNG && !isBMP) {
-                    this.$message.error('上传图片必须是JPG/GIF/PNG/BMP 格式!');
+                    this.$message.error('上传图片必须是JPG/GIF/PNG/BMP 格式!')
                 }
                 if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                    this.$message.error('上传头像图片大小不能超过 2MB!')
                 }
-                return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
+                return (isJPG || isBMP || isGIF || isPNG) && isLt2M
             },
-            uploadSectionFile(param) {
-                loginService.getPolicy({}).then(res =>{
-                    let that = this;
+            uploadSectionFile (param) {
+                loginService.getPolicy({}).then(res => {
+                    let that = this
                     const randomName = new Date().getTime() + '.' + param.file.name.split('.').pop()
                     const fd = new FormData()
                     const {accessid, host, policy, signature, dir, expire} = res.data.datas
@@ -154,24 +192,23 @@
                     fd.append('success_action_status', 200)
                     fd.append('file', param.file)
                     if (!param.file.type.match('image.*')) {
-                        that.$message.error('请上传图片格式的文件!');
+                        that.$message.error('请上传图片格式的文件!')
                         return
                     }
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('post', host, true);
+                    const xhr = new XMLHttpRequest()
+                    xhr.open('post', host, true)
                     xhr.upload.addEventListener('progress', (evt) => {
                         that.progress = Math.round((evt.loaded) * 100 / evt.total)
-                    }, false);
+                    }, false)
                     xhr.addEventListener('load', (e) => {
                         if (e.target.status !== 200) {
-                            that.$message.error('上传失败!');
+                            that.$message.error('上传失败!')
                             return
-                        };
-                        console.log('eeeee', e)
+                        }
                         if (e.target.status === 200) {
                             that.$nextTick(() => {
                                 that.setPageInfo.imageUrl = process.env.IMG_URL + dir + randomName
-                            });
+                            })
                             return
                         }
                     }, false)
@@ -181,13 +218,13 @@
                 })
             },
             // 提交
-            submitForm(formName) {
-                let that = this;
-                let hostLogo = '';
+            submitForm (formName) {
+                let that = this
+                let hostLogo = ''
                 if (that.setPageInfo.imageUrl.indexOf(process.env.IMG_URL) === -1) {
-                    hostLogo = that.setPageInfo.imageUrl.substring(0, that.setPageInfo.imageUrl.length);
+                    hostLogo = that.setPageInfo.imageUrl.substring(0, that.setPageInfo.imageUrl.length)
                 } else {
-                    hostLogo = that.setPageInfo.imageUrl.substring(8, that.setPageInfo.imageUrl.length);
+                    hostLogo = that.setPageInfo.imageUrl.substring(8, that.setPageInfo.imageUrl.length)
                 }
                 that.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -199,23 +236,23 @@
                             hostEmail: that.setPageInfo.mailbox,
                             hostDesc: that.setPageInfo.briefIntroduction,
                         }).then(res => {
-                            if(res.data.success) {
+                            if (res.data.success) {
                                 that.$message({
                                     type: 'success',
-                                    message: "保存成功"
-                                });
-                                that.getsettPageInfo();
+                                    message: '保存成功'
+                                })
+                                that.getsettPageInfo()
                             } else {
-                                that.$message.error(res.data.message);
+                                that.$message.error(res.data.message)
                             }
                         }).catch(err => {
                             console.log(err)
                         })
                     } else {
-                        console.log('error submit!!');
-                        return false;
+                        console.log('error submit!!')
+                        return false
                     }
-                });
+                })
             },
             handleClick (tab, event) {
                 console.log(tab, event)
@@ -229,6 +266,20 @@
 </script>
 
 <style>
+    .qrCodeCanvas {
+        width: 180px !important;
+        height: 180px !important;
+        border: 1px dashed #d9d9d9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .qrCodeCanvas img{
+        width: 160px;
+        height: 160px;
+    }
+
     .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
@@ -236,9 +287,11 @@
         position: relative;
         overflow: hidden;
     }
+
     .avatar-uploader .el-upload:hover {
         border-color: #409EFF;
     }
+
     .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
@@ -247,6 +300,7 @@
         line-height: 178px;
         text-align: center;
     }
+
     .avatar {
         width: 178px;
         height: 178px;

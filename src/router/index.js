@@ -10,6 +10,8 @@ import passwordrecovery from '../view/passwordrecovery'
 import roleManagement from '../view/systemManagement/roleManagement'
 import accountManagement from '../view/systemManagement/accountManagement'
 import classifiedManagement from '../view/systemManagement/classifiedManagement'
+import recommendedSettings from '../view/systemManagement/recommendedSettings'
+import focusMapManagement from '../view/systemManagement/focusMapManagement'
 // 总体管理
 import allArticles from '../view/overallManagement/allArticles'
 //功能
@@ -70,6 +72,14 @@ export default new Router({
                 path: '/classifiedManagement',
                 component: classifiedManagement,
                 name: '分类管理'
+            },{
+                path: '/recommendedSettings',
+                component: recommendedSettings,
+                name: '推荐设置'
+            },{
+                path: '/focusMapManagement',
+                component: focusMapManagement,
+                name: '焦点图管理'
             }]
         },
         {
