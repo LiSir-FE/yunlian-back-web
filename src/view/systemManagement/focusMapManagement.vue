@@ -83,7 +83,8 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="addContentDiaload = false">取 消</el-button>
-                <el-button type="primary" @click="addContentDialogFn('addContentInfo', addContentInfoId)">确 定</el-button>
+                <el-button type="primary"
+                           @click="addContentDialogFn('addContentInfo', addContentInfoId)">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -147,6 +148,10 @@
             // 新增
             addContent () {
                 let that = this
+                if (that.tableData.length >= 10) {
+                    that.$message.error('焦点图添加已达上限!')
+                    return false
+                }
                 that.addContentDiaload = true
                 that.addContentInfo = {
                     imageUrl: '',
@@ -165,7 +170,7 @@
                 }
                 that.$refs[formName].validate((valid) => {
                     if (valid) {
-                        if(addContentInfoId) {
+                        if (addContentInfoId) {
                             loginService.postBanners({
                                 id: addContentInfoId,
                                 picUrl: picUrl,
@@ -206,11 +211,11 @@
             // 编辑
             editFn (id) {
                 let that = this
-                that.addContentDiaload = true;
-                that.addContentInfoId = id;
+                that.addContentDiaload = true
+                that.addContentInfoId = id
                 loginService.getBannersid(id).then(res => {
                     if (res.data.success) {
-                        let rulest = res.data.datas;
+                        let rulest = res.data.datas
                         that.addContentInfo.imageUrl = process.env.IMG_URL + rulest.picUrl
                         that.addContentInfo.title = rulest.picTitle
                         that.addContentInfo.jumpLink = rulest.picLink
@@ -242,8 +247,8 @@
                 })
 
             },
-            closeContentFn() {
-                this.addContentInfoId = '';
+            closeContentFn () {
+                this.addContentInfoId = ''
             },
             // 上传
             handleAvatarSuccess (res, file) {

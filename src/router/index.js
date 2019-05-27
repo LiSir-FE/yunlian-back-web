@@ -14,6 +14,9 @@ import recommendedSettings from '../view/systemManagement/recommendedSettings'
 import focusMapManagement from '../view/systemManagement/focusMapManagement'
 // 总体管理
 import allArticles from '../view/overallManagement/allArticles'
+import allActivities from '../view/overallManagement/allActivities'
+import allInformation from '../view/overallManagement/allInformation'
+import allComments from '../view/overallManagement/allComments'
 //功能
 import articleManagement from '../view/functionManagement/articleManagement'
 //用户管理
@@ -91,6 +94,18 @@ export default new Router({
                 path: '/allArticles',
                 component: allArticles,
                 name: '所有文章'
+            },{
+                path: '/allActivities',
+                component: allActivities,
+                name: '所有活动'
+            },{
+                path: '/allInformation',
+                component: allInformation,
+                name: '所有资料'
+            },{
+                path: '/allComments',
+                component: allComments,
+                name: '所有评论'
             }]
         },{
             path: '/home',

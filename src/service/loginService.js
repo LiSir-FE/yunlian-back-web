@@ -155,6 +155,49 @@ export const loginService = {
     putBannersstatus: function (params) {
         return axios.put(apis + 'banners/status' + this.getParams(params));
     },
+    //获取推荐列表
+    getAdname: function (params) {
+        return axios.get(apis + 'ad/name' + this.getParams(params));
+    },
+    //获取推荐
+    getAd: function (params) {
+        return axios.get(apis + 'ad' + this.getParams(params));
+    },
+    //获取单个推荐
+    getAdid: function (id) {
+        return axios.get(apis + `ad/${id}`);
+    },
+    // 修改推荐
+    putAd: function (params) {
+        return axios.put(apis + 'ad' + this.getParams(params) );
+    },
+    
+    
+    // 获取文章分类 获取文章标签
+    getArticlesType: function (param) {
+        return axios.get(apis + 'dictionarys/nolist' + this.getParams(param))
+    },
+    // 获取全部文章列表
+    getList: function (param) {
+        return axios.get(apis + 'articles' + this.getParams(param))
+    },
+    // 获得申请列表
+    getVarifysList: function (param) {
+        return axios.get(apis + 'varifys' + this.getParams(param))
+    },
+    
+    // 获取全部活动列表
+    getActivities: function (param) { // 活动列表
+        return axios.get(apis + 'activities' + this.getParams(param))
+    },
+    
+    
+    
+    // 获取资料列表
+    getDocumentslist: function (params) {
+        return axios.get(apis + 'documents/list' + this.getParams(params));
+    },
+   
     getParams: function (param) {
         let url = ''
         for (let key in param) {

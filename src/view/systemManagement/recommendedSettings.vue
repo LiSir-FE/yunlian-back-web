@@ -8,26 +8,35 @@
             </el-breadcrumb>
         </div>
 
-
-
     </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
+    import {loginService} from '../../service/loginService'
 
+    export default {
+        data () {
+            return {
+                type: '',
+                tableData: []
             }
+        },
+        mounted () {
+
+        },
+        methods: {
+
         }
     }
 </script>
 
 <style lang="scss">
-    .el-table__empty-block{
+    .el-table__empty-block {
         display: none;
     }
-    .el-table{
+
+    .el-table {
         margin-bottom: 40px;
     }
+
 </style>
