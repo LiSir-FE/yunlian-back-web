@@ -17,6 +17,9 @@ import allArticles from '../view/overallManagement/allArticles'
 import allActivities from '../view/overallManagement/allActivities'
 import allInformation from '../view/overallManagement/allInformation'
 import allComments from '../view/overallManagement/allComments'
+import allCompanies from '../view/overallManagement/allCompanies'
+import allWork from '../view/overallManagement/allWork'
+import allIntelligence from '../view/overallManagement/allIntelligence'
 //功能
 import articleManagement from '../view/functionManagement/articleManagement'
 //用户管理
@@ -106,6 +109,18 @@ export default new Router({
                 path: '/allComments',
                 component: allComments,
                 name: '所有评论'
+            },{
+                path: '/allCompanies',
+                component: allCompanies,
+                name: '所有公司'
+            },{
+                path: '/allWork',
+                component: allWork,
+                name: '所有工作'
+            },{
+                path: '/allIntelligence',
+                component: allIntelligence,
+                name: '所有商机'
             }]
         },{
             path: '/home',

@@ -197,6 +197,56 @@ export const loginService = {
     getDocumentslist: function (params) {
         return axios.get(apis + 'documents/list' + this.getParams(params));
     },
+    
+    // 获取评论接口
+    getComments:function(param){
+        return axios.get(apis + 'admin/comments'+ this.getParams(param));
+    },
+    // 获取评论接口
+    postComments:function(param){
+        return axios.post(apis + 'admin/comments', qs.stringify(param));
+    },
+    
+    
+    getCompaniesAll: function (param) {
+        return axios.get(apis + 'companies/all' + this.getParams(param))
+    },
+    
+    // 删除公司
+    deleteCompanies: function (data, param) {
+        return axios.delete(apis + `companies/${data}`)
+    },
+    
+    // 关注
+    collectFlase: function (param) {
+        return axios.post(apis + `/companyCollects/` + this.getParams(param))
+    },
+    // 取消关注公司
+    collectTrue: function (param) {
+        return axios.delete(apis + `/companyCollects/` + this.getParams(param))
+    },
+    
+    // 获取一级行业
+    getindustryOptions: function (param) {
+        return axios.get(apis + `companies/fields` + this.getParams(param))
+    },
+    
+    
+    // 工作普通用户列表所有
+    getWorkListAll: function (param) {
+        return axios.get(apis + 'jobs/all' + this.getParams(param))
+    },
+    
+    // 工作统计
+    getWorkStatistics: function (param) {
+        return axios.get(apis + `jobs/statistics` + this.getParams(param))
+    },
+    
+    
+    // 情报列表-全部
+    informationListAll: function (param) {
+        return axios.get(apis + `infos/all` + this.getParams(param))
+    },
    
     getParams: function (param) {
         let url = ''
