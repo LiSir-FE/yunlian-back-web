@@ -29,6 +29,7 @@
                     <el-menu :default-active="$route.path" class="el-menu-vertical-demo" unique-opened router
                              v-show="!collapsed">
                         <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
+                            <!--{{item}}-->
                             <el-submenu :index="index+''" v-if='!item.leaf' :key='index'>
                                 <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
                                 <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path"
@@ -94,13 +95,16 @@
         <el-dialog title="修改密码" :visible.sync="passWorddialogVisible" width="30%">
             <el-form ref="passInfo" :model="passInfo" label-width="80px" :rules="rules">
                 <el-form-item label="原始密码" prop="originalPassword">
-                    <el-input type="password" v-model="passInfo.originalPassword" placeholder="请输入原始密码" show-password></el-input>
+                    <el-input type="password" v-model="passInfo.originalPassword" placeholder="请输入原始密码"
+                              show-password></el-input>
                 </el-form-item>
                 <el-form-item label="新密码" prop="newPassword">
-                    <el-input type="password" v-model="passInfo.newPassword" placeholder="请输入新密码" show-password></el-input>
+                    <el-input type="password" v-model="passInfo.newPassword" placeholder="请输入新密码"
+                              show-password></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="confirmPassword">
-                    <el-input type="password" v-model="passInfo.confirmPassword" placeholder="请再次输入新密码" show-password></el-input>
+                    <el-input type="password" v-model="passInfo.confirmPassword" placeholder="请再次输入新密码"
+                              show-password></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -113,6 +117,7 @@
 <script>
     import {loginService} from '../service/loginService'
     import logo from '../assets/img/logo/logo.png'
+    import {common} from '../assets/js/common/common'
 
     export default {
         components: {},
@@ -155,7 +160,7 @@
                     newPassword: '',
                     confirmPassword: ''
                 },
-
+                adminList: [],
                 rules: {
                     originalPassword: [{required: true, validator: originalPassword, trigger: 'blur'}],
                     newPassword: [{required: true, validator: newPassword, trigger: 'blur'}],
@@ -219,7 +224,7 @@
                                 })
                                 that.$router.push({name: 'login'})
                             } else {
-                                that.$message.error(res.data.message);
+                                that.$message.error(res.data.message)
                             }
                         }).catch(err => {
                             console.log(err)
@@ -229,14 +234,58 @@
                         return false
                     }
                 })
+            },
+            admin (value) {
+                let that = this
+                if(that.adminList.indexOf(value) > -1) {
+                    that.$router.options.routes.forEach(item => {
+                        if(item.roles) {
+                            if(item.roles === value) {
+                                item.hidden = false;
+                            }
+                        }
+                        if(item.children) {
+                            item.children.forEach(items => {
+                                if(items.roles === value) {
+                                    items.hidden = false;
+                                }
+                            })
+                        }
+                    })
+                }
             }
         },
         mounted () {
-            this.getAdminInfo()
+            let that = this
+            that.getAdminInfo()
             loginService.getAdmin({}).then(res => {
-                this.sysUserName = res.data.datas.hostCompany
+                that.sysUserName = res.data.datas.hostCompany
             }).catch(err => {
                 console.log(err)
+            })
+            let r = that.$route.name
+            let token = window.localStorage.getItem('token')
+            if (token == null) {
+                that.$router.replace({name: 'login'})
+            } else {
+                let JWT = token.split('.')
+                let info = JWT[1]
+                let tokenData = common.packageUserInfo(info)
+                that.adminList = tokenData.permissions
+                window.localStorage.setItem('jurisdiction', JSON.stringify(that.adminList))
+            }
+            let adminListArr = []
+            that.$router.options.routes.forEach(item => {
+                if (item.children) {
+                    item.children.forEach(items => {
+                        if (items.roles) {
+                            adminListArr.push(item.roles, items.roles)
+                        }
+                    })
+                }
+            })
+            adminListArr.forEach(item => {
+                that.admin(item)
             })
         }
     }

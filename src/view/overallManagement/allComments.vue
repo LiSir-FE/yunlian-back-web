@@ -128,12 +128,12 @@
 </script>
 
 <style lang="scss">
-    .container{
-        width: 100%;
-        height: auto;
-        display: flex;
-        padding: 10px 0;
-        border-bottom: 1px solid #e8e8e8;
-        box-sizing: border-box;
-    }
+    /*.container{*/
+        /*width: 100%;*/
+        /*height: auto;*/
+        /*display: flex;*/
+        /*padding: 10px 0;*/
+        /*border-bottom: 1px solid #e8e8e8;*/
+        /*box-sizing: border-box;*/
+    /*}*/
 </style>

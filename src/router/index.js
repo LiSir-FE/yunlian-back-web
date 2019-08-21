@@ -65,121 +65,173 @@ export default new Router({
             path: '/home',
             component: home,
             name: '系统管理',
+            roles: '100:query',
+            hidden: true,
             iconCls: 'el-icon-monitor',
             children: [{
                 path: '/roleManagement',
                 component: roleManagement,
-                name: '角色管理'
+                name: '角色管理',
+                hidden: true,
+                roles: '110:query'
             },{
                 path: '/accountManagement',
                 component: accountManagement,
-                name: '账号管理'
+                name: '账号管理',
+                hidden: true,
+                roles: '120:query'
             },{
                 path: '/classifiedManagement',
                 component: classifiedManagement,
-                name: '分类管理'
+                name: '分类管理',
+                hidden: true,
+                roles: '130:query'
             },{
                 path: '/recommendedSettings',
                 component: recommendedSettings,
-                name: '推荐设置'
+                name: '推荐设置',
+                hidden: true,
+                roles: '140:query'
             },{
                 path: '/focusMapManagement',
                 component: focusMapManagement,
-                name: '焦点图管理'
+                name: '焦点图管理',
+                hidden: true,
+                roles: '150:query'
             }]
         },
         {
             path: '/home',
             component: home,
             name: '总体管理',
+            roles: '200:query',
+            hidden: true,
             iconCls: 'el-icon-edit-outline',
             children: [{
                 path: '/allArticles',
                 component: allArticles,
+                roles: '210:query',
+                hidden: true,
                 name: '所有文章'
             },{
                 path: '/allActivities',
                 component: allActivities,
+                roles: '220:query',
+                hidden: true,
                 name: '所有活动'
             },{
                 path: '/allInformation',
                 component: allInformation,
+                roles: '230:query',
+                hidden: true,
                 name: '所有资料'
             },{
                 path: '/allComments',
                 component: allComments,
+                roles: '250:query',
+                hidden: true,
                 name: '所有评论'
             },{
                 path: '/allCompanies',
                 component: allCompanies,
+                roles: '260:query',
+                hidden: true,
                 name: '所有公司'
             },{
                 path: '/allWork',
                 component: allWork,
+                roles: '270:query',
+                hidden: true,
                 name: '所有工作'
             },{
                 path: '/allIntelligence',
                 component: allIntelligence,
+                roles: '280:query',
+                hidden: true,
                 name: '所有商机'
             }]
         },{
             path: '/home',
             component: home,
             name: '功能',
+            roles: '300:query',
+            hidden: true,
             iconCls: 'el-icon-pie-chart',
             children: [{
                 path: '/articleManagement',
                 component: articleManagement,
+                roles: '310:query',
+                hidden: true,
                 name: '文章管理'
             }]
         },{
             path: '/home',
             component: home,
             name: '用户管理',
+            roles: '400:query',
+            hidden: true,
             iconCls: 'el-icon-user',
             children: [{
                 path: '/userManagement',
                 component: userManagement,
+                roles: '420:query',
+                hidden: true,
                 name: '用户列表'
             }]
         },{
             path: '/home',
             component: home,
             name: '工作管理',
+            roles: '800:query',
+            hidden: true,
             iconCls: 'el-icon-notebook-2',
             children: [{
                 path: '/companyList',
                 component: companyList,
+                roles: '810:query',
+                hidden: true,
                 name: '公司列表'
             }]
         },{
             path: '/home',
             component: home,
             name: '财务管理',
+            roles: '500:query',
+            hidden: true,
             iconCls: 'el-icon-refrigerator',
             children: [{
                 path: '/summaryFunds',
                 component: summaryFunds,
+                roles: '510:query',
+                hidden: true,
                 name: '资金总览'
             }]
         },{
             path: '/home',
             component: home,
             name: '统计分析',
+            roles: '600:query',
+            hidden: true,
             iconCls: 'el-icon-copy-document',
             children: [{
                 path: '/trafficAnalysis',
                 component: trafficAnalysis,
+                roles: '610:query',
+                hidden: true,
                 name: '流量分析'
             }]
         },{
             path: '/home',
             component: home,
             name: '账号设置',
+            roles: '700:query',
+            hidden: true,
             iconCls: 'el-icon-setting',
             children: [{
                 path: '/accountSettings',
                 component: accountSettings,
+                roles: '710:query',
+                hidden: true,
                 name: '账号'
             }]
         }
