@@ -1,5 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
 // 引入组件
 
 import login from '../view/login.vue'
@@ -38,7 +43,7 @@ export default new Router({
     mode: 'history',
     routes: [
         {
-            path: '/',
+            path: '/login',
             name: 'login',
             component: login,
             hidden: true
@@ -50,10 +55,13 @@ export default new Router({
             hidden: true
         },
         {
-            path: '/home',
+            path: '/',
             component: home,
             name: 'home',
-            hidden: true
+            hidden: true,
+            meta: {
+                keepalive: true
+            }
         },
         {
             path: '/passwordrecovery',
@@ -237,3 +245,5 @@ export default new Router({
         }
     ]
 })
+
+
