@@ -247,6 +247,7 @@ export const loginService = {
     informationListAll: function (param) {
         return axios.get(apis + `infos/all` + this.getParams(param))
     },
+    
    
     getParams: function (param) {
         let url = ''

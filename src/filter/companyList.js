@@ -681,3 +681,23 @@ export function companyVip(val) {
     return companyVip
 }
 
+
+export function articleStatus(val) {
+    let articleStatus = '';
+    switch (val) {
+        case '1': {
+            articleStatus = '已发布';
+            break;
+        }
+        case '2': {
+            articleStatus = '待审核';
+            break;
+        }
+        case '3': {
+            articleStatus = '被驳回';
+            break;
+        }
+    }
+    return articleStatus
+}
+

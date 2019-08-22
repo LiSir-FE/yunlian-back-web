@@ -62,7 +62,6 @@
                 let that = this
                 let captchaBox = document.getElementById('captcha-box')
                 loginService.getGaptchas({}).then(res => {
-                    console.log(res)
                     initGeetest({
                         // 以下配置参数来自服务端 SDK
                         gt: res.data.gt,
@@ -154,6 +153,9 @@
         display: -webkit-flex;
         justify-content: center;
         align-items: center;
+        /*background-image: url("../assets/img/logo/logoBg.jpg");*/
+        /*background-repeat: no-repeat;*/
+        /*background-size: 100% 100%;*/
     }
 
     .login-container {

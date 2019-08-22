@@ -7,7 +7,7 @@ import QRCode from 'qrcodejs2'
 import axios from 'axios'
 import router from './router'
 import App from './App'
-
+import Watermark from './watermark';
 Vue.use(ElementUI)
 Vue.use(router)
 
@@ -101,5 +101,8 @@ new Vue({
     router,
     render: h => h(App),
     components: {App},
+    created() {
+        Watermark.set('物流嘉年华');
+    },
     template: '<App/>'
 })

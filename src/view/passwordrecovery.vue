@@ -176,7 +176,6 @@
                             phone: that.ruleForm.phoneNum,
                             password: that.ruleForm.newPassWord
                         }).then(res => {
-                            console.log(res)
                             if (res.data.success) {
                                 this.$message({
                                     message: '修改成功',
