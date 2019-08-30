@@ -1,4 +1,5 @@
 'use strict'
+const FileManagerPlugin = require('filemanager-webpack-plugin')
 const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
@@ -117,7 +118,25 @@ const webpackConfig = merge(baseWebpackConfig, {
                 to: config.test.assetsSubDirectory,
                 ignore: ['.*']
             }
-        ])
+        ]),
+        
+        new webpack.ProvidePlugin({
+            // $: 'jquery',
+            // jQuery: 'jquery',
+            // 'windows.jQuery': 'jquery',
+            // videoPlayer:'vue-video-player'
+        }),
+        
+        new FileManagerPlugin({
+            onEnd:{
+                delete: [
+                    './test_wetuc_admin.zip',
+                ],
+                archive: [
+                    {source: './dist', destination: './test_wetuc_admin.zip'},
+                ]
+            }
+        })
     ]
 })
 
