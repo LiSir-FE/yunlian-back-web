@@ -17,6 +17,7 @@ import accountManagement from '../view/systemManagement/accountManagement'
 import classifiedManagement from '../view/systemManagement/classifiedManagement'
 import recommendedSettings from '../view/systemManagement/recommendedSettings'
 import focusMapManagement from '../view/systemManagement/focusMapManagement'
+import advertisingManagement from '../view/systemManagement/advertisingManagement'
 // 总体管理
 import allArticles from '../view/overallManagement/allArticles'
 import allActivities from '../view/overallManagement/allActivities'
@@ -106,6 +107,12 @@ export default new Router({
                 name: '焦点图管理',
                 hidden: true,
                 roles: '150:query'
+            },{
+                path: '/advertisingManagement',
+                component: advertisingManagement,
+                name: '广告管理',
+                hidden: true,
+                roles: '160:query'
             }]
         },
         {
