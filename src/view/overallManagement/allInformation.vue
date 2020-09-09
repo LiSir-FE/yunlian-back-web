@@ -24,16 +24,24 @@
 
         <el-table :data="tableData" style="width: 100%" v-loading="tableLoading"
                   element-loading-text="拼命加载中">
-            <el-table-column prop="name" label="文件名" min-width="100" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="desc" label="描述" min-width="100" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="form" label="分类" min-width="80"></el-table-column>
-            <el-table-column prop="size" label="大小" min-width="80"></el-table-column>
-            <el-table-column prop="right" label="下载量" min-width="80">
+            <el-table-column label="文件名" min-width="120" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <span class="spanHover">{{scope.row.name}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="描述" min-width="120" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <span class="spanHover">{{scope.row.desc}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="form" label="分类" min-width="60"></el-table-column>
+            <el-table-column prop="size" label="大小" min-width="60"></el-table-column>
+            <el-table-column prop="right" label="下载量" min-width="60">
                 <template slot-scope="scope">
                     <span>{{scope.row.downloadCount === null ? '0' : scope.row.downloadCount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="时间" min-width="150">
+            <el-table-column label="时间" min-width="120">
                 <template slot-scope="scope">
                     <span>{{scope.row.createTime | stampFormate}}</span>
                 </template>
@@ -95,12 +103,16 @@
                     order: 'Long_max',
                     all: true
                 }).then(res => {
-                    if(res.data.success) {
-                        let result = res.data.datas
-                        that.tableData = result.datas
-                        that.page.total = Number(result.totalCount)
+                    if(res.data.code == 200) {
+                        let result = res.data.datas;
+                        that.tableData = result.datas;
+                        that.page.total = Number(result.totalCount);
+                        setTimeout(function () {
+                            that.tableLoading = false
+                        }, 300)
+                    } else {
+                        that.$message.error(res.data.message)
                     }
-                    that.tableLoading = false;
                 }).catch(err => {
                     console.log(err)
                 })

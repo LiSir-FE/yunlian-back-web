@@ -3,23 +3,42 @@
         <div class="login-page-container">
             <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px"
                      class="demo-ruleForm login-container">
-                <h3 class="title">欢迎 登录运联</h3>
-                <el-form-item prop="account">
-                    <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
-                </el-form-item>
-                <el-form-item prop="checkPass">
-                    <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"
-                              placeholder="密码" show-password></el-input>
-                </el-form-item>
-                <div id="captcha-box"></div>
-                <el-button type="text" class="remember rememberLeft" @click="passwordrecoveryFn">忘记密码</el-button>
-                <el-button type="text" class="remember rememberRight" @click="shenqing">没有账号?立即申请</el-button>
-                <el-form-item style="width:100%;">
-                    <el-button type="primary" style="width:100%;" @click="handleSubmit2" :loading="logining">登录
-                    </el-button>
-                </el-form-item>
+                <div class="loginQrcode">
+                    <i class="el-icon-s-grid" @click.prevent="loginQrcode = !loginQrcode" v-if="loginQrcode"></i>
+                    <i class="el-icon-s-platform" @click.prevent="loginQrcode = !loginQrcode" v-if="!loginQrcode"></i>
+                    <div class="popup" v-if="loginQrcode">
+                        扫码登录在这里
+                    </div>
+                </div>
+                <div class="login-wetuc" v-if="loginQrcode">
+                    <h3 class="title">欢迎 登录运联</h3>
+                    <el-form-item prop="account">
+                        <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="checkPass">
+                        <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"
+                                  placeholder="密码" show-password></el-input>
+                    </el-form-item>
+                    <div id="captcha-box"></div>
+                    <el-button type="text" class="remember rememberLeft" @click="passwordrecoveryFn">忘记密码</el-button>
+                    <el-button type="text" class="remember rememberRight" @click="shenqing">没有账号?立即申请</el-button>
+                    <el-form-item style="width:100%;">
+                        <el-button type="primary" style="width:100%;" @click="handleSubmit2" :loading="logining">登录
+                        </el-button>
+                    </el-form-item>
+                </div>
+
+                <!--二维码登录-->
+
+                <div class="login-wetuc login-wetuc1" v-if="!loginQrcode">
+                    <wxlogin :appid="appid" :scope="scope" :redirect_uri="redirect_uri" :state="state" href="data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7CndpZHRoOiAxNTBweDsKbWFyZ2luLXRvcDogMTVweDsKYm9yZGVyOiAxcHggc29saWQgI0UyRTJFMjsKfQppZnJhbWV7CndpZHRoOjEwMCUKfQ=="></wxlogin>
+                </div>
 
             </el-form>
+
+
+
+
         </div>
     </div>
 
@@ -27,11 +46,12 @@
 
 <script>
     import {loginService} from '../service/loginService'
-
+    import wxlogin from 'vue-wxlogin'
     export default {
         props: {},
         data () {
             return {
+                loginQrcode: true,
                 logining: false,
                 geetestInfo: {},
                 captchaObj: {},
@@ -51,11 +71,18 @@
                         message: '请输入密码',
                         trigger: 'blur'
                     }]
-                }
+                },
+                appid: 'wx0e895a548ba53875',
+                scope: 'snsapi_login',
+                redirect_uri: 'https://admin.wetuc.com/wxlogin',
+                state: String(Math.ceil(Math.random()*1000))
             }
         },
+        components: {
+            wxlogin
+        },
         mounted: function () {
-            this.getGaptchas()
+            this.getGaptchas();
         },
         methods: {
             getGaptchas () {
@@ -168,7 +195,7 @@
         background: #fff;
         border: 1px solid #eaeaea;
         box-shadow: 0 0 25px #cac6c6;
-        position: absolute;
+        position: relative;
     }
 
     #captcha-box {
@@ -198,5 +225,73 @@
         float: right;
         cursor:pointer
     }
+
+    .login-wetuc{
+        width: 350px;
+        height: 310px;
+    }
+
+
+    .loginQrcode i{
+        position: absolute;
+        right: -4px;
+        top: -4px;
+        font-size: 52px;
+        cursor: pointer;
+        color: #3a8ee6;
+    }
+
+
+    .loginQrcode .popup{
+        position: absolute;
+        top: 5px;
+        right: 60px;
+        height: 26px;
+        width:100px;
+        line-height: 26px;
+        background:#fff;
+        padding:1px 10px;
+        font-size: 12px;
+        color:#3a8ee6;
+        border-radius:2px;
+        border:1px solid #3a8ee6;
+    }
+
+    .loginQrcode .popup:before{
+        content:'';
+        display:block;
+        width:0;
+        height:0;
+        position:absolute;
+        top:6px;
+        right:-9px;
+        border-left:9px solid #3a8ee6;
+        border-top:7px solid transparent;
+        border-bottom:7px solid transparent;
+    }
+
+    .loginQrcode .popup:after{
+        content:'';
+        display:block;
+        width:0;
+        height:0;
+        position:absolute;
+        top:8px;
+        right:-7px;
+        border-left:7px solid #fff;
+        border-top:5px solid transparent;
+        border-bottom:5px solid transparent;
+    }
+
+    .login-wetuc1 div{
+        width: 100%;
+        height: 100%;
+    }
+
+    .login-wetuc1 div iframe{
+        width: 100%;
+        height: 100%;
+    }
+
 
 </style>

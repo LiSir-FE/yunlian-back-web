@@ -16,11 +16,16 @@
             <el-table-column label="图片" min-width="100">
                 <template slot-scope="scope">
                     <div class="tableImg">
-                        <img :src="imgUrl + scope.row.picUrl" alt="">
+                        <el-avatar shape="square" fit="cover" :size="100" :src="imgUrl + scope.row.picUrl"></el-avatar>
+                        <!--<img :src="imgUrl + scope.row.picUrl" alt="">-->
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="picTitle" label="标题" min-width="120" show-overflow-tooltip></el-table-column>
+            <el-table-column label="标题" min-width="120" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <span class="spanHover">{{scope.row.picTitle}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="sortNum" label="排序号" min-width="50"></el-table-column>
             <el-table-column label="创建时间" min-width="120">
                 <template slot-scope="scope">

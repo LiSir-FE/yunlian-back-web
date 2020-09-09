@@ -45,7 +45,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="queryData(pageInfo.search)">筛选</el-button>
+                <el-button type="primary" @click="queryData(pageInfo.search)">筛 选</el-button>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="addAccDialoadBtnFn(addAccDialogId)">发布文章</el-button>
@@ -67,19 +67,27 @@
 
             <el-table-column prop="date" label="配图" min-width="120">
                 <template slot-scope="scope">
-                    <el-image style="width: 108px; height: 72px"
-                              :src="imgUrl + scope.row.poster"></el-image>
+                    <!--<el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.poster"></el-image>-->
+                    <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.poster"></el-avatar>
+
                 </template>
             </el-table-column>
-            <el-table-column prop="title" label="标题" min-width="180" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="classifications" label="文章分类" min-width="180"
-                             v-if="articleName === 'first'"></el-table-column>
-            <el-table-column label="文章状态" min-width="120">
+            <el-table-column label="标题" min-width="180" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <span class="spanHover">{{scope.row.title}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="文章分类" min-width="180" v-if="articleName === 'first'">
+                <template slot-scope="scope">
+                    <span class="spanHover" v-for="item in scope.row.classifications">{{item + '/'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="文章状态" min-width="80">
                 <template slot-scope="scope">
                     <span>{{scope.row.status | articleStatus}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="创建时间" min-width="120">
+            <el-table-column label="创建时间" min-width="100">
                 <template slot-scope="scope">
                     <span>{{scope.row.createDate | stampFormate4}}</span>
                 </template>

@@ -3,44 +3,44 @@
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: '/roleManagement' }">总体管理</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/allArticles' }">总体管理</el-breadcrumb-item>
                 <el-breadcrumb-item>所有商机</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <el-form ref="pageInfo" :model="pageInfo" label-width="80px" @submit.native.prevent :inline="true">
             <div class="wetuc-page-block">
-                <el-form-item label="">
-                    <el-input v-model="pageInfo.title" @keyup.enter.native="screen" placeholder="请输入关键字搜索" class="wetuc-input3-col3"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-select v-model="pageInfo.type" placeholder="请选择碎片类型" class="wetuc-input133-col130" clearable>
-                        <el-option
-                            v-for="item in typeOption"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-button type="primary" @click="screen">筛选</el-button>
+
+                <el-input v-model="pageInfo.title" @keyup.enter.native="screen" placeholder="请输入关键字搜索" class="wetuc-input3-col3"></el-input>
+
+
+                <el-select v-model="pageInfo.type" placeholder="请选择碎片类型" class="wetuc-input133-col130" clearable>
+                    <el-option
+                        v-for="item in typeOption"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+
+                <el-button type="primary" @click="screen">筛 选</el-button>
             </div>
 
         </el-form>
 
         <el-table :data="tableData" style="width: 100%" v-loading="tableLoading" element-loading-text="拼命加载中">
-            <el-table-column prop="infoType" label="碎片类型" min-width="70">
+            <el-table-column prop="infoType" label="碎片类型" min-width="80">
                 <template slot-scope="scope">
                     {{scope.row.infoType | infoType}}
                 </template>
             </el-table-column>
-            <el-table-column prop="infoTitle" label="碎片标题" min-width="150" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="hostName" label="发现人" min-width="70" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="createTime" label="时间" min-width="120">
+            <el-table-column prop="infoTitle" label="碎片标题" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="hostName" label="发现人" min-width="60" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="createTime" label="时间" min-width="100">
                 <template slot-scope="scope">
                     {{scope.row.createTime | stampFormate4}}
                 </template>
             </el-table-column>
-            <el-table-column label="操作" min-width="60" fixed="right">
+            <el-table-column label="操作" min-width="60" fixed="right" align="right">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click.prevent="details(scope.row)">
                         详情
@@ -103,16 +103,22 @@
             // 查全部
             wholeAll() {
                 let that = this;
+                that.tableLoading = true;
                 loginService.informationListAll({
                     param: that.pageInfo.title,
                     infoType: that.pageInfo.type,
                     pageNo: that.page.pageNum,
                     pageSize: that.page.pageSize
                 }).then(res => {
-                    if (res.data.success) {
+                    if (res.data.code == 200) {
                         let result = res.data.datas;
                         that.tableData = result.datas;
                         that.page.total = Number(result.totalCount);
+                        setTimeout(function () {
+                            that.tableLoading = false
+                        }, 300)
+                    } else {
+                        that.$message.error(res.data.message)
                     }
                 }).catch(err =>{
                     console.log(err);

@@ -18,14 +18,15 @@
         <el-table :data="arrayData" style="width: 100%" v-loading="tableLoading" element-loading-text="拼命加载中">
             <el-table-column min-width="60">
                 <template slot-scope="scope">
-                    <el-image style="width: 50px; height: 50px;border-radius: 100%;overflow: hidden" :src="imgUrl + scope.row.userHeadImg"></el-image>
+                    <el-avatar :size="50" :src="imgUrl + scope.row.userHeadImg"></el-avatar>
+                    <!--<el-image style="width: 50px; height: 50px;border-radius: 100%;overflow: hidden" :src="imgUrl + scope.row.userHeadImg"></el-image>-->
                 </template>
             </el-table-column>
-            <el-table-column prop="userName" min-width="80"
+            <el-table-column prop="userName" min-width="60"
                              show-overflow-tooltip></el-table-column>
-            <el-table-column prop="content" min-width="80"
+            <el-table-column prop="content" min-width="60"
                              show-overflow-tooltip></el-table-column>
-            <el-table-column min-width="100"
+            <el-table-column min-width="80"
                              show-overflow-tooltip>
                 <template slot-scope="scope">
                     <span> {{scope.row.commentTime | stampFormate2}}</span>
@@ -37,7 +38,7 @@
                     <el-button type="text" size="small">{{scope.row.typeTitle}}</el-button>
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" min-width="80" align="right">
+            <el-table-column fixed="right" min-width="60" align="right">
                 <template slot-scope="scope">
                     <el-button type="text" size="small">删除</el-button>
                 </template>
@@ -91,12 +92,16 @@
                     type: type,
                     all: true
                 }).then(res => {
-                    if(res.data.success) {
+                    if(res.data.code == 200) {
                         let result = res.data.datas;
                         that.arrayData = result.datas;
                         that.page.total = Number(result.totalCount)
+                        setTimeout(function () {
+                            that.tableLoading = false
+                        }, 300)
+                    } else {
+                        that.$message.error(res.data.message)
                     }
-                    that.tableLoading = false;
                 }).catch(err => {
                     console.log(err)
                 })

@@ -12,35 +12,33 @@
             <el-tabs v-model="accountNum" @tab-click="handleClick">
                 <el-tab-pane label="账号列表" name="accountList">
                     <el-form ref="accListInfo" :inline="true" :model="accListInfo" label-width="10px">
-                        <el-form-item>
-                            <el-input v-model="accListInfo.accName" placeholder="搜索账号/名称" class="wetuc-input3-col3"
-                                      @keyup.enter.native="queryAccListData(accListInfo.seleList)">
-                                <i slot="suffix" class="el-input__icon el-icon-search"
-                                   @click="queryAccListData(accListInfo.seleList)" style="cursor: pointer"></i>
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-select v-model="accListInfo.seleList" placeholder="选择列表" class="wetuc-input3-col3"
-                                       @change="seleListChange(accListInfo.seleList)">
-                                <el-option
-                                    v-for="item in accOptionsList"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item v-if="accListInfo.seleList === ''">
-                            <el-select v-model="accListInfo.seleAll" placeholder="全部"
-                                       @change="seleAllChange(accListInfo.seleAll)" class="wetuc-input3-col3">
-                                <el-option
-                                    v-for="item in seleAllOptionsList"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+
+                        <el-input v-model="accListInfo.accName" placeholder="搜索账号/名称" class="wetuc-input3-col3"
+                                  @keyup.enter.native="queryAccListData(accListInfo.seleList)">
+                            <i slot="suffix" class="el-input__icon el-icon-search"
+                               @click="queryAccListData(accListInfo.seleList)" style="cursor: pointer"></i>
+                        </el-input>
+
+                        <el-select v-model="accListInfo.seleList" placeholder="选择列表" class="wetuc-input3-col3"
+                                   @change="seleListChange(accListInfo.seleList)">
+                            <el-option
+                                v-for="item in accOptionsList"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+
+                        <el-select v-if="accListInfo.seleList === ''" v-model="accListInfo.seleAll" placeholder="全部"
+                                   @change="seleAllChange(accListInfo.seleAll)" class="wetuc-input3-col3">
+                            <el-option
+                                v-for="item in seleAllOptionsList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
+
                         <el-form-item>
                             <el-button type="primary" @click="addAccDialoadBtnFn(addAccDialogId)">新建账号</el-button>
                         </el-form-item>

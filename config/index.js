@@ -8,7 +8,7 @@ module.exports = {
     dev: {
         env: require('./dev.env'),
         port: 8090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-        autoOpenBrowser: false,
+        autoOpenBrowser: true,
         // Paths
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
@@ -81,13 +81,14 @@ module.exports = {
     },
     build: {
         // Template for index.html
+        env: require('./prod.env'),
         index: path.resolve(__dirname, '../dist/index.html'),
         
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: 'static',
-        assetsPublicPath: '/',
-        
+        assetsPublicPath: 'http://lliliang.cn',
+    
         /**
          * Source Maps
          */

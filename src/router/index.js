@@ -12,22 +12,37 @@ import notFound from '../view/404.vue'
 import home from '../view/home.vue'
 import passwordrecovery from '../view/passwordrecovery'
 // 系统管理
-import roleManagement from '../view/systemManagement/roleManagement'
-import accountManagement from '../view/systemManagement/accountManagement'
-import classifiedManagement from '../view/systemManagement/classifiedManagement'
-import recommendedSettings from '../view/systemManagement/recommendedSettings'
-import focusMapManagement from '../view/systemManagement/focusMapManagement'
-import advertisingManagement from '../view/systemManagement/advertisingManagement'
+import roleManagement from '../view/systemManagement/roleManagement' // 角色管理
+import accountManagement from '../view/systemManagement/accountManagement' // 账号管理
+import classifiedManagement from '../view/systemManagement/classifiedManagement' // 分类管理
+import recommendedSettings from '../view/systemManagement/recommendedSettings' // 推荐设置
+import focusMapManagement from '../view/systemManagement/focusMapManagement' // 焦点图管理
+
+import advertisingManagement from '../view/systemManagement/advertisingManagement' // 版权管理 (广告)
+import advertisingList from '../view/systemManagement/advertisingList' // 版权列表
+import addVertisingManagement from '../view/systemManagement/addVertisingManagement' // 添加版权
+import editVertisingManagement from '../view/systemManagement/editVertisingManagement' // 修改版权
+
+
 // 总体管理
-import allArticles from '../view/overallManagement/allArticles'
-import allActivities from '../view/overallManagement/allActivities'
-import allInformation from '../view/overallManagement/allInformation'
-import allComments from '../view/overallManagement/allComments'
-import allCompanies from '../view/overallManagement/allCompanies'
-import allWork from '../view/overallManagement/allWork'
-import allIntelligence from '../view/overallManagement/allIntelligence'
+import allArticles from '../view/overallManagement/allArticles' // 所有文章
+import allActivities from '../view/overallManagement/allActivities' // 所有活动
+import allInformation from '../view/overallManagement/allInformation' // 所有资料
+import allComments from '../view/overallManagement/allComments' // 所有评论
+import allCompanies from '../view/overallManagement/allCompanies' // 所有公司
+import allWork from '../view/overallManagement/allWork' // 所有工作
+import allIntelligence from '../view/overallManagement/allIntelligence' // 所有商机
+import allCapacity from '../view/overallManagement/allCapacity' // 所有车队
+
 //功能
-import articleManagement from '../view/functionManagement/articleManagement'
+import articleManagement from '../view/functionManagement/articleManagement' // 文章管理
+import activityListManagement from '../view/functionManagement/activityListManagement' //活动管理
+import datummanageManagement from '../view/functionManagement/datummanageManagement' //资料管理
+import commentManagement from '../view/functionManagement/commentManagement' //评论管理
+import brandManagement from '../view/functionManagement/brandManagement' //微站管理
+import lotteryListManagement from '../view/functionManagement/lotteryListManagement' //现场互动
+
+
 //用户管理
 import userManagement from '../view/userManagement/userManagement'
 //工作管理
@@ -110,9 +125,27 @@ export default new Router({
             },{
                 path: '/advertisingManagement',
                 component: advertisingManagement,
-                name: '广告管理',
+                name: '版权管理',
                 hidden: true,
                 roles: '160:query'
+            },{
+                path: '/advertisingList',
+                component: advertisingList,
+                name: '版权列表',
+                hidden: true,
+                roles: '170:query'
+            },{
+                path: '/addVertisingManagement',
+                component: addVertisingManagement,
+                name: '添加版权',
+                hidden: true,
+                roles: '180:query'
+            },{
+                path: '/editVertisingManagement',
+                component: editVertisingManagement,
+                name: '修改版权',
+                hidden: true,
+                roles: '190:query'
             }]
         },
         {
@@ -164,6 +197,12 @@ export default new Router({
                 roles: '280:query',
                 hidden: true,
                 name: '所有商机'
+            },{
+                path: '/allCapacity',
+                component: allCapacity,
+                roles: '290:query',
+                hidden: true,
+                name: '所有车队'
             }]
         },{
             path: '/home',
@@ -178,6 +217,36 @@ export default new Router({
                 roles: '310:query',
                 hidden: true,
                 name: '文章管理'
+            },{
+                path: '/activityListManagement',
+                component: activityListManagement,
+                roles: '320:query',
+                hidden: true,
+                name: '活动管理'
+            },{
+                path: '/datummanageManagement',
+                component: datummanageManagement,
+                roles: '330:query',
+                hidden: true,
+                name: '资料管理'
+            },{
+                path: '/commentManagement',
+                component: commentManagement,
+                roles: '340:query',
+                hidden: true,
+                name: '评论管理'
+            },{
+                path: '/brandManagement',
+                component: brandManagement,
+                roles: '350:query',
+                hidden: true,
+                name: '微站管理'
+            },{
+                path: '/lotteryListManagement',
+                component: lotteryListManagement,
+                roles: '360:query',
+                hidden: true,
+                name: '现场互动'
             }]
         },{
             path: '/home',

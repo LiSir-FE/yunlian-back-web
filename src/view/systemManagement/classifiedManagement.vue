@@ -8,26 +8,27 @@
             </el-breadcrumb>
         </div>
         <el-form ref="pageInfo" :model="pageInfo" :inline="true" label-width="10px">
-            <el-form-item>
-                <el-input v-model="pageInfo.query" placeholder="请输入名称" class="wetuc-input3-col3"
-                          @keyup.enter.native="queryData(pageInfo.articleActivity)">
-                    <i slot="suffix" class="el-input__icon el-icon-search"
-                       @click="queryData(pageInfo.articleActivity)" style="cursor: pointer"></i>
-                </el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-select v-model="pageInfo.articleActivity" class="wetuc-input3-col3" @change="articActiFn">
-                    <el-option
-                        v-for="item in articleActivityList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="addText(pageInfo.articleActivity)">添加</el-button>
-            </el-form-item>
+
+
+            <el-input v-model="pageInfo.query" placeholder="请输入名称" class="wetuc-input3-col3"
+                      @keyup.enter.native="queryData(pageInfo.articleActivity)">
+                <i slot="suffix" class="el-input__icon el-icon-search"
+                   @click="queryData(pageInfo.articleActivity)" style="cursor: pointer"></i>
+            </el-input>
+
+            <el-select v-model="pageInfo.articleActivity" class="wetuc-input3-col3" @change="articActiFn">
+                <el-option
+                    v-for="item in articleActivityList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+            </el-select>
+
+            <el-button type="primary" @click="addText(pageInfo.articleActivity)">添 加</el-button>
+
+
+
         </el-form>
 
         <el-table :data="tableData" style="width: 100%" v-loading="tableLoading" element-loading-text="拼命加载中">

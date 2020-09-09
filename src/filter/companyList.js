@@ -701,3 +701,44 @@ export function articleStatus(val) {
     return articleStatus
 }
 
+export function copyrightStates(val) {
+    let copyrightStates = '';
+    switch (val) {
+        case 1: {
+            copyrightStates = '未上线';
+            break;
+        }
+        case 2: {
+            copyrightStates = '投放中';
+            break;
+        }
+        case 3: {
+            copyrightStates = '已结束';
+            break;
+        }
+    }
+    return copyrightStates
+}
+
+export function qualified(val) {
+    let qualified = '';
+    switch (val) {
+        case 1: {
+            qualified = '待评审';
+            break;
+        }
+        case 2: {
+            qualified = '合格';
+            break;
+        }
+        case 3: {
+            qualified = '不合格';
+            break;
+        }
+    }
+    return qualified
+}
+
+
+
+

@@ -304,6 +304,9 @@
 </script>
 
 <style scoped>
+    .el-checkbox:last-of-type{
+        margin-right: 8px !important;
+    }
     .treeStyle {
         width: 49%;
         display: inline-grid;

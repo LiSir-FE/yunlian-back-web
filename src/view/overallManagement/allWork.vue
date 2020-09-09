@@ -3,36 +3,35 @@
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: '/roleManagement' }">总体管理</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/allArticles' }">总体管理</el-breadcrumb-item>
                 <el-breadcrumb-item>所有工作</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <el-form ref="pageInfo" :model="pageInfo" label-width="10px" @submit.native.prevent :inline="true">
-            <el-form-item label="">
-                <el-input v-model="pageInfo.titleName" @keyup.enter.native="screen" placeholder="请输入关键字搜索" class="wetuc-input3-col3"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-select v-model="pageInfo.type" placeholder="请选择分类" class="wetuc-input3-col3" clearable>
-                    <el-option
-                        v-for="item in typeOption"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item>
-                <el-select v-model="pageInfo.value" placeholder="请选择价值" class="wetuc-input3-col3" clearable>
-                    <el-option
-                        v-for="item in valueOption"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-button type="primary" @click="screen">筛选</el-button>
+
+            <el-input v-model="pageInfo.titleName" @keyup.enter.native="screen" placeholder="请输入关键字搜索" class="wetuc-input3-col3"></el-input>
+
+            <el-select v-model="pageInfo.type" placeholder="请选择分类" class="wetuc-input3-col3" clearable>
+                <el-option
+                    v-for="item in typeOption"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+            </el-select>
+
+
+            <el-select v-model="pageInfo.value" placeholder="请选择价值" class="wetuc-input3-col3" clearable>
+                <el-option
+                    v-for="item in valueOption"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+            </el-select>
+
+            <el-button type="primary" @click="screen">筛 选</el-button>
         </el-form>
         <el-table :data="tableData" style="width: 100%" v-loading="tableLoading" element-loading-text="拼命加载中">
             <el-table-column prop="name" label="用户姓名" min-width="80" show-overflow-tooltip></el-table-column>
@@ -51,20 +50,20 @@
                     {{scope.row.scene | scene}}
                 </template>
             </el-table-column>
-            <el-table-column prop="title" label="标题" min-width="150" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="title" label="标题" min-width="120" show-overflow-tooltip></el-table-column>
             <el-table-column prop="admin.hostName" label="记录人" min-width="65" show-overflow-tooltip></el-table-column>
             <el-table-column prop="value" label="价值" min-width="60">
                 <template slot-scope="scope">
                     {{scope.row.value | value}}
                 </template>
             </el-table-column>
-            <el-table-column prop="visitTime" label="时间" min-width="120">
+            <el-table-column prop="visitTime" label="时间" min-width="80">
                 <template slot-scope="scope">
                     <p v-if="scope.row.visitTime">{{scope.row.visitTime | stampFormate4}}</p>
                     <p v-else></p>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" min-width="60" fixed="right">
+            <el-table-column label="操作" min-width="60" fixed="right" align="right">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click.prevent="details(scope.row)">
                         详情
@@ -161,7 +160,7 @@
                     pageNo: that.page.pageNum,
                     pageSize: that.page.pageSize
                 }).then(res => {
-                    if (res.data.success) {
+                    if (res.data.code == 200) {
                         let result = res.data.datas;
                         if (result.datas) {
                             result.datas.forEach(item => {
@@ -170,7 +169,11 @@
                         }
                         that.tableData = result.datas;
                         that.page.total = Number(result.totalCount);
-                        that.tableLoading = false;
+                        setTimeout(function () {
+                            that.tableLoading = false
+                        }, 300)
+                    } else {
+                        that.$message.error(res.data.message)
                     }
                 }).catch(err => {
                     console.log(err);

@@ -11,7 +11,8 @@
         <div>
             <el-tabs v-model="article" @tab-click="handleClick">
                 <el-tab-pane label="全部文章" name="articleAll">
-                    <el-form ref="pageAllInfo" :model="pageAllInfo" label-width="80px">
+                    <el-form ref="pageAllInfo" :model="pageAllInfo" label-width="10px" :inline="true">
+
                         <el-input v-model="pageAllInfo.query" placeholder="搜索" class="wetuc-input3-col3"
                                   @keyup.enter.native="queryAllData(pageAllInfo.articlesIification, pageAllInfo.articleLabel)">
                             <i slot="suffix" class="el-input__icon el-icon-search"
@@ -19,7 +20,7 @@
                         </el-input>
 
                         <el-select v-model="pageAllInfo.articlesIification" placeholder="文章分类" class="wetuc-input3-col3"
-                                   @change="articlesIificationChange">
+                                   @change="articlesIificationChange" clearable>
                             <el-option
                                 v-for="item in articlesIificationList"
                                 :key="item.id"
@@ -29,7 +30,7 @@
                         </el-select>
 
                         <el-select v-model="pageAllInfo.articleLabel" placeholder="文章标签" class="wetuc-input3-col3"
-                                   @change="articleLabelChange">
+                                   @change="articleLabelChange" clearable>
                             <el-option
                                 v-for="item in articleLabelList"
                                 :key="item.id"
@@ -61,12 +62,15 @@
                         </el-table-column>
                         <el-table-column label="配图" min-width="120">
                             <template slot-scope="scope">
-                                <el-image style="width: 108px; height: 72px"
-                                          :src="imgUrl + scope.row.poster"></el-image>
+                                <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.poster"></el-avatar>
+                                <!--<el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.poster"></el-image>-->
                             </template>
                         </el-table-column>
-                        <el-table-column prop="title" label="标题" min-width="150"
-                                         show-overflow-tooltip></el-table-column>
+                        <el-table-column label="标题" min-width="150" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span class="spanHover">{{scope.row.title}}</span>
+                            </template>
+                        </el-table-column>
                         <el-table-column label="文章分类" min-width="100">
                             <template slot-scope="scope">
                                  <span v-if="scope.row.classifications">
@@ -82,7 +86,7 @@
                                 <span>{{scope.row.varefyTime | stampFormate4}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" min-width="200" fixed="right">
+                        <el-table-column label="操作" min-width="200" fixed="right" align="right">
                             <template slot-scope="scope">
                                 <el-button type="text" size="small" @click="editText(scope.row.id)">编辑</el-button>
                                 <el-button type="text" size="small" @click="editText(scope.row.id)"
@@ -100,8 +104,6 @@
                                 </el-button>
                             </template>
                         </el-table-column>
-
-                        <tr>123123</tr>
                     </el-table>
 
                     <div class="wetuc-pagination-panel">
@@ -127,7 +129,7 @@
                                @click="queryReviewData(pageReviewInfo.examine)" style="cursor: pointer"></i>
                         </el-input>
 
-                        <el-select v-model="pageReviewInfo.examine" class="wetuc-input3-col3" @change="examineChange">
+                        <el-select v-model="pageReviewInfo.examine" class="wetuc-input3-col3" @change="examineChange" clearable>
                             <el-option
                                 v-for="item in examineList"
                                 :key="item.value"
@@ -161,7 +163,7 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column label="操作" min-width="150" fixed="right">
+                        <el-table-column label="操作" min-width="150" fixed="right" align="right">
                             <template slot-scope="scope">
                                 <el-button type="text" size="small" @click="editText(scope.row.id)" v-if="scope.row.varifyResult === '0'">通过</el-button>
                                 <el-button type="text" size="small" @click="editText(scope.row.id)" v-if="scope.row.varifyResult === '0'">驳回</el-button>
@@ -190,6 +192,82 @@
                         </el-pagination>
                     </div>
                 </el-tab-pane>
+
+                <el-tab-pane label="文章评审" name="articleReview">
+                    <el-form ref="reviewPageInfo" :model="reviewPageInfo" label-width="80px">
+
+                        <el-date-picker
+                            @change="reviewTime"
+                            class="wetuc-input3-col3"
+                            v-model="reviewPageInfo.time"
+                            type="daterange"
+                            format="yyyy-MM-dd"
+                            value-format="timestamp"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                        </el-date-picker>
+
+                        <el-select v-model="reviewPageInfo.review" placeholder="请选择评审状态" class="wetuc-input3-col3" clearable @change="reviewChange">
+                            <el-option
+                                v-for="item in reviewList"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+
+                        <el-button type="primary" @click="screen">筛 选</el-button>
+
+                    </el-form>
+
+
+                    <el-table :data="reviewTableData" style="width: 100%" v-loading="reviewLoading" element-loading-text="拼命加载中">
+                        <el-table-column label="标题" min-width="220" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span @click="toDetail(scope.row.id)" class="spanHover">
+                                    {{scope.row.title}}
+                                </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="readNum" label="阅读量" min-width="60" show-overflow-tooltip></el-table-column>
+                        <el-table-column label="发布时间" min-width="80" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                {{scope.row.createDate | stampFormate}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="createUser" label="分析师" min-width="60" show-overflow-tooltip></el-table-column>
+
+                        <el-table-column label="评审" min-width="80" show-overflow-tooltip fixed="right" align="right" v-if="reviewPageInfo.review == 0">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.qualified | qualified}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column fixed="right" align="right" label="操作" min-width="120" v-else>
+                            <template slot-scope="scope">
+                                <el-button type="text" size="small" @click.prevent="qualifiedClick(scope.row)" v-if="scope.row.qualified == '1' || scope.row.qualified == '2'">
+                                    合格
+                                </el-button>
+                                <el-button type="text" size="small" @click.prevent="unqualified(scope.row)" v-if="scope.row.qualified != '2' || scope.row.qualified == '3'">
+                                    不合格
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                    <div class="wetuc-pagination-panel">
+                        <el-pagination
+                            @size-change="reviewHandlSizeChange"
+                            @current-change="reviewHandleCurrentChange"
+                            :current-page="reviewPage.pageNum"
+                            :page-sizes="[5, 10, 20, 50]"
+                            :page-size="reviewPage.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="reviewPage.total">
+                        </el-pagination>
+                    </div>
+                </el-tab-pane>
+
             </el-tabs>
 
 
@@ -200,6 +278,7 @@
 <script>
     import {loginService} from '../../service/loginService'
     import {stampFormate} from '../../filter/index'
+    import {qualified} from '../../filter/companyList'
 
     export default {
         data () {
@@ -225,6 +304,27 @@
                     pageSize: 5,
                     total: 0,
                 },
+                reviewPageInfo: {
+                    time: '',
+                    review: ''
+                },
+                reviewPage: {
+                    pageNum: 1,
+                    pageSize: 5,
+                    total: 0,
+                },
+                reviewLoading: false,
+                reviewTableData: [],
+                reviewList: [{
+                    label: '全部',
+                    value: 0
+                },{
+                    label: '待评审',
+                    value: 1
+                },{
+                    label: '已评审',
+                    value: 2
+                }],
                 tableAllData: [],
                 tableReviewData: [],
                 tableAllLoading: false,
@@ -243,10 +343,14 @@
                 }]
             }
         },
+        filters: {
+            qualified
+        },
         mounted () {
             this.queryAllData(this.pageAllInfo.articlesIification, this.pageAllInfo.articleLabel)
             this.getArticlesIification()
             this.getArticleLabelList()
+            this.getArticlesList(this.reviewPageInfo.review)
         },
         methods: {
             queryAllData (classId, lableId) {
@@ -292,6 +396,98 @@
                     console.log(err)
                 })
             },
+
+            // 获取文章评审
+            getArticlesList(qualified) {
+                let that = this;
+                that.reviewLoading = true;
+                loginService.getArticlesList({
+                    pageNo: that.reviewPage.pageNum,
+                    pageSize: that.reviewPage.pageSize,
+                    qualified: qualified,
+                    lableId: '5ba0f72b5a700006de4fc194',
+                    all: true,
+                    status: 1,
+                    createStartTime: that.reviewPageInfo.time && that.reviewPage.time[0] ? that.reviewPage.time[0] : '',
+                    createEndTime: that.reviewPageInfo.time && that.reviewPage.time[1] ? that.reviewPage.time[1] : ''
+                }).then(res => {
+                    if(res.data.code == 200) {
+                        let result = res.data.datas;
+                        that.reviewTableData = result.datas;
+                        that.reviewPage.total = Number(result.totalCount);
+                        setTimeout(function () {
+                            that.reviewLoading = false
+                        }, 300)
+                    } else {
+                        that.$message.error(res.data.message)
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+
+
+            // 文章评审筛选
+            screen() {
+                this.getArticlesList(this.reviewPageInfo.review)
+            },
+
+
+            // 时间
+            reviewTime (item) {
+                this.reviewPage.time = [];
+                this.reviewPage.time[0] = item[0];
+                this.reviewPage.time[1] = item[1];
+            },
+
+            // 合格不合格
+            qualifiedClick(row) {
+                let that = this;
+                loginService.articlesQualified(row.id, {
+                    qualified: 2
+                }).then(res => {
+                    if (res.data.code == 200) {
+                        that.$message.success('合格!');
+                        setTimeout(function () {
+                            that.getArticlesList(that.qualified)
+                        }, 800)
+                    } else {
+                        that.$message.error(res.data.message)
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            unqualified(row) {
+                let that = this;
+                loginService.articlesQualified(row.id, {
+                    qualified: 3
+                }).then(res => {
+                    if (res.data.code == 200) {
+                        that.$message.warning('不合格!');
+                        setTimeout(function () {
+                            that.getArticlesList(that.qualified)
+                        }, 800)
+                    } else {
+                        that.$message.error(res.data.message)
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+
+
+            // 文章评审状态
+            reviewChange(row) {
+                this.getArticlesList(row)
+            },
+
+            // 文章评审新窗口
+            toDetail(id) {
+                let href = this.$store.state.frontEndDomainName + 'article/' + id;
+                window.open(href, '_blank');
+            },
+
             // 获取文章分类
             getArticlesIification () {
                 let that = this
@@ -360,6 +556,21 @@
                     this.queryReviewData(this.pageReviewInfo.examine)
                 }
             },
+
+
+            // 分页
+            reviewHandlSizeChange (val) {
+                this.reviewPage.pageSize = val
+                this.getArticlesList(this.reviewPageInfo.review)
+            },
+            reviewHandleCurrentChange (val) {
+                if (val !== 0) {
+                    this.reviewPage.pageNum = val
+                    this.getArticlesList(this.reviewPageInfo.review)
+                }
+            },
+
+
             // 操作
             editText (id) {
                 console.log(id)
@@ -367,8 +578,10 @@
             handleClick (tab, event) {
                 if (tab.name === 'reviewArticles') {
                     this.queryReviewData(this.pageReviewInfo.examine)
-                } else {
+                } else if(tab.name === 'articleAll') {
                     this.queryAllData(this.pageAllInfo.articlesIification, this.pageAllInfo.articleLabel)
+                } else {
+                    console.log('123132')
                 }
             }
         }

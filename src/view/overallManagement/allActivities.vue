@@ -17,7 +17,7 @@
             </el-input>
 
 
-            <el-select v-model="pageInfo.classId" placeholder="活动分类" @change="classChange">
+            <el-select v-model="pageInfo.classId" placeholder="活动分类" @change="classChange" clearable>
                 <el-option
                     v-for="item in classList"
                     :key="item.id"
@@ -26,7 +26,7 @@
                 </el-option>
             </el-select>
 
-            <el-select v-model="pageInfo.tagId" placeholder="活动状态" @change="tagChange">
+            <el-select v-model="pageInfo.tagId" placeholder="活动状态" @change="tagChange" clearable>
                 <el-option
                     v-for="item in tagList"
                     :key="item.value"
@@ -35,7 +35,7 @@
                 </el-option>
             </el-select>
 
-            <el-select v-model="pageInfo.status" placeholder="报名状态" @change="statusChange">
+            <el-select v-model="pageInfo.status" placeholder="报名状态" @change="statusChange" clearable>
                 <el-option
                     v-for="item in statusList"
                     :key="item.value"
@@ -54,10 +54,16 @@
             </el-table-column>
             <el-table-column label="封面图" min-width="120">
                 <template slot-scope="scope">
-                    <el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.activityPoster"></el-image>
+                    <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.activityPoster"></el-avatar>
+
+                    <!--<el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.activityPoster"></el-image>-->
                 </template>
             </el-table-column>
-            <el-table-column prop="activityTitle" label="标题" min-width="150" show-overflow-tooltip></el-table-column>
+            <el-table-column label="标题" min-width="150" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <span class="spanHover">{{scope.row.activityTitle}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="actTheme" label="活动分类" min-width="100"></el-table-column>
             <el-table-column prop="actTheme" label="活动状态" min-width="100">
                 <template slot-scope="scope">
@@ -153,24 +159,28 @@
             this.getArticlesType();
         },
         methods: {
-            queryData() {
+            queryData(classId, actStauts, actApplyStauts) {
                 let that = this;
                 that.tableLoading = true;
                 loginService.getActivities({
                     pageNo: that.page.pageNum,
                     pageSize: that.page.pageSize,
                     query: that.pageInfo.query,
-                    actStauts: that.pageInfo.classId,
-                    classId: that.pageInfo.tagId,
-                    actApplyStauts: that.pageInfo.status,
+                    actStauts: actStauts,
+                    classId: classId,
+                    actApplyStauts: actApplyStauts,
                     all: true
                 }).then(res => {
-                    if(res.data.success) {
+                    if(res.data.code == 200) {
                         let result = res.data.datas
                         that.tableData = result.datas
                         that.page.total = Number(result.totalCount)
+                        setTimeout(function () {
+                            that.tableLoading = false
+                        }, 300)
+                    } else {
+                        that.$message.error(res.data.message)
                     }
-                    that.tableLoading = false;
                 }).catch(err => {
                     console.log(err)
                 })

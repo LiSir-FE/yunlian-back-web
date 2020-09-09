@@ -3,15 +3,20 @@
         <el-row class="container">
             <div class="nav-top">
                 <div class="topLeft">
-                    <el-image :src="url" class="logo"></el-image>
+                    <el-image :src="url" class="logo" @click="logoFun" v-if="!collapsed"></el-image>
+                    <el-image src="./static/favicon.ico" class="logos" @click="logoFun" v-if="collapsed"></el-image>
                 </div>
                 <div class="topRight">
-                    <div class="rightHome clearfix"><a href="https://wetuc.com " target="_blank">网站首页</a>
-                        <router-link to="/system/message">消息<span>{{unreadNum}}</span></router-link>
+                    <div class="rightHome clearfix">
+                        <!--<a href="https://wetuc.com " target="_blank">网站首页</a>-->
+                        <router-link to="/system/message">
+                            <el-badge :value="unreadNum" class="item"><i class="el-icon-message-solid"></i></el-badge>
+                        </router-link>
                     </div>
                     <div class="User">
                         <div class="UserImg">
-                            <img class="image" :src="adminPhoto"/>
+                            <el-avatar class="image" :src="adminPhoto"></el-avatar>
+                            <!--<img class="image" :src="adminPhoto"/>-->
                         </div>
                         <div class="name">{{sysUserName}}<i class="el-icon-caret-bottom"></i></div>
                         <div class="logout">
@@ -27,7 +32,7 @@
                 <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
                     <!--导航菜单-->
                     <el-menu :default-active="$route.path" class="el-menu-vertical-demo" unique-opened router
-                             v-show="!collapsed">
+                             v-show="!collapsed" style="width: 100%">
                         <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
                             <!--{{item}}-->
                             <el-submenu :index="index+''" v-if='!item.leaf' :key='index'>
@@ -58,7 +63,7 @@
                                     @mouseout="showMenu(index,false)">
                                     <li v-for="child in item.children" v-if="!child.hidden" :key="child.path"
                                         class="el-menu-item"
-                                        style="padding-left: 40px;height: 56px;line-height: 56px;"
+                                        style="min-width:180px; padding-left: 40px;height: 56px;line-height: 56px;"
                                         :class="$route.path==child.path?'is-active':''"
                                         @click="$router.push(child.path)">{{child.name}}
                                     </li>
@@ -236,6 +241,10 @@
             tucDataTabs
         },
         methods: {
+            // logo点击
+            logoFun() {
+              this.collapsed = !this.collapsed
+            },
             // 获取信息
             getAdminInfo () {
                 let that = this
@@ -451,7 +460,7 @@
                 }
 
                 .collapsed {
-                    width: 60px;
+                    width: 100%;
 
                     .item {
                         position: relative;
@@ -474,8 +483,8 @@
             }
 
             .menu-expanded {
-                flex: 0 0 230px;
-                width: 230px;
+                flex: 0 0 180px;
+                width: 180px;
                 background-color: #f1f2f3;
             }
 
@@ -533,7 +542,17 @@
     .nav-top .topLeft .logo {
         width: 165px;
         height: 40px;
+        cursor: pointer;
         padding-top: 10px;
+    }
+
+    .nav-top .topLeft .logos {
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-sizing: border-box;
+        margin-left: -35px;
     }
 
     .nav-top .topRight, .right-top .topRight {
@@ -552,16 +571,25 @@
 
     .nav-top .topRight .rightHome {
         font-size: 14px;
-        height: 14px;
-        line-height: 14px;
-        margin-top: 23px;
+        /*height: 14px;*/
+        /*line-height: 14px;*/
+        /*margin-top: 23px;*/
+        height: 100%;
         color: #666;
+        border-right: 1px solid #e6e6e6;
+        margin-right: 10px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
 
         a {
-            float: left;
+            /*float: left;*/
             padding-right: 10px;
             margin-right: 10px;
-            border-right: 1px solid #666;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
             color: #666;
             text-decoration: none;
 
@@ -615,6 +643,11 @@
 
     .nav-top .topRight .User .name i {
         margin-left: 6px;
+    }
+
+
+    .el-icon-message-solid{
+        font-size: 20px;
     }
 
 

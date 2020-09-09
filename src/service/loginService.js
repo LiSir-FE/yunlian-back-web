@@ -172,6 +172,40 @@ export const loginService = {
         return axios.put(apis + 'ad' + this.getParams(params) );
     },
     
+    // 广告管理
+    // 获取版位列表
+    getGuanggaoInfo: function (params) {
+        return axios.get(apis + 'ads' + this.getParams(params));
+    },
+    
+    // 新增版权
+    addGuanggaoInfo: function (params) {
+        return axios.post(apis + 'ads' + this.getParams(params));
+    },
+    
+    // 删除版权
+    deleteGuanggaoInfo: function (id) {
+        return axios.delete(apis + `ads/${id}`);
+    },
+    
+    // 获取版权详情
+    detailsGuanggao: function (id) {
+        return axios.get(apis + `ads/${id}`);
+    },
+    
+    // 修改版权
+    editGuanggaoInfo: function (params) {
+        return axios.put(apis + '/ads' + this.getParams(params));
+    },
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     // 获取文章分类 获取文章标签
     getArticlesType: function (param) {
@@ -190,6 +224,29 @@ export const loginService = {
     getActivities: function (param) { // 活动列表
         return axios.get(apis + 'activities' + this.getParams(param))
     },
+    
+    
+    // 获取文章评审list
+    // 文章评审列表
+    getArticlesList: function(param) {
+        return axios.get(apis + `/articles` + this.getParams(param))
+    },
+    
+    //合格or不合格
+    articlesQualified: function(id, param) {
+        return axios.put(apis + `/articles/${id}/qualified` + this.getParams(param))
+    },
+    
+    
+    
+    // 车队接口
+    
+    // 车队列表
+    getfleetList: function (param) {
+        return axios.get(apis + `/carteam` + this.getParams(param))
+    },
+    
+    
     
     
     

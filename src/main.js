@@ -10,7 +10,6 @@ import App from './App'
 import Watermark from './watermark';
 Vue.use(ElementUI)
 Vue.use(router)
-
 let win = typeof window
 let isClient = false
 if (win && win != 'undefined') {
@@ -37,7 +36,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     // 响应数据基本判断
     // 对token过期的跳转登录页面
-    if (response.data.code == 510100 && !(response.config.url.indexOf('cdks/login') > 0)) {
+    if (response && response.data.code == 510100 && !(response.config.url.indexOf('cdks/login') > 0)) {
         if (isClient) {
             localStorage.clear()
             localStorage.redirectUrl = location.href

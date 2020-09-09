@@ -8,7 +8,7 @@
             </el-breadcrumb>
         </div>
         <div>
-            <el-tabs v-model="accountName" @tab-click="handleClick">
+            <el-tabs v-model="accountName" @tab-click="handleClick" v-loading="fullscreenLoading">
                 <el-tab-pane label="账号设置" name="settings">
                     <el-form ref="setPageInfo" :model="setPageInfo" label-width="100px" :rules="rules">
                         <el-form-item label="头像" prop="imageUrl">
@@ -88,6 +88,7 @@
                 }
             }
             return {
+                fullscreenLoading: false,
                 accountName: 'settings',
                 actionUrl: process.env.API_ROOT + `oss/policy`,
                 setPageInfo: {
@@ -118,21 +119,29 @@
         methods: {
             getsettPageInfo () {
                 let that = this
+                that.fullscreenLoading = true;
                 loginService.getAdminInfo({}).then(res => {
-                    if (res.data.datas.wechatBind) {
-                        that.qrCodeFlag = false
+                    if(res.data.success) {
+                        if (res.data.datas.wechatBind) {
+                            that.qrCodeFlag = false
+                        } else {
+                            that.qrCodeFlag = true
+                        }
+                        that.setPageInfo.imageUrl = process.env.IMG_URL + res.data.datas.hostLogo
+                        that.setPageInfo.accountNum = res.data.datas.account
+                        that.setPageInfo.name = res.data.datas.hostCompany
+                        that.setPageInfo.contacts = res.data.datas.hostName
+                        that.setPageInfo.phone = res.data.datas.hostPhone
+                        that.setPageInfo.mailbox = res.data.datas.hostEmail
+                        that.setPageInfo.briefIntroduction = res.data.datas.hostDesc
+                        if (that.qrCodeFlag) {
+                            that.getWechaturl()
+                        }
+                        setTimeout(() => {
+                            that.fullscreenLoading = false;
+                        }, 200);
                     } else {
-                        that.qrCodeFlag = true
-                    }
-                    that.setPageInfo.imageUrl = process.env.IMG_URL + res.data.datas.hostLogo
-                    that.setPageInfo.accountNum = res.data.datas.account
-                    that.setPageInfo.name = res.data.datas.hostCompany
-                    that.setPageInfo.contacts = res.data.datas.hostName
-                    that.setPageInfo.phone = res.data.datas.hostPhone
-                    that.setPageInfo.mailbox = res.data.datas.hostEmail
-                    that.setPageInfo.briefIntroduction = res.data.datas.hostDesc
-                    if (that.qrCodeFlag) {
-                        that.getWechaturl()
+                        that.$message.error(res.data.message)
                     }
                 }).catch(err => {
                     console.log(err)
