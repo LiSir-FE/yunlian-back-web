@@ -92,11 +92,58 @@
                             <div v-if="$route.meta.keepalive">
                                 <tuc-data-display :option="disOption"></tuc-data-display>
                                 <tuc-data-tabs :option="tabsOption"></tuc-data-tabs>
+
+
+                                <el-collapse-transition>
+                                    <el-tabs v-model="matter" type="card" @tab-click="handleClick">
+                                        <el-tab-pane label="代办事项" name="todo">
+                                            <div class="todo-box-div" v-for="item in todoCheckedList">
+                                                <div class="todo-box-div-check" :style="{background: item.background}">
+                                                    <el-checkbox v-model="item.todocheck" :key="item.title" @change="todoCheckedFn(item)">
+                                                        <span style="margin-right: 48px;box-sizing: border-box">{{item.title}}</span>
+                                                    </el-checkbox>
+                                                    <i :class="item.icon1"></i>
+                                                    <i :class="item.icon2"></i>
+                                                    <i :class="item.icon3"></i>
+                                                </div>
+                                            </div>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="已办事项" name="done">
+                                            <div class="todo-box-div" v-for="item in doneCheckedList">
+                                                <div class="todo-box-div-check" :style="{background: item.background}">
+                                                    <el-checkbox v-model="item.todocheck" :key="item.title" @change="todoCheckedFn(item)">
+                                                        <span style="margin-right: 48px;box-sizing: border-box">{{item.title}}</span>
+                                                    </el-checkbox>
+                                                    <i :class="item.icon1"></i>
+                                                    <i :class="item.icon2"></i>
+                                                    <i :class="item.icon3"></i>
+                                                </div>
+                                            </div>
+                                        </el-tab-pane>
+                                    </el-tabs>
+                                </el-collapse-transition>
+
+                                <template>
+                                    <el-tabs v-model="workList" type="card" @tab-click="handleWorkListClick">
+                                        <el-tab-pane label="工作台" name="work">
+                                            <div id="myChart" class="myChart" ref="myChart"></div>
+                                            <div id="myChart1" class="myChart" ref="myChart1"></div>
+                                            <div id="myChart2" class="myChart" ref="myChart2"></div>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="财务清单" name="finance">
+
+                                        </el-tab-pane>
+                                    </el-tabs>
+                                </template>
+
+
+
                             </div>
                         </el-col>
                     </div>
                 </section>
             </el-col>
+            <!--<div class="nav-footer">版权所有: 李亮个人</div>-->
         </el-row>
 
         <!--修改密码-->
@@ -129,7 +176,7 @@
     import {common} from '../assets/js/common/common'
     import tucDataDisplay from '../components/tuc-data-display/index'
     import tucDataTabs from '../components/tuc-data-tabs/index'
-
+    import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
     export default {
         data () {
             let originalPassword = (rule, value, callback) => {
@@ -231,6 +278,45 @@
                         }
                     ]
                 },
+
+                // 事项
+                matter: 'todo',
+                todoCheckedList: [{
+                    title: '物流嘉年华于今日开会,请确认',
+                    todocheck: true,
+                    background: 'rgba(255, 140, 0, 0.15)',
+                    icon1: 'el-icon-edit',
+                    icon2: 'el-icon-star-on',
+                    icon3: 'el-icon-delete'
+                },{
+                    title: '今日收到款项 8203 元,请查收并签字确认,还有5200元未入账',
+                    todocheck: false,
+                    background: 'rgba(255, 69, 0, 0.15)',
+                    icon1: 'el-icon-edit',
+                    icon2: 'el-icon-star-on',
+                    icon3: 'el-icon-delete'
+                },{
+                    title: '李亮于今日来运联参观,请确认',
+                    todocheck: false,
+                    background: 'rgba(144, 238, 144, 0.15)',
+                    icon1: 'el-icon-edit',
+                    icon2: 'el-icon-star-on',
+                    icon3: 'el-icon-delete'
+                },{
+                    title: '今日重点会议,请前往会议室',
+                    todocheck: false,
+                    background: 'rgba(255, 215, 0, 0.15)',
+                    icon1: 'el-icon-edit',
+                    icon2: 'el-icon-star-on',
+                    icon3: 'el-icon-delete'
+                }],
+                doneCheckedList: [],
+                todoChecked: '',
+
+
+
+                // 工作台 // 财务清单
+                workList: 'work',
                 rules: {
                     originalPassword: [{required: true, validator: originalPassword, trigger: 'blur'}],
                     newPassword: [{required: true, validator: newPassword, trigger: 'blur'}],
@@ -240,17 +326,132 @@
         },
         components: {
             tucDataDisplay,
-            tucDataTabs
+            tucDataTabs,
+        },
+        component: {
+            CollapseTransition
         },
         methods: {
             // logo点击
             logoFun() {
               this.collapsed = !this.collapsed
             },
+            // 事项
+            handleClick(tab, event) {
+                console.log(tab, event);
+            },
+            todoCheckedFn(item) {
+                let that = this;
+                if(item.todocheck) {
+                    that.doneCheckedList.push(item)
+                } else {
+                    if(that.doneCheckedList.indexOf(item) > -1) {
+                        that.doneCheckedList.splice(item, 1)
+                    }
+                }
+            },
+
+
+
+            // 工作台 // 财务清单
+            handleWorkListClick(tab, event) {
+                console.log(tab, event);
+            },
+            drawLine(){
+                // 基于准备好的dom，初始化echarts实例
+                // let myChart = this.$echarts.init(document.getElementById('myChart'))
+                // let myChart1 = this.$echarts.init(document.getElementById('myChart1'))
+                // let myChart2 = this.$echarts.init(document.getElementById('myChart2'))
+                let myChart = this.$refs.myChart;
+                let myChart1 = this.$refs.myChart1;
+                let myChart2 = this.$refs.myChart2;
+                // 绘制图表
+                if(myChart) {
+                    myChart = this.$echarts.init(myChart);
+                    myChart.setOption({
+                        tooltip: {
+                            formatter: '{a} <br/>{b} : {c}%'
+                        },
+                        series: [
+                            {
+                                name: '业务指标',
+                                type: 'gauge',
+                                detail: {formatter: '{value}%'},
+                                data: [{value: 50, name: '完成率'}]
+                            }
+                        ]
+                    });
+                }
+
+                if(myChart1) {
+                    myChart1 = this.$echarts.init(myChart1);
+                    // 绘制图表
+                    myChart1.setOption({
+                        color: ['#3398DB'],
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: [
+                            {
+                                type: 'category',
+                                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                axisTick: {
+                                    alignWithLabel: true
+                                }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value'
+                            }
+                        ],
+                        series: [
+                            {
+                                name: '直接访问',
+                                type: 'bar',
+                                barWidth: '60%',
+                                data: [10, 52, 200, 334, 390, 330, 220]
+                            }
+                        ]
+                    });
+                }
+
+
+
+
+                if(myChart2) {
+                    myChart2 = this.$echarts.init(myChart2);
+                    // 绘制图表
+                    myChart2.setOption({
+                        xAxis: {
+                            type: 'category',
+                            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            data: [820, 932, 901, 934, 1290, 1330, 1320],
+                            type: 'line',
+                            smooth: true
+                        }]
+                    });
+                }
+
+            },
             // 获取信息
             getAdminInfo () {
-                let that = this
-                let imgurl = process.env.IMG_URL
+                let that = this;
+                let imgurl = process.env.IMG_URL;
                 loginService.getAdminInfo().then(function (res) {
                     if (res.data.code == 200) {
                         let obj = res.data.datas
@@ -259,6 +460,12 @@
                         that.unreadNum = obj.unreadMsgNum
                     } else {
                         that.$message.error(res.data.message)
+                    }
+                });
+                // 待办事项
+                that.todoCheckedList.forEach(item => {
+                    if(item.todocheck) {
+                        that.doneCheckedList.push(item)
                     }
                 })
             },
@@ -335,7 +542,8 @@
         },
         mounted () {
             let that = this
-            that.getAdminInfo()
+            that.getAdminInfo();
+            that.drawLine();
             loginService.getAdmin({}).then(res => {
                 that.sysUserName = res.data.datas.hostCompany
             }).catch(err => {
@@ -372,6 +580,60 @@
 <style scoped lang="scss">
     .home-container{
         height: 100%;
+    }
+
+    .nav-footer{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        color: #ccc;
+        font-size: 14px;
+        left: 0;
+    }
+
+
+    .el-tab-pane .todo-box-div-check{
+        display: inline-block;
+        padding: 10px 20px 10px 10px;
+        background: #ebebeb;
+        border-radius: 4px;
+        margin: 10px 0;
+        /*color: #fff;*/
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .todo-box-div-check i {
+        cursor: pointer;
+    }
+
+
+    .el-tab-pane .todo-box-div{
+        width: 100%;
+        display: inline-block;
+    }
+
+    .el-checkbox__input.is-checked+.el-checkbox__label{
+        color: #fff !important;
+    }
+    .myChart{
+        width: 33%;
+        height: 300px;
+        float: left;
+    }
+    .transition-box {
+        margin-bottom: 10px;
+        width: 200px;
+        height: 100px;
+        border-radius: 4px;
+        background-color: #409EFF;
+        text-align: center;
+        color: #fff;
+        padding: 40px 20px;
+        box-sizing: border-box;
+        margin-right: 20px;
     }
     .container {
         position: absolute;

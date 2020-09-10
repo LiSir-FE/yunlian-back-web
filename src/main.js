@@ -3,11 +3,13 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import 'element-ui/lib/theme-chalk/base.css'
 import QRCode from 'qrcodejs2'
 import axios from 'axios'
 import router from './router'
 import App from './App'
 import Watermark from './watermark';
+import echarts from 'echarts'
 Vue.use(ElementUI)
 Vue.use(router)
 let win = typeof window
@@ -15,6 +17,7 @@ let isClient = false
 if (win && win != 'undefined') {
     isClient = true
 }
+Vue.prototype.$echarts = echarts;
 // ajax
 Vue.prototype.$http = axios.create({
     timeout: 60000
@@ -100,8 +103,8 @@ new Vue({
     router,
     render: h => h(App),
     components: {App},
-    created() {
-        Watermark.set('物流嘉年华');
-    },
+    // created() {
+    //     Watermark.set('物流嘉年华');
+    // },
     template: '<App/>'
 })

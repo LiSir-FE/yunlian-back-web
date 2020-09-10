@@ -48,7 +48,7 @@
                             <el-input type="text" v-model="setPageInfo.mailbox" class="wetuc-input-col3"></el-input>
                         </el-form-item>
                         <el-form-item label="简介" prop="briefIntroduction">
-                            <el-input type="textarea" v-model="setPageInfo.briefIntroduction" rows="3"></el-input>
+                            <el-input type="textarea" v-model="setPageInfo.briefIntroduction" rows="4"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="submitForm('setPageInfo')">提交</el-button>

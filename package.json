@@ -17,6 +17,7 @@
     "compression-webpack-plugin": "^3.0.0",
     "countup.js": "^1.9.3",
     "cross-env": "^5.2.0",
+    "echarts": "^4.9.0",
     "element-ui": "^2.8.2",
     "less-loader": "^5.0.0",
     "node-sass": "^4.12.0",

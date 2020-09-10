@@ -24,8 +24,7 @@
                     <el-button type="text" class="remember rememberLeft" @click="passwordrecoveryFn">忘记密码</el-button>
                     <el-button type="text" class="remember rememberRight" @click="shenqing">没有账号?立即申请</el-button>
                     <el-form-item style="width:100%;">
-                        <el-button type="primary" style="width:100%;" @click="handleSubmit2" :loading="logining">登录
-                        </el-button>
+                        <el-button type="primary" style="width:100%;border-radius: 4px" @click="handleSubmit2" :loading="logining">登 录</el-button>
                     </el-form-item>
                 </div>
 
