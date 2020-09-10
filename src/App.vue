@@ -1,13 +1,29 @@
 <template>
     <div id="app">
-        <router-view></router-view>
+        <keep-alive>
+            <transition name="fade">
+                <router-view v-if="$route.meta.keepalive" :style="styleObject"></router-view>
+            </transition>
+        </keep-alive>
+
+
+        <transition name="fade" class="asdsad">
+            <router-view v-if="!$route.meta.keepalive" :style="styleObject"></router-view>  // 不需要缓存的页面'
+        </transition>
     </div>
 </template>
 
 <script>
+    import vueBg from './assets/img/logo/vueBackGlound.jpg'
+
     export default {
         data () {
-            return {}
+            return {
+                styleObject: {
+                    background: 'url('+ vueBg +') center center no-repeat',
+                    backgroundSize: 'cover'
+                }
+            }
         }
     }
 </script>
@@ -50,4 +66,19 @@
         }
 
     }
+
+    /*.fade-enter{*/
+        /*opacity: 0;*/
+    /*}*/
+    /*.fade-leave {*/
+        /*opacity: 1;*/
+    /*}*/
+    /*.fade-leave-active {*/
+        /*opacity: 0;*/
+        /*transition: opacity 1s;*/
+    /*}*/
+    /*.fade-leave-active {*/
+        /*opacity: 0;*/
+        /*transition: opacity 1s;*/
+    /*}*/
 </style>

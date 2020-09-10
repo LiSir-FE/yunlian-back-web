@@ -6,11 +6,12 @@
                 <div class="loginQrcode">
                     <i class="el-icon-s-grid" @click.prevent="loginQrcode = !loginQrcode" v-if="loginQrcode"></i>
                     <i class="el-icon-s-platform" @click.prevent="loginQrcode = !loginQrcode" v-if="!loginQrcode"></i>
+
                     <div class="popup" v-if="loginQrcode">
                         扫码登录在这里
                     </div>
                 </div>
-                <div class="login-wetuc" v-if="loginQrcode">
+                <div class="login-wetuc" v-show="loginQrcode">
                     <h3 class="title">欢迎 登录运联</h3>
                     <el-form-item prop="account">
                         <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
@@ -30,7 +31,7 @@
 
                 <!--二维码登录-->
 
-                <div class="login-wetuc login-wetuc1" v-if="!loginQrcode">
+                <div class="login-wetuc login-wetuc1" v-show="!loginQrcode">
                     <wxlogin :appid="appid" :scope="scope" :redirect_uri="redirect_uri" :state="state" href="data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7CndpZHRoOiAxNTBweDsKbWFyZ2luLXRvcDogMTVweDsKYm9yZGVyOiAxcHggc29saWQgI0UyRTJFMjsKfQppZnJhbWV7CndpZHRoOjEwMCUKfQ=="></wxlogin>
                 </div>
 
@@ -85,6 +86,13 @@
             this.getGaptchas();
         },
         methods: {
+            // loginQrFn() {
+            //     this.loginQrcode = !this.loginQrcode;
+            //     if(this.loginQrcode) {
+            //         console.log(this.loginQrcode)
+            //         this.getGaptchas();
+            //     }
+            // },
             getGaptchas () {
                 let that = this
                 let captchaBox = document.getElementById('captcha-box')
@@ -204,7 +212,6 @@
         background: rgba(0, 0, 0, 0.1);
         border-radius: 5px;
         color: #C0C4CC;
-        margin-bottom: 22px;
         display: inline-block;
         overflow: hidden;
     }

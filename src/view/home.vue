@@ -4,7 +4,7 @@
             <div class="nav-top">
                 <div class="topLeft">
                     <el-image :src="url" class="logo" @click="logoFun" v-if="!collapsed"></el-image>
-                    <el-image src="./static/favicon.ico" class="logos" @click="logoFun" v-if="collapsed"></el-image>
+                    <el-image :src="logos" class="logos" @click="logoFun" v-if="collapsed"></el-image>
                 </div>
                 <div class="topRight">
                     <div class="rightHome clearfix">
@@ -125,6 +125,7 @@
 <script>
     import {loginService} from '../service/loginService'
     import logo from '../assets/img/logo/logo.png'
+    import logos from '../assets/img/logo/logos.png'
     import {common} from '../assets/js/common/common'
     import tucDataDisplay from '../components/tuc-data-display/index'
     import tucDataTabs from '../components/tuc-data-tabs/index'
@@ -160,6 +161,7 @@
                 sysUserName: '',
                 collapsed: false,
                 url: logo,
+                logos: logos,
                 adminPhoto: '',
                 unreadNum: '',
 
@@ -368,8 +370,17 @@
 </script>
 
 <style scoped lang="scss">
+    .home-container{
+        height: 100%;
+    }
     .container {
         position: absolute;
+        background: #fff;
+        /*background-color: rgba(0,0,0,0.5);*/
+        /*background:rgba(255, 255, 255, 8.5);*/
+        filter:alpha(Opacity=85);
+        -moz-opacity:0.85;
+        opacity: 0.85;
         top: 0;
         bottom: 0;
         width: 100%;
@@ -548,11 +559,12 @@
 
     .nav-top .topLeft .logos {
         cursor: pointer;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
+        margin-top: 10px;
+        margin-left: -30px;
         box-sizing: border-box;
-        margin-left: -35px;
     }
 
     .nav-top .topRight, .right-top .topRight {
