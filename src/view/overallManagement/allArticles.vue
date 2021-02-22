@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/allArticles' }">总体管理</el-breadcrumb-item>
                 <el-breadcrumb-item>所有文章</el-breadcrumb-item>
             </el-breadcrumb>
@@ -60,9 +60,10 @@
                                 <span>{{scope.$index + 1}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="配图" min-width="120">
+                        <el-table-column label="配图（查看大图）" min-width="120">
                             <template slot-scope="scope">
-                                <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.poster"></el-avatar>
+                                <el-image class="table-td-thumb" :src="imgUrl + scope.row.poster" :preview-src-list="[imgUrl + scope.row.poster]"></el-image>
+<!--                                <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.poster"></el-avatar>-->
                                 <!--<el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.poster"></el-image>-->
                             </template>
                         </el-table-column>
@@ -86,22 +87,22 @@
                                 <span>{{scope.row.varefyTime | stampFormate4}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" min-width="200" fixed="right" align="right">
+                        <el-table-column label="操作" min-width="240" fixed="right" align="right">
                             <template slot-scope="scope">
-                                <el-button type="text" size="small" @click="editText(scope.row.id)">编辑</el-button>
-                                <el-button type="text" size="small" @click="editText(scope.row.id)"
+                                <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)">编辑</el-button>
+                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)"
                                            v-if="scope.row.isClose === '0'">关闭
                                 </el-button>
-                                <el-button type="text" size="small" @click="editText(scope.row.id)"
+                                <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)"
                                            v-if="scope.row.isClose === '1'">开启
                                 </el-button>
-                                <el-button type="text" size="small" @click="editText(scope.row.id)">删除</el-button>
-                                <el-button type="text" size="small" @click="editText(scope.row.id)"
+                                <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)"
                                            v-if="scope.row.position >= 20">置顶
                                 </el-button>
-                                <el-button type="text" size="small" @click="editText(scope.row.id)"
+                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)"
                                            v-if="scope.row.position <= 20">取消置顶
                                 </el-button>
+                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -175,7 +176,7 @@
                                     :content="scope.row.failReason">
                                     <el-button slot="reference" type="text" size="small">驳回原因</el-button>
                                 </el-popover>
-                                <el-button type="text" size="small" @click="editText(scope.row.id)" v-if="scope.row.varifyResult !== '0'">删除记录</el-button>
+                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)" v-if="scope.row.varifyResult !== '0'">删除记录</el-button>
                             </template>
                         </el-table-column>
                     </el-table>

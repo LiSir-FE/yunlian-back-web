@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/allArticles' }">总体管理</el-breadcrumb-item>
                 <el-breadcrumb-item>所有商机</el-breadcrumb-item>
             </el-breadcrumb>
@@ -42,7 +42,7 @@
             </el-table-column>
             <el-table-column label="操作" min-width="60" fixed="right" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small" @click.prevent="details(scope.row)">
+                    <el-button type="text" icon="el-icon-edit" size="small" @click.prevent="details(scope.row)">
                         详情
                     </el-button>
                 </template>

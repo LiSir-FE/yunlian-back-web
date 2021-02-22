@@ -131,24 +131,24 @@
                             }).then(res => {
                                 console.log(res)
                                 if (res.data.success) {
-                                    that.logining = false
-                                    localStorage.token = res.data.datas
-                                    that.$router.push({name: 'home'})
+                                    that.logining = false;
+                                    localStorage.token = res.data.datas;
+                                    this.$router.push('/')
                                     that.$message({
                                         message: '恭喜你，登录成功!',
                                         type: 'success'
                                     })
                                 } else {
-                                    that.logining = false
+                                    that.logining = false;
                                     that.$message({
                                         message: res.data.message,
                                         type: 'warning'
                                     })
-                                    that.captchaObj.reset()
-                                    that.getGaptchas()
+                                    that.captchaObj.reset();
+                                    that.getGaptchas();
                                 }
                             }).catch(err => {
-                                console.log(err)
+                                console.log(err);
                             })
                         } else {
                             that.logining = false

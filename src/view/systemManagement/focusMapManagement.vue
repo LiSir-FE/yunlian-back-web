@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/roleManagement' }">系统管理</el-breadcrumb-item>
                 <el-breadcrumb-item>焦点图管理</el-breadcrumb-item>
             </el-breadcrumb>
@@ -11,12 +11,13 @@
             新增内容
         </el-button>
 
-        <el-table :data="tableData" style="width: 100%" height="500" empty-text="暂无数据" v-loading="tableLoading"
+        <el-table :data="tableData" empty-text="暂无数据" v-loading="tableLoading"
                   element-loading-text="拼命加载中">
-            <el-table-column label="图片" min-width="100">
+            <el-table-column label="图片（查看大图）" min-width="100">
                 <template slot-scope="scope">
                     <div class="tableImg">
-                        <el-avatar shape="square" fit="cover" :size="100" :src="imgUrl + scope.row.picUrl"></el-avatar>
+                        <el-image class="table-td-thumb" :src="imgUrl + scope.row.picUrl" :preview-src-list="[imgUrl + scope.row.picUrl]"></el-image>
+<!--                        <el-avatar shape="square" fit="cover" :size="100" :src="imgUrl + scope.row.picUrl"></el-avatar>-->
                         <!--<img :src="imgUrl + scope.row.picUrl" alt="">-->
                     </div>
                 </template>
@@ -34,8 +35,8 @@
             </el-table-column>
             <el-table-column fixed="right" label="操作" min-width="100" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="editFn(scope.row.id)">编辑</el-button>
-                    <el-button type="text" size="small" @click="deleteFn(scope.row.id)">删除
+                    <el-button type="text" icon="el-icon-edit" size="small" @click="editFn(scope.row.id)">编辑</el-button>
+                    <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="deleteFn(scope.row.id)">删除
                     </el-button>
                 </template>
             </el-table-column>

@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/advertisingManagement' }">版权管理</el-breadcrumb-item>
                 <el-breadcrumb-item>添加版权</el-breadcrumb-item>
             </el-breadcrumb>

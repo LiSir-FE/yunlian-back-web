@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/roleManagement' }">系统管理</el-breadcrumb-item>
                 <el-breadcrumb-item>角色管理</el-breadcrumb-item>
             </el-breadcrumb>
@@ -20,8 +20,8 @@
                 <el-table-column prop="userNum" label="成员数量" min-width="160"></el-table-column>
                 <el-table-column fixed="right" label="操作" min-width="100" align="right">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" @click="editFn(scope.row.id)">编辑</el-button>
-                        <el-button type="text" size="small" v-if="scope.row.init !== true"
+                        <el-button type="text" icon="el-icon-edit" size="small" @click="editFn(scope.row.id)">编辑</el-button>
+                        <el-button type="text" icon="el-icon-delete" class="red" size="small" v-if="scope.row.init !== true"
                                    @click="deleteFn(scope.row.id)">删除
                         </el-button>
                     </template>

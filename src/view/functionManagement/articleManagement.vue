@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/articleManagement' }">功能</el-breadcrumb-item>
                 <el-breadcrumb-item>文章管理</el-breadcrumb-item>
             </el-breadcrumb>
@@ -67,8 +67,8 @@
 
             <el-table-column prop="date" label="配图" min-width="120">
                 <template slot-scope="scope">
-                    <!--<el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.poster"></el-image>-->
-                    <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.poster"></el-avatar>
+                    <el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.poster"></el-image>
+<!--                    <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.poster"></el-avatar>-->
 
                 </template>
             </el-table-column>
@@ -94,8 +94,8 @@
             </el-table-column>
             <el-table-column fixed="right" label="操作" min-width="120" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small">编辑</el-button>
-                    <el-button type="text" size="small">删除</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small">编辑</el-button>
+                    <el-button type="text" icon="el-icon-delete" class="red" size="small">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

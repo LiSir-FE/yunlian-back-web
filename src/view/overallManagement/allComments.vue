@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/allArticles' }">总体管理</el-breadcrumb-item>
                 <el-breadcrumb-item>所有评论</el-breadcrumb-item>
             </el-breadcrumb>
@@ -18,8 +18,8 @@
         <el-table :data="arrayData" style="width: 100%" v-loading="tableLoading" element-loading-text="拼命加载中">
             <el-table-column min-width="60">
                 <template slot-scope="scope">
-                    <el-avatar :size="50" :src="imgUrl + scope.row.userHeadImg"></el-avatar>
-                    <!--<el-image style="width: 50px; height: 50px;border-radius: 100%;overflow: hidden" :src="imgUrl + scope.row.userHeadImg"></el-image>-->
+<!--                    <el-avatar :size="50" :src="imgUrl + scope.row.userHeadImg"></el-avatar>-->
+                    <el-image style="width: 50px; height: 50px;border-radius: 100%;overflow: hidden" :src="imgUrl + scope.row.userHeadImg"></el-image>
                 </template>
             </el-table-column>
             <el-table-column prop="userName" min-width="60"
@@ -40,7 +40,7 @@
             </el-table-column>
             <el-table-column fixed="right" min-width="60" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small">删除</el-button>
+                    <el-button type="text" icon="el-icon-delete" class="red" size="small">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

@@ -1,21 +1,27 @@
 <template>
     <div id="app">
-        <keep-alive>
-            <transition name="fade">
-                <router-view v-if="$route.meta.keepalive" :style="styleObject"></router-view>
-            </transition>
-        </keep-alive>
-
-
-        <transition name="fade" class="asdsad">
-            <router-view v-if="!$route.meta.keepalive" :style="styleObject"></router-view>  // 不需要缓存的页面'
-        </transition>
+        <router-view></router-view>
     </div>
+
+<!--    <div id="app">-->
+<!--        <div class="content">-->
+<!--            <transition name="move" mode="out-in">-->
+<!--                <keep-alive>-->
+<!--                    <router-view v-if="$route.meta.keepalive" :style="styleObject"></router-view>-->
+<!--                </keep-alive>-->
+<!--            </transition>-->
+<!--            <transition name="move" mode="out-in">-->
+<!--                <keep-alive>-->
+<!--                    <router-view v-if="!$route.meta.keepalive" :style="styleObject"></router-view>  // 不需要缓存的页面'-->
+<!--                </keep-alive>-->
+<!--            </transition>-->
+<!--            <el-backtop target=".content"></el-backtop>-->
+<!--        </div>-->
+<!--    </div>-->
 </template>
 
 <script>
     import vueBg from './assets/img/logo/vueBackGlound.jpg'
-
     export default {
         data () {
             return {
@@ -23,6 +29,14 @@
                     background: 'url('+ vueBg +') center center no-repeat',
                     backgroundSize: 'cover'
                 }
+            }
+        },
+        created() {
+            window.onload = function () {
+                history.pushState(null, null, document.URL);
+                window.addEventListener('popstate', function () {
+                    history.pushState(null, null, document.URL)
+                });
             }
         }
     }
@@ -46,6 +60,14 @@
         width: 100%;
     }
 
+    .content{
+        width: auto;
+        height: 100%;
+        padding: 10px;
+        overflow-y: scroll;
+        box-sizing: border-box;
+    }
+
     .el-submenu [class^=fa] {
         vertical-align: baseline;
         margin-right: 10px;
@@ -66,19 +88,4 @@
         }
 
     }
-
-    /*.fade-enter{*/
-        /*opacity: 0;*/
-    /*}*/
-    /*.fade-leave {*/
-        /*opacity: 1;*/
-    /*}*/
-    /*.fade-leave-active {*/
-        /*opacity: 0;*/
-        /*transition: opacity 1s;*/
-    /*}*/
-    /*.fade-leave-active {*/
-        /*opacity: 0;*/
-        /*transition: opacity 1s;*/
-    /*}*/
 </style>

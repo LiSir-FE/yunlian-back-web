@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/roleManagement' }">系统管理</el-breadcrumb-item>
                 <el-breadcrumb-item>推荐设置</el-breadcrumb-item>
             </el-breadcrumb>
@@ -13,7 +13,7 @@
             <el-card class="box-card" v-for="(item, idx) in tableData" :key="idx">
                 <div slot="header" class="clearfix">
                     <span>{{item.name}}</span>
-                    <el-button style="float: right; padding: 3px 0" type="text" @click="editModify(item)">编辑</el-button>
+                    <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-edit" @click="editModify(item)">编辑</el-button>
                 </div>
 
 

@@ -1,6 +1,8 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import Vuex from 'vuex'
+
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/base.css'
@@ -12,6 +14,9 @@ import Watermark from './watermark';
 import echarts from 'echarts'
 Vue.use(ElementUI)
 Vue.use(router)
+Vue.use(Vuex);
+
+// 注册上面引入的各大模块
 let win = typeof window
 let isClient = false
 if (win && win != 'undefined') {
@@ -88,7 +93,7 @@ axios.interceptors.response.use(function (response) {
             default:
                 err.message = `连接出错(${err.response.status})!`
         }
-        
+
     } else {
         if (!isClient) return
         err.message = '连接服务器失败!'

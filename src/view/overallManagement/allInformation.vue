@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/allArticles' }">总体管理</el-breadcrumb-item>
                 <el-breadcrumb-item>所有资料</el-breadcrumb-item>
             </el-breadcrumb>
@@ -46,10 +46,10 @@
                     <span>{{scope.row.createTime | stampFormate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" min-width="100" fixed="right">
+            <el-table-column label="操作" min-width="100" fixed="right" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="editText(scope.row.id)">下载</el-button>
-                    <el-button type="text" size="small" @click="editText(scope.row.id)">删除</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)">下载</el-button>
+                    <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

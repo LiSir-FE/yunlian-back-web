@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/allArticles' }">总体管理</el-breadcrumb-item>
                 <el-breadcrumb-item>所有公司</el-breadcrumb-item>
             </el-breadcrumb>
@@ -61,13 +61,13 @@
             <el-table-column prop="infoNum" label="商机" min-width="80" show-overflow-tooltip></el-table-column>
             <el-table-column label="操作" min-width="120" fixed="right" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small" @click.prevent="details(scope.row)">
+                    <el-button type="text" icon="el-icon-edit" size="small" @click.prevent="details(scope.row)">
                         详情
                     </el-button>
-                    <el-button type="text" size="small" v-if="scope.row.collect === false" @click.prevent="collectFlase(scope.row)">
+                    <el-button type="text" icon="el-icon-edit" size="small" v-if="scope.row.collect === false" @click.prevent="collectFlase(scope.row)">
                         关注
                     </el-button>
-                    <el-button type="text" size="small" v-if="scope.row.collect === true" @click.prevent="collectTrue(scope.row)">
+                    <el-button type="text" icon="el-icon-delete" class="red" size="small" v-if="scope.row.collect === true" @click.prevent="collectTrue(scope.row)">
                         取消关注
                     </el-button>
                 </template>

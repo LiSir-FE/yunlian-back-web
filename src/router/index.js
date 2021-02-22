@@ -9,7 +9,8 @@ Router.prototype.push = function push(location) {
 
 import login from '../view/login.vue'
 import notFound from '../view/404.vue'
-import home from '../view/home.vue'
+import home from '../components/tuc-home/index.vue'
+import dashboard from '../view/dashboard.vue'
 import passwordrecovery from '../view/passwordrecovery'
 // 系统管理
 import roleManagement from '../view/systemManagement/roleManagement' // 角色管理
@@ -53,37 +54,50 @@ import summaryFunds from '../view/financialManagement/summaryFunds'
 import trafficAnalysis from '../view/statisticalAnalysis/trafficAnalysis'
 //账号管理
 import accountSettings from '../view/accountManagement/accountSettings'
+import fa from "element-ui/src/locale/lang/fa";
 // 要告诉 vue 使用 vueRouter
 Vue.use(Router)
 export default new Router({
     mode: 'history',
     routes: [
         {
-            path: '/login',
-            name: 'login',
-            component: login,
-            hidden: true
-        },
-        {
-            path: '/404',
-            component: notFound,
-            name: 'notFound',
-            hidden: true
+            path: '/',
+            hidden: true,
+            redirect: '/dashboard'
         },
         {
             path: '/',
             component: home,
-            name: 'home',
+            hidden: false,
+            iconCls: 'el-icon-monitor',
+            index: '0',
+            children: [{
+                path: '/dashboard',
+                component: dashboard,
+                name: '主页',
+                hidden: false
+            }]
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: login,
             hidden: true,
-            meta: {
-                keepalive: true
-            }
+            meta: { title: '登录' }
+        },
+        {
+            path: '*',
+            component: notFound,
+            name: 'notFound',
+            hidden: true,
+            redirect: '/notFound'
         },
         {
             path: '/passwordrecovery',
             component: passwordrecovery,
             name: 'passwordrecovery',
-            hidden: true
+            hidden: true,
+            meta: { title: '修改密码' }
         },
         {
             path: '/home',
@@ -92,6 +106,7 @@ export default new Router({
             roles: '100:query',
             hidden: true,
             iconCls: 'el-icon-monitor',
+            index: '1',
             children: [{
                 path: '/roleManagement',
                 component: roleManagement,
@@ -155,6 +170,7 @@ export default new Router({
             roles: '200:query',
             hidden: true,
             iconCls: 'el-icon-edit-outline',
+            index: '2',
             children: [{
                 path: '/allArticles',
                 component: allArticles,
@@ -211,6 +227,7 @@ export default new Router({
             roles: '300:query',
             hidden: true,
             iconCls: 'el-icon-pie-chart',
+            index: '3',
             children: [{
                 path: '/articleManagement',
                 component: articleManagement,
@@ -255,6 +272,7 @@ export default new Router({
             roles: '400:query',
             hidden: true,
             iconCls: 'el-icon-user',
+            index: '4',
             children: [{
                 path: '/userManagement',
                 component: userManagement,
@@ -269,6 +287,7 @@ export default new Router({
             roles: '800:query',
             hidden: true,
             iconCls: 'el-icon-notebook-2',
+            index: '5',
             children: [{
                 path: '/companyList',
                 component: companyList,
@@ -283,6 +302,7 @@ export default new Router({
             roles: '500:query',
             hidden: true,
             iconCls: 'el-icon-refrigerator',
+            index: '6',
             children: [{
                 path: '/summaryFunds',
                 component: summaryFunds,
@@ -297,6 +317,7 @@ export default new Router({
             roles: '600:query',
             hidden: true,
             iconCls: 'el-icon-copy-document',
+            index: '7',
             children: [{
                 path: '/trafficAnalysis',
                 component: trafficAnalysis,
@@ -311,6 +332,7 @@ export default new Router({
             roles: '700:query',
             hidden: true,
             iconCls: 'el-icon-setting',
+            index: '8',
             children: [{
                 path: '/accountSettings',
                 component: accountSettings,

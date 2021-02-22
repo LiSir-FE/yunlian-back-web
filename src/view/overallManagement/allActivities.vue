@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/allArticles' }">总体管理</el-breadcrumb-item>
                 <el-breadcrumb-item>所有活动</el-breadcrumb-item>
             </el-breadcrumb>
@@ -52,9 +52,10 @@
                     <span class="item-icon"><i class="el-icon-view"></i>{{scope.row.actReadNum}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="封面图" min-width="120">
+            <el-table-column label="封面图（查看大图）" min-width="120">
                 <template slot-scope="scope">
-                    <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.activityPoster"></el-avatar>
+                    <el-image class="table-td-thumb" :src="imgUrl + scope.row.activityPoster" :preview-src-list="[imgUrl + scope.row.activityPoster]"></el-image>
+<!--                    <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.activityPoster"></el-avatar>-->
 
                     <!--<el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.activityPoster"></el-image>-->
                 </template>
@@ -85,13 +86,13 @@
                     <span>{{scope.row.publishTime | stampFormate4}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" min-width="200" fixed="right">
+            <el-table-column label="操作" min-width="240" fixed="right" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="editText(scope.row.id)">编辑</el-button>
-                    <el-button type="text" size="small" @click="editText(scope.row.id)" v-if="scope.row.sortNumber > 0">取消置顶</el-button>
-                    <el-button type="text" size="small" @click="editText(scope.row.id)" v-if="scope.row.sortNumber <= 0">置顶</el-button>
-                    <el-button type="text" size="small" @click="editText(scope.row.id)" v-if="scope.row.isClose === 0">关闭</el-button>
-                    <el-button type="text" size="small" @click="editText(scope.row.id)" v-if="scope.row.isClose === 1">开启</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)">编辑</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)" v-if="scope.row.sortNumber > 0">取消置顶</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)" v-if="scope.row.sortNumber <= 0">置顶</el-button>
+                    <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)" v-if="scope.row.isClose === 0">关闭</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)" v-if="scope.row.isClose === 1">开启</el-button>
                 </template>
             </el-table-column>
         </el-table>

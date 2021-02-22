@@ -2,7 +2,7 @@
     <div class="wetuc-page-content">
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'home' }">主页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/roleManagement' }">系统管理</el-breadcrumb-item>
                 <el-breadcrumb-item>账号管理</el-breadcrumb-item>
             </el-breadcrumb>
@@ -82,9 +82,9 @@
                         </el-table-column>
                         <el-table-column fixed="right" label="操作" min-width="120" align="right">
                             <template slot-scope="scope">
-                                <el-button type="text" size="small" v-if="accListInfo.seleList === '4'">详情</el-button>
-                                <el-button type="text" size="small" @click="getAccountsid(scope.row.id)" v-if="accListInfo.seleList !== '4'">编辑</el-button>
-                                <el-button type="text" size="small" @click="deleteAccounts(scope.row.id)" v-if="accListInfo.seleList !== '4'">删除</el-button>
+                                <el-button type="text" icon="el-icon-edit" size="small" v-if="accListInfo.seleList === '4'">详情</el-button>
+                                <el-button type="text" icon="el-icon-edit" size="small" @click="getAccountsid(scope.row.id)" v-if="accListInfo.seleList !== '4'">编辑</el-button>
+                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="deleteAccounts(scope.row.id)" v-if="accListInfo.seleList !== '4'">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>

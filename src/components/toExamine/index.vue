@@ -64,7 +64,7 @@
             <el-table-column prop="bankCardNo" label="银行卡" min-width="120" show-overflow-tooltip v-if="accounType === 'authentication'"></el-table-column>
             <el-table-column fixed="right" label="操作" min-width="80" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small">详情</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small">详情</el-button>
                 </template>
             </el-table-column>
         </el-table>

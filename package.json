@@ -13,21 +13,20 @@
     "build": "cross-env NODE_ENV=production EVN_CONFIG=prod node build/build.js"
   },
   "dependencies": {
+    "bus": "^0.1.0",
     "common": "^0.2.5",
     "compression-webpack-plugin": "^3.0.0",
-    "countup.js": "^1.9.3",
     "cross-env": "^5.2.0",
     "echarts": "^4.9.0",
     "element-ui": "^2.8.2",
     "less-loader": "^5.0.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.14.1",
     "qrcodejs2": "0.0.2",
     "qs": "^6.7.0",
     "style-loader": "^0.23.1",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1",
-    "vue-style-loader": "^3.1.2",
-    "vuex": "^3.1.1"
+    "vue-router": "^3.5.1",
+    "vue-style-loader": "^3.1.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -94,8 +93,8 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.1.2",
     "vue-template-compiler": "^2.5.2",
-    "vue-wxlogin": "^1.0.1",
-    "vuex": "^3.1.1",
+    "vue-wxlogin": "^1.0.2",
+    "vuex": "^3.6.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
