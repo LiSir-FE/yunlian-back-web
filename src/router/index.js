@@ -58,7 +58,7 @@ import fa from "element-ui/src/locale/lang/fa";
 // 要告诉 vue 使用 vueRouter
 Vue.use(Router)
 export default new Router({
-    mode: 'history',
+    // mode: 'history',
     routes: [
         {
             path: '/',
@@ -86,7 +86,7 @@ export default new Router({
             meta: { title: '登录' }
         },
         {
-            path: '*',
+            path: '/notFound',
             component: notFound,
             name: 'notFound',
             hidden: true,

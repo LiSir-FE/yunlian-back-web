@@ -11,8 +11,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-
-const env = config.test.env
+const env = config.build[process.env.env_config + 'Env']
+// const env = config.test.env
+//
+const env = process.env.NODE_ENV === 'testing'
+    ? require('../config/test.env')
+    : require('../config/prod.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
     module: {
@@ -110,7 +114,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             children: true,
             minChunks: 3
         }),
-        
+
         // copy custom static assets
         new CopyWebpackPlugin([
             {
@@ -119,14 +123,14 @@ const webpackConfig = merge(baseWebpackConfig, {
                 ignore: ['.*']
             }
         ]),
-        
+
         new webpack.ProvidePlugin({
             // $: 'jquery',
             // jQuery: 'jquery',
             // 'windows.jQuery': 'jquery',
             // videoPlayer:'vue-video-player'
         }),
-        
+
         new FileManagerPlugin({
             onEnd:{
                 delete: [
@@ -142,7 +146,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 
 if (config.test.productionGzip) {
     const CompressionWebpackPlugin = require('compression-webpack-plugin')
-    
+
     webpackConfig.plugins.push(
         new CompressionWebpackPlugin({
             asset: '[path].gz[query]',
