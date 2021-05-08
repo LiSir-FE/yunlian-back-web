@@ -1,5 +1,5 @@
 <template>
-    <div class="warp">
+    <div class="warp" :style="styleObject">
         <div class="login-page-container">
             <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px"
                      class="demo-ruleForm login-container">
@@ -11,8 +11,9 @@
                         扫码登录在这里
                     </div>
                 </div>
+                <h3 class="title" v-show="loginQrcode">欢迎 登录运联</h3>
+
                 <div class="login-wetuc" v-show="loginQrcode">
-                    <h3 class="title">欢迎 登录运联</h3>
                     <el-form-item prop="account">
                         <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
                     </el-form-item>
@@ -27,9 +28,7 @@
                         <el-button type="primary" style="width:100%;border-radius: 4px" @click="handleSubmit2" :loading="logining">登 录</el-button>
                     </el-form-item>
                 </div>
-
                 <!--二维码登录-->
-
                 <div class="login-wetuc login-wetuc1" v-show="!loginQrcode">
                     <wxlogin :appid="appid" :scope="scope" :redirect_uri="redirect_uri" :state="state" href="data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7CndpZHRoOiAxNTBweDsKbWFyZ2luLXRvcDogMTVweDsKYm9yZGVyOiAxcHggc29saWQgI0UyRTJFMjsKfQppZnJhbWV7CndpZHRoOjEwMCUKfQ=="></wxlogin>
                 </div>
@@ -45,12 +44,17 @@
 </template>
 
 <script>
+    import vueBg from '../assets/img/logo/vueBackGlound.jpg'
     import {loginService} from '../service/loginService'
     import wxlogin from 'vue-wxlogin'
     export default {
         props: {},
         data () {
             return {
+                styleObject: {
+                    background: 'url('+ vueBg +') center center no-repeat',
+                    backgroundSize: 'cover'
+                },
                 loginQrcode: true,
                 logining: false,
                 geetestInfo: {},
@@ -122,8 +126,8 @@
                         that.logining = true
                         if (that.geetesst) {
                             loginService.login({
-                                account: this.ruleForm2.account,
-                                password: this.ruleForm2.checkPass,
+                                account: that.ruleForm2.account,
+                                password: that.ruleForm2.checkPass,
                                 platform: 'ADMIN_PC',
                                 challenge: that.geetestInfo.geetest_challenge,
                                 validate: that.geetestInfo.geetest_validate,
@@ -133,7 +137,7 @@
                                 if (res.data.success) {
                                     that.logining = false;
                                     localStorage.token = res.data.datas;
-                                    this.$router.push('/')
+                                    that.$router.push('/')
                                     that.$message({
                                         message: '恭喜你，登录成功!',
                                         type: 'success'
@@ -198,7 +202,7 @@
         -moz-border-radius: 5px;
         background-clip: padding-box;
         width: 350px;
-        padding: 35px 35px 15px;
+        padding: 50px 35px 5px 35px;
         background: #fff;
         border: 1px solid #eaeaea;
         box-shadow: 0 0 25px #cac6c6;
@@ -234,9 +238,12 @@
 
     .login-wetuc{
         width: 350px;
-        height: 310px;
+        height: 280px;
     }
 
+    .login-container{
+        background-color: rgba(255, 255, 255, .5);
+    }
 
     .loginQrcode i{
         position: absolute;
@@ -297,6 +304,11 @@
     .login-wetuc1 div iframe{
         width: 100%;
         height: 100%;
+    }
+
+    .title{
+        position: absolute;
+        top: 15px;
     }
 
 

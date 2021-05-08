@@ -91,6 +91,8 @@
                 fullscreenLoading: false,
                 accountName: 'settings',
                 actionUrl: process.env.API_ROOT + `oss/policy`,
+                imgUrl: process.env.IMG_URL,
+                qCodeIdx: 1,
                 setPageInfo: {
                     accountNum: '',
                     qrCodeInput: '已认证',
@@ -134,8 +136,9 @@
                         that.setPageInfo.phone = res.data.datas.hostPhone
                         that.setPageInfo.mailbox = res.data.datas.hostEmail
                         that.setPageInfo.briefIntroduction = res.data.datas.hostDesc
-                        if (that.qrCodeFlag) {
+                        if (that.qrCodeFlag && that.qCodeIdx <= 1) {
                             that.getWechaturl()
+                            ++that.qCodeIdx //阻止每次保存数据后页面多出来的new QCode 二维码
                         }
                         setTimeout(() => {
                             that.fullscreenLoading = false;
@@ -230,10 +233,12 @@
             submitForm (formName) {
                 let that = this
                 let hostLogo = ''
-                if (that.setPageInfo.imageUrl.indexOf(process.env.IMG_URL) === -1) {
+                if (that.setPageInfo.imageUrl.indexOf(that.imgUrl) === -1) {
                     hostLogo = that.setPageInfo.imageUrl.substring(0, that.setPageInfo.imageUrl.length)
-                } else {
+                } else if (that.imgUrl == '/picHead/') {
                     hostLogo = that.setPageInfo.imageUrl.substring(8, that.setPageInfo.imageUrl.length)
+                } else {
+                    hostLogo = that.setPageInfo.imageUrl.substring(27, that.setPageInfo.imageUrl.length)
                 }
                 that.$refs[formName].validate((valid) => {
                     if (valid) {

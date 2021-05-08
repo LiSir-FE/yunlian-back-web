@@ -118,7 +118,7 @@ export default {
     position: relative;
     height: 30px;
     overflow: hidden;
-    background: #fff;
+    background-color: rgba(255, 255, 255, .5) !important;
     padding-right: 120px;
     box-shadow: 0 5px 10px #ddd;
 }
@@ -140,6 +140,7 @@ export default {
     line-height: 23px;
     border: 1px solid #e9eaec;
     background: #fff;
+    /*background-color: rgba(255, 255, 255, .5) !important;*/
     padding: 0 5px 0 12px;
     vertical-align: middle;
     color: #666;
@@ -179,7 +180,7 @@ export default {
     text-align: center;
     width: 110px;
     height: 30px;
-    background: #fff;
+    background-color: rgba(255, 255, 255, .5) !important;
     box-shadow: -3px 0 15px 3px rgba(0, 0, 0, .1);
     z-index: 10;
 }

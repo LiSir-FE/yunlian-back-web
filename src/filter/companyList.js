@@ -657,7 +657,7 @@ export function orderStatus(val) {
             orderStatus = '交易完成';
             break;
         }
-        
+
     }
     return orderStatus
 }
@@ -738,6 +738,66 @@ export function qualified(val) {
     }
     return qualified
 }
+
+export function contractStamp(val) {
+    let contractStamp = '';
+    switch (val) {
+        case 1: {
+            contractStamp = '均未盖章';
+            break;
+        }
+        case 2: {
+            contractStamp = '我方已盖章';
+            break;
+        }
+        case 3: {
+            contractStamp = '对方已盖章';
+            break;
+        }
+        case 4: {
+            contractStamp = '双方已盖章';
+            break;
+        }
+    }
+    return contractStamp
+}
+
+export function contractBillEndTime(val) {
+    let contractBillEndTime = '';
+    let timestamp = new Date().getTime();
+    if(!val) {
+        contractBillEndTime = '-'
+    } else {
+        let dateDiff = new Date(Number(val)).getTime() - timestamp; //时间差的毫秒数
+        let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));  //计算出相差天数
+        contractBillEndTime = dayDiff + '天'
+    }
+    return contractBillEndTime
+}
+
+export function contractStatus(val) {
+    let contractStatus = '';
+    switch (val) {
+        case 1: {
+            contractStatus = '待审核';
+            break;
+        }
+        case 2: {
+            contractStatus = '已审核';
+            break;
+        }
+        case 3: {
+            contractStatus = '进行中';
+            break;
+        }
+        case 4: {
+            contractStatus = '已完成';
+            break;
+        }
+    }
+    return contractStatus
+}
+
 
 
 

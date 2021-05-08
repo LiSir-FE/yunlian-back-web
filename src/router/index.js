@@ -48,6 +48,11 @@ import lotteryListManagement from '../view/functionManagement/lotteryListManagem
 import userManagement from '../view/userManagement/userManagement'
 //工作管理
 import companyList from '../view/workManagement/companyList'
+
+// 合同管理
+import contractManagement from '../view/contractManagement/contractList' //合同列表
+import allContracts from '../view/contractManagement/allContracts' //全部合同
+
 //财务管理
 import summaryFunds from '../view/financialManagement/summaryFunds'
 //统计分析
@@ -58,7 +63,7 @@ import fa from "element-ui/src/locale/lang/fa";
 // 要告诉 vue 使用 vueRouter
 Vue.use(Router)
 export default new Router({
-    // mode: 'history',
+    mode: 'history',
     routes: [
         {
             path: '/',
@@ -298,11 +303,32 @@ export default new Router({
         },{
             path: '/home',
             component: home,
+            name: '合同管理',
+            roles: '900:query',
+            hidden: true,
+            iconCls: 'el-icon-tickets',
+            index: '6',
+            children: [{
+                path: '/contractList',
+                component: contractManagement,
+                roles: '910:query',
+                hidden: true,
+                name: '合同列表'
+            },{
+                path: '/allContracts',
+                component: allContracts,
+                roles: '920:query',
+                hidden: true,
+                name: '全部合同'
+            }]
+        },{
+            path: '/home',
+            component: home,
             name: '财务管理',
             roles: '500:query',
             hidden: true,
             iconCls: 'el-icon-refrigerator',
-            index: '6',
+            index: '7',
             children: [{
                 path: '/summaryFunds',
                 component: summaryFunds,
@@ -317,7 +343,7 @@ export default new Router({
             roles: '600:query',
             hidden: true,
             iconCls: 'el-icon-copy-document',
-            index: '7',
+            index: '8',
             children: [{
                 path: '/trafficAnalysis',
                 component: trafficAnalysis,
@@ -332,7 +358,7 @@ export default new Router({
             roles: '700:query',
             hidden: true,
             iconCls: 'el-icon-setting',
-            index: '8',
+            index: '9',
             children: [{
                 path: '/accountSettings',
                 component: accountSettings,

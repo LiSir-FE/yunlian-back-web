@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar">
-        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#fff" text-color="#000" active-text-color="#20a0ff" unique-opened router>
+        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" text-color="#000" active-text-color="#20a0ff" unique-opened router>
             <template v-for="item in routersList">
                 <template v-if="item.children && item.index >= 1">
                     <el-submenu :index="item.index" :key="item.index">
@@ -60,8 +60,16 @@ export default {
     }
     .sidebar-el-menu:not(.el-menu--collapse) {
         width: 160px;
+        background-color: rgba(255, 255, 255, .5);
     }
     .sidebar > ul {
         height: 100%;
+        background-color: rgba(255, 255, 255, .5) !important;
+    }
+    .el-submenu .el-menu{
+        background-color: rgba(255, 255, 255, .5) !important;
+    }
+    .el-menu{
+        background-color: rgba(255, 255, 255, .5) !important;
     }
 </style>

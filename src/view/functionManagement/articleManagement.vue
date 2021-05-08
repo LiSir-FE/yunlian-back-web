@@ -11,9 +11,7 @@
 
         <div>
             <el-tabs v-model="articleName" @tab-click="handleClick">
-                <el-tab-pane label="我的文章" name="first">
-
-                </el-tab-pane>
+                <el-tab-pane label="我的文章" name="first"></el-tab-pane>
                 <el-tab-pane label="草稿箱" name="second"></el-tab-pane>
             </el-tabs>
         </div>
@@ -65,11 +63,11 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="date" label="配图" min-width="120">
+            <el-table-column label="图片（查看大图）" min-width="100">
                 <template slot-scope="scope">
-                    <el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.poster"></el-image>
-<!--                    <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.poster"></el-avatar>-->
-
+                    <div class="tableImg">
+                        <el-image class="table-td-thumb" :src="imgUrl + scope.row.poster" :preview-src-list="[imgUrl + scope.row.poster]"></el-image>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column label="标题" min-width="180" show-overflow-tooltip>

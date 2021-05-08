@@ -13,6 +13,7 @@ import router from './router'
 import App from './App'
 import Watermark from './watermark';
 import echarts from 'echarts'
+import de from "element-ui/src/locale/lang/de";
 Vue.use(ElementUI)
 Vue.use(router)
 Vue.use(Vuex);
@@ -45,7 +46,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     // 响应数据基本判断
     // 对token过期的跳转登录页面
-    if (response && response.data.code == 510100 && !(response.config.url.indexOf('cdks/login') > 0)) {
+    if (response && response.data.code == 510100 && !(response.config.url.indexOf('/apis/admins') > 0)) {
         if (isClient) {
             localStorage.clear()
             localStorage.redirectUrl = location.href
@@ -109,8 +110,8 @@ new Vue({
     router,
     render: h => h(App),
     components: {App},
-    // created() {
-    //     Watermark.set('物流嘉年华');
-    // },
+    created() {
+        Watermark.set('物流嘉年华');
+    },
     template: '<App/>'
 })

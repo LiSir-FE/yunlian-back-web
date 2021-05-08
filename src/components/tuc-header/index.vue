@@ -186,12 +186,12 @@ export default {
     },
     mounted() {
         let that = this;
-        that.getAdminInfo();
-        loginService.getAdmin({}).then(res => {
-            that.sysUserName = res.data.datas.hostCompany
-        }).catch(err => {
-            console.log(err)
-        })
+        // that.getAdminInfo();
+        // loginService.getAdmin({}).then(res => {
+        //     that.sysUserName = res.data.datas.hostCompany
+        // }).catch(err => {
+        //     console.log(err)
+        // })
         if (document.body.clientWidth < 1500) {
             that.logoFun();
         }
@@ -204,6 +204,7 @@ export default {
         display: none;
         position: absolute;
         top: 56px;
+        right: 5px;
         border: 1px solid #ddd;
         border-radius: 4px;
         background: #fff;
@@ -227,9 +228,13 @@ export default {
         display: block;
 
     }
+    .UserImg{
+        margin-right: 10px;
+    }
     .header {
         height: 60px;
         line-height: 60px;
+        background-color: rgba(255, 255, 255, .5);
 
         .userinfo {
             text-align: right;
@@ -402,7 +407,7 @@ export default {
 
     .nav-top .topRight .User .name, .right-top .topRight .User .name {
         float: left;
-        width: 80px;
+        //width: 80px;
         text-align: center;
         color: #969896;
         line-height: 60px;
