@@ -23,7 +23,7 @@
                     </el-form-item>
                     <div id="captcha-box"></div>
                     <el-button type="text" class="remember rememberLeft" @click="passwordrecoveryFn">忘记密码</el-button>
-                    <el-button type="text" class="remember rememberRight" @click="shenqing">没有账号?立即申请</el-button>
+                    <el-button type="text" class="remember rememberRight" @click="apply">没有账号?立即申请</el-button>
                     <el-form-item style="width:100%;">
                         <el-button type="primary" style="width:100%;border-radius: 4px" @click="handleSubmit2" :loading="logining">登 录</el-button>
                     </el-form-item>
@@ -35,9 +35,6 @@
 
             </el-form>
 
-
-
-
         </div>
     </div>
 
@@ -45,8 +42,8 @@
 
 <script>
     import vueBg from '../assets/img/logo/vueBackGlound.jpg'
-    import {loginService} from '../service/loginService'
     import wxlogin from 'vue-wxlogin'
+    import {loginService} from '../service/loginService'
     export default {
         props: {},
         data () {
@@ -89,13 +86,6 @@
             this.getGaptchas();
         },
         methods: {
-            // loginQrFn() {
-            //     this.loginQrcode = !this.loginQrcode;
-            //     if(this.loginQrcode) {
-            //         console.log(this.loginQrcode)
-            //         this.getGaptchas();
-            //     }
-            // },
             getGaptchas () {
                 let that = this
                 let captchaBox = document.getElementById('captcha-box')
@@ -133,7 +123,6 @@
                                 validate: that.geetestInfo.geetest_validate,
                                 seccode: that.geetestInfo.geetest_seccode
                             }).then(res => {
-                                console.log(res)
                                 if (res.data.success) {
                                     that.logining = false;
                                     localStorage.token = res.data.datas;
@@ -170,7 +159,7 @@
             passwordrecoveryFn() {
                 this.$router.push({name: 'passwordrecovery'})
             },
-            shenqing() {
+            apply() {
                 window.location.href = 'https://wetuc.com/sponsor';
             }
         }

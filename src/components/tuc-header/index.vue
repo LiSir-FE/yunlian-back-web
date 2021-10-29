@@ -128,6 +128,26 @@ export default {
                     that.$message.error(res.data.message)
                 }
             });
+            that.getStaffpagesAccounts();
+        },
+        // 获取内部员工工作天数
+        getStaffpagesAccounts() {
+            loginService.getStaffpagesAccounts({}).then(res => {
+                if(res.data.code == 200) {
+                    const h = this.$createElement;
+                    this.$message({
+                        message: h('p', null, [
+                            h('span', null, '加入运联的第'),
+                            h('i', { style: 'color: teal' }, res.data.datas),
+                            h('span', null, '天,今天的你跟昨天的你不一样!')
+                        ])
+                    });
+                } else {
+                    console.log(res.data.message);
+                }
+            }).catch(err => {
+                console.log(err);
+            })
         },
         // 侧边栏折叠
         // logo点击
@@ -186,7 +206,6 @@ export default {
     },
     mounted() {
         let that = this;
-        // that.getAdminInfo();
         // loginService.getAdmin({}).then(res => {
         //     that.sysUserName = res.data.datas.hostCompany
         // }).catch(err => {
@@ -195,6 +214,7 @@ export default {
         if (document.body.clientWidth < 1500) {
             that.logoFun();
         }
+        that.getAdminInfo();
     }
 }
 </script>

@@ -347,6 +347,7 @@
         filters: {
             qualified
         },
+
         mounted () {
             this.queryAllData(this.pageAllInfo.articlesIification, this.pageAllInfo.articleLabel)
             this.getArticlesIification()

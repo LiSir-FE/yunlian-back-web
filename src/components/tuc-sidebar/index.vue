@@ -42,6 +42,12 @@ export default {
             this.collapse = msg;
             bus.$emit('collapse-content', msg);
         });
+    },
+    methods: {
+
+    },
+    mounted() {
+
     }
 }
 </script>

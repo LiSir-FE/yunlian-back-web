@@ -9,13 +9,13 @@ import 'element-ui/lib/theme-chalk/base.css'
 import '@/assets/style/rules.scss'
 import QRCode from 'qrcodejs2'
 import axios from 'axios'
+import store from './store'
 import router from './router'
 import App from './App'
 import Watermark from './watermark';
 import echarts from 'echarts'
 import de from "element-ui/src/locale/lang/de";
 Vue.use(ElementUI)
-Vue.use(router)
 Vue.use(Vuex);
 
 // 注册上面引入的各大模块
@@ -49,8 +49,8 @@ axios.interceptors.response.use(function (response) {
     if (response && response.data.code == 510100 && !(response.config.url.indexOf('/apis/admins') > 0)) {
         if (isClient) {
             localStorage.clear()
-            localStorage.redirectUrl = location.href
-            location.href = location.origin
+            // localStorage.redirectUrl = location.href
+            // location.href = location.origin
         }
     }
     return response
@@ -107,6 +107,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
+    store,
     router,
     render: h => h(App),
     components: {App},

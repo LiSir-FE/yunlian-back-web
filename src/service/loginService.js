@@ -29,6 +29,10 @@ export const loginService = {
     getAdmin: function (params) {
         return axios.get(apis + 'admins' + this.getParams(params))
     },
+    // 获取内部员工工作天数
+    getStaffpagesAccounts: function (params) {
+        return axios.get(apis + 'accounts/staffhiretime' + this.getParams(params));
+    },
     // 上传头像
     getPolicy: function (params) {
         return axios.get(apis + `oss/policy`)

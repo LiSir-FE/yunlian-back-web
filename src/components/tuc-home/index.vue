@@ -44,10 +44,12 @@ export default {
 
         // 只有在标签页列表里的页面才使用keep-alive，即关闭标签之后就不保存到内存中了。
         bus.$on('tags', msg => {
+            // this.$store.commit('setArticlesNmae', '文章管理');
             let arr = [];
             for (let i = 0, len = msg.length; i < len; i++) {
                 msg[i].name && arr.push(msg[i].name);
             }
+            // console.log(this.$store.getters.getArticlesNmae, this.$router.options.routes, '1111111');
             this.tagsList = arr;
         });
     },
@@ -85,7 +87,7 @@ export default {
             that.adminList = tokenData.permissions
             window.localStorage.setItem('jurisdiction', JSON.stringify(that.adminList))
         }
-        let adminListArr = []
+        let adminListArr = [];
         that.$router.options.routes.forEach(item => {
             if (item.children) {
                 item.children.forEach(items => {

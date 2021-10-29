@@ -45,10 +45,10 @@
         <el-dialog :title="userTitle" :visible.sync="userDialogVisible" width="50%" v-loading="treeLoading"
                    :close-on-click-modal="false" :close-on-press-escape="false">
             <el-form ref="treeOneInfo" :model="treeOneInfo" label-width="80px" :rules="treeOneRules">
-                <el-form-item label="角色名称:" prop="userName">
+                <el-form-item label="角色名称:" prop="userName" class="wetuc-displayLft">
                     <el-input v-model="treeOneInfo.userName" placeholder="请输入角色名称" class="wetuc-input3-col3"></el-input>
                 </el-form-item>
-                <el-form-item label="角色描述:" prop="userDesc">
+                <el-form-item label="角色描述:" prop="userDesc" class="wetuc-displayLft">
                     <el-input v-model="treeOneInfo.userDesc" placeholder="请输入角色名称" class="wetuc-input3-col3"></el-input>
                 </el-form-item>
 

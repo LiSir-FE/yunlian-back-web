@@ -1,12 +1,11 @@
+import store from '../store'
 import Vue from 'vue'
 import Router from 'vue-router'
-
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => err)
 }
 // 引入组件
-
 import login from '../view/login.vue'
 import notFound from '../view/404.vue'
 import home from '../components/tuc-home/index.vue'
@@ -30,6 +29,7 @@ import allArticles from '../view/overallManagement/allArticles' // 所有文章
 import allActivities from '../view/overallManagement/allActivities' // 所有活动
 import allInformation from '../view/overallManagement/allInformation' // 所有资料
 import allComments from '../view/overallManagement/allComments' // 所有评论
+
 import allCompanies from '../view/overallManagement/allCompanies' // 所有公司
 import allWork from '../view/overallManagement/allWork' // 所有工作
 import allIntelligence from '../view/overallManagement/allIntelligence' // 所有商机
@@ -40,12 +40,16 @@ import articleManagement from '../view/functionManagement/articleManagement' // 
 import activityListManagement from '../view/functionManagement/activityListManagement' //活动管理
 import datummanageManagement from '../view/functionManagement/datummanageManagement' //资料管理
 import commentManagement from '../view/functionManagement/commentManagement' //评论管理
+
 import brandManagement from '../view/functionManagement/brandManagement' //微站管理
 import lotteryListManagement from '../view/functionManagement/lotteryListManagement' //现场互动
+import problemList from '../view/functionManagement/problemList' //问题管理
+import courses from '../view/functionManagement/courses' //课程管理
 
 
 //用户管理
-import userManagement from '../view/userManagement/userManagement'
+import userManagement from '../view/userManagement/userManagement'  // 全部用户
+import vip from '../view/userManagement/vip'   // 会员用户
 //工作管理
 import companyList from '../view/workManagement/companyList'
 
@@ -54,9 +58,16 @@ import contractManagement from '../view/contractManagement/contractList' //合�
 import allContracts from '../view/contractManagement/allContracts' //全部合同
 
 //财务管理
-import summaryFunds from '../view/financialManagement/summaryFunds'
+import summaryFunds from '../view/financialManagement/summaryFunds' // 资金总览
 //统计分析
-import trafficAnalysis from '../view/statisticalAnalysis/trafficAnalysis'
+import trafficAnalysis from '../view/statisticalAnalysis/trafficAnalysis' //流量分析
+import userAnalysis from '../view/statisticalAnalysis/userAnalysis'       //用户分析
+import contentAnalysis from '../view/statisticalAnalysis/contentAnalysis' //内容分析
+import incomeAnalysis from '../view/statisticalAnalysis/incomeAnalysis'   //收入分析
+import workAnalysis from '../view/statisticalAnalysis/workAnalysis'       //工作分析
+import answerAnalysis from '../view/statisticalAnalysis/answerAnalysis'   //答题统计
+import contractStatistics from '../view/statisticalAnalysis/contractStatistics'        // 合同统计
+import contractNumStatistics from '../view/statisticalAnalysis/contractNumStatistics'  // 内容统计
 //账号管理
 import accountSettings from '../view/accountManagement/accountSettings'
 import fa from "element-ui/src/locale/lang/fa";
@@ -181,7 +192,7 @@ export default new Router({
                 component: allArticles,
                 roles: '210:query',
                 hidden: true,
-                name: '所有文章'
+                name: '所有文章' // store.getters.getArticlesNmae
             },{
                 path: '/allActivities',
                 component: allActivities,
@@ -269,6 +280,18 @@ export default new Router({
                 roles: '360:query',
                 hidden: true,
                 name: '现场互动'
+            },{
+                path: '/problemList',
+                component: problemList,
+                roles: '360:query',
+                hidden: true,
+                name: '问题管理'
+            },{
+                path: '/courses',
+                component: courses,
+                roles: '360:query',
+                hidden: true,
+                name: '课程管理'
             }]
         },{
             path: '/home',
@@ -283,7 +306,13 @@ export default new Router({
                 component: userManagement,
                 roles: '420:query',
                 hidden: true,
-                name: '用户列表'
+                name: '全部用户'
+            }, {
+                path: '/vip',
+                component: vip,
+                roles: '420:query',
+                hidden: true,
+                name: '会员用户'
             }]
         },{
             path: '/home',
@@ -350,6 +379,48 @@ export default new Router({
                 roles: '610:query',
                 hidden: true,
                 name: '流量分析'
+            }, {
+                path: '/userAnalysis',
+                component: userAnalysis,
+                roles: '610:query',
+                hidden: true,
+                name: '用户分析'
+            }, {
+                path: '/contentAnalysis',
+                component: contentAnalysis,
+                roles: '610:query',
+                hidden: true,
+                name: '内容分析'
+            }, {
+                path: '/incomeAnalysis',
+                component: incomeAnalysis,
+                roles: '610:query',
+                hidden: true,
+                name: '收入分析'
+            }, {
+                path: '/workAnalysis',
+                component: workAnalysis,
+                roles: '610:query',
+                hidden: true,
+                name: '工作分析'
+            }, {
+                path: '/answerAnalysis',
+                component: answerAnalysis,
+                roles: '610:query',
+                hidden: true,
+                name: '答题统计'
+            }, {
+                path: '/contractStatistics',
+                component: contractStatistics,
+                roles: '610:query',
+                hidden: true,
+                name: '合同统计'
+            }, {
+                path: '/contractNumStatistics',
+                component: contractNumStatistics,
+                roles: '610:query',
+                hidden: true,
+                name: '内容统计'
             }]
         },{
             path: '/home',
