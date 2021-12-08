@@ -145,6 +145,7 @@
             // 获取列表
             queryData () {
                 let that = this
+                that.tableLoading = true
                 loginService.getRoles({
                     pageNo: that.page.pageNum,
                     pageSize: that.page.pageSize
@@ -156,7 +157,9 @@
                     } else {
                         that.$message.error(res.data.message)
                     }
-                    that.tableLoading = false
+                    setTimeout(function () {
+                        that.tableLoading = false
+                    }, 300)
                 }).catch(err => {
                     console.log(err)
                 })

@@ -3,13 +3,13 @@
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: '/advertisingManagement' }">版权管理</el-breadcrumb-item>
-                <el-breadcrumb-item>添加版权</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/advertisingManagement' }">广告管理</el-breadcrumb-item>
+                <el-breadcrumb-item>添加广告</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <div class="wetuc-page-header">
-            <p>添加版权</p>
+            <p>添加广告</p>
         </div>
 
 
@@ -107,8 +107,10 @@
                 let imageUrl = ''
                 if (that.pageInfo.imageUrl.indexOf(process.env.IMG_URL) === -1) {
                     imageUrl = that.pageInfo.imageUrl.substring(0, that.pageInfo.imageUrl.length)
+                } else if (that.imgUrl == '/picHead/') {
+                    imageUrl = 'd' + that.pageInfo.imageUrl.split('d')[2];
                 } else {
-                    imageUrl = that.pageInfo.imageUrl.substring(8, that.pageInfo.imageUrl.length)
+                    imageUrl = that.pageInfo.imageUrl.substring(27, that.pageInfo.imageUrl.length)
                 }
                 let onlineTime = that.pageInfo.time[0] ? that.pageInfo.time[0].getTime() : '';
                 let offlineTime = that.pageInfo.time[1] ? that.pageInfo.time[1].getTime() : '';
@@ -130,8 +132,7 @@
                                     type: 'success'
                                 });
                                 that.copyrightLoading = false;
-                                that.cancel();
-                                // that.$router.push({name: 'advertisingManagement', query: {location: that.location, picWidth: that.picWidth}})
+                                that.$router.push({path: 'advertisingManagement'})
                             } else {
                                 that.$message.error(res.data.message)
                             }

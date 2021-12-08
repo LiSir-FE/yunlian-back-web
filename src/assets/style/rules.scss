@@ -77,19 +77,72 @@ iframe{
 .el-button {
     border-radius: 4px !important;
 }
-
+.dialog-input-col1 {
+    width: 140px !important;
+}
 .dialog-input-col2 {
     width: 195px !important;
 }
+.wetuc-input-col1 {
 
+    width: 140px !important;
+}
 .wetuc-input-col2 {
 
     width: 252px !important;
+}
+.wetuc-input-col234 {
+
+    width: 234px !important;
+}
+
+.wetuc-input-col615{
+    width: 615px !important;
+}
+.wetuc-input-col618{
+    width: 618px !important;
+}
+
+.wetuc-input-col523{
+    width: 523px !important;
+}
+.wetuc-input-col598{
+    width: 598px !important;
+}
+
+.wetuc-input-col983{
+    width: 983px !important;
+    max-width: 983px !important;
+}
+.wetuc-input-col943{
+    width: 943px !important;
+    max-width: 943px !important;
+}
+.wetuc-input-col845{
+    width: 845px !important;
+    max-width: 845px !important;
+}
+.wetuc-input-col885{
+    width: 885px !important;
+    max-width: 885px !important;
+}
+.wetuc-input-col890{
+    width: 890px !important;
+    max-width: 890px !important;
 }
 
 .wetuc-input-col3 {
 
     width: 352px !important;
+}
+.wetuc-input-col4 {
+
+    width: 300px !important;
+}
+
+.wetuc-textarea-col1{
+    width: 980px !important;
+    max-width: 980px !important;
 }
 
 .wetuc-input3-col3 {
@@ -360,21 +413,29 @@ iframe{
 }
 
 // 删除按钮颜色
+.el-icon-delete{
+    color: #ff0000;
+}
+.el-icon-delete:hover {
+    color: #ff0000;
+}
 .red {
     color: #ff0000;
 }
-
+.red:hover {
+    color: #ff0000;
+}
 // 查看图片
 .table-td-thumb{
     display: block;
-    margin: auto;
+    //margin: auto;
     width: 108px;
     height: 72px;
 }
 
 // 查看大图-关闭按钮
 .el-icon-circle-close{
-    font-size: 24px !important;
+    font-size: 12px !important;
 }
 .el-image-viewer__close{
     color: #fff;
@@ -425,4 +486,373 @@ iframe{
 .wetuc-displayLft{
     display: inline-block;
 }
+
+//换行显示
+.wetuc-page-block{
+    display: block;
+}
+.wetuc-page-block:nth-child(2){
+    display: block;
+    margin: 10px 0;
+}
+
+
+// 分割divider
+.divider{
+    div{
+        display: inline-block;
+        width: 150px;
+        font-size: 14px !important;
+        font-weight: 200;
+        margin: 10px 0;
+        text-align: center;
+        span{
+            font-size: 18px !important;
+            display: block;
+            text-align: center;
+            font-weight: 600;
+            line-height: 30px;
+        }
+    }
+    .el-divider, .el-divider--vertical{
+        width: 1px !important;
+        height: 2em !important;
+        vertical-align: sub !important;
+    }
+}
+
+// 冠军
+.wetuc-champion{
+    background-image: url('~@/assets/img/work/champion.png'); // cli2-sass 引入背景图方式
+    width: 15px;
+    height: 19px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    left: 0%;
+    top: 30%;
+}
+// 亚军
+.wetuc-runnerUp{
+    background-image: url("~@/assets/img/work/runnerUp.png");
+    width: 15px;
+    height: 19px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    left: 0%;
+    top: 30%;
+}
+// 季军
+.wetuc-runner-up{
+    background-image: url("~@/assets/img/work/runner-up.png");
+    width: 15px;
+    height: 19px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    left: 0%;
+    top: 30%;
+}
+
+// 平分盒子
+.wetuc-card{
+    display: inline-block;
+    margin: 0 8px;
+    box-sizing: border-box;
+}
+.wetuc-cardFirst{
+    display: inline-block;
+    box-sizing: border-box;
+    margin-left: 0 !important;
+    margin-right: 8px;
+}
+
+// 红色字体
+.wetuc-spanRed{
+    color: #d71718;
+    font-size: 16px !important;
+    padding-left: 5px;
+}
+
+// 内容echars
+.echartsMain{
+    width: 100% !important;
+    height: 300px !important;
+    display: inline-block;
+}
+
+// echars平分布局
+.echartsFlex{
+    width: 49% !important;
+    height: 400px !important;
+    display: inline-block;
+}
+
+
+// 容器
+.wetuc-container {
+    display: inline-block;
+    width: 100%;
+}
+
+
+
+// 上传图片
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+.avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+}
+
+
+// 二维码
+.qrCodeCanvas {
+    width: 180px !important;
+    height: 180px !important;
+    border: 1px dashed #d9d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.qrCodeCanvas img{
+    width: 160px;
+    height: 160px;
+}
+
+
+// 单体
+.wetuc-block{
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+// 定位-右
+.wetuc-ortion{
+    position: absolute;
+    right: -20px;
+    top: 13px;
+    bottom: 0;
+    cursor: pointer;
+    display: inline-table;
+}
+// 单行2个
+.wetuc-twoBlock{
+    width: 49%;
+    display: inline-block;
+}
+
+
+// 上传合同下边距
+.el-upload-list--text{
+    margin-bottom: 10px !important;
+}
+
+.my-label {
+    background: #E1F3D8 !important;
+}
+
+
+.title-underline{
+    cursor: pointer;
+}
+.title-underline:hover{
+    color: #409EFF;
+}
+
+// input-inco划过样式
+.el-input__span{
+    display: none;
+}
+.el-input__icon:hover{
+    cursor: pointer;
+    position: relative;
+    .el-input__span{
+        width: 300px;
+        display: block;
+        position: absolute;
+        left: -150px;
+        top: -50px;
+        font-size: 10px !important;
+        line-height: 24px;
+        color: #FFFFFF;
+        text-align: left;
+        background: #409EFF;
+        border-radius: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+}
+
+.sponsor{
+    background-image: linear-gradient(90deg, #508DFF 3%, #389BFF 35%, #26C5FE 88%, #3BB8FE 99%);
+    border-radius: 2px;
+    color:#fff;
+    padding:3px;
+    font-size:12px;
+    margin-left:5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*右侧侧边栏*/
+.rightSideMode {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .1);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+
+.rightSide {
+    width: 500px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: #fff;
+
+    .rightSideTit {
+        padding: 0 20px;
+        height: 46px;
+        line-height: 46px;
+        color: #333;
+        font-size: 14px;
+        background-color: #fbfbfd;
+        border-bottom: 1px solid #e0e6ed;
+        border-radius: 1px;
+        cursor: pointer;
+
+        .icon-jiantou {
+            margin-right: 20px;
+            display: inline-block;
+            line-height: 45px;
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            -o-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+    }
+
+    .el-collapse {
+        padding: 20px;
+    }
+
+    .el-collapse-item__header {
+        height: 50px;
+        line-height: 50px;
+        font-size: 15px;
+        color: #20a0ff;
+    }
+
+    .flexItem {
+        .el-collapse-item__content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+
+    .rightSideItem {
+        width: 50%;
+        line-height: 45px;
+        font-size: 13px;
+        border-bottom: 1px solid #eff2f6;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        .tit {
+            width: 70px;
+            display: inline-block;
+            margin-right: 10px;
+            color: #1f2d3d;
+        }
+
+        .cont {
+            color: #475669;
+        }
+    }
+
+    .rightSideItemForm {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 15px;
+
+        .tit {
+            width: 70px;
+            display: inline-block;
+            margin-right: 10px;
+            color: #1f2d3d;
+        }
+    }
+
+    .collapseBtn {
+        margin-left: 60px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

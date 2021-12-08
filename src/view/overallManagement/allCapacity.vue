@@ -9,15 +9,15 @@
         </div>
 
 
-        <el-form ref="pageInfo" :model="pageInfo" label-width="80px">
+        <el-form ref="pageInfo" :model="pageInfo" label-width="80px" :inline="true">
 
             <el-input v-model="pageInfo.query" placeholder="搜索" class="wetuc-input3-col3"
-                      @keyup.enter.native="queryData(pageInfo.classId, pageInfo.tagId, pageInfo.status)">
+                      @keyup.enter.native="getfleetList">
                 <i slot="suffix" class="el-input__icon el-icon-search"
-                   @click="queryData(pageInfo.classId, pageInfo.tagId, pageInfo.status)" style="cursor: pointer"></i>
+                   @click="getfleetList" style="cursor: pointer"></i>
             </el-input>
 
-            <el-select v-model="pageInfo.carName" class="wetuc-input3-col3" @change="carNameChange" clearable>
+            <el-select v-model="pageInfo.carName" class="wetuc-input3-col3" @change="getfleetList">
                 <el-option
                     v-for="item in carNameList"
                     :key="item.value"
@@ -26,7 +26,31 @@
                 </el-option>
             </el-select>
 
-            <el-button type="primary">筛 选</el-button>
+            <el-form-item label="" v-if="pageInfo.carName === '3'">
+                <el-input-number v-model="pageInfo.stateNum" :min="1" :max="10000000"></el-input-number>~
+                <el-input-number v-model="pageInfo.endNum" :min="1" :max="10000000"></el-input-number>
+            </el-form-item>
+
+
+            <el-form-item label="" prop="startCity" v-if="pageInfo.carName === '5'">
+                <el-cascader
+                    @change="getfleetList"
+                    class="wetuc-input3-col3"
+                    placeholder="请选择出发城市"
+                    :props="props"
+                    v-model="pageInfo.startCity">
+                </el-cascader>
+            </el-form-item>
+
+            <el-form-item label="" prop="endCity" v-if="pageInfo.carName === '5'">
+                <el-cascader
+                    @change="getfleetList"
+                    class="wetuc-input3-col3"
+                    placeholder="请选择到达城市"
+                    :props="props"
+                    v-model="pageInfo.endCity">
+                </el-cascader>
+            </el-form-item>
 
         </el-form>
 
@@ -39,7 +63,7 @@
             <el-table-column prop="driverNum" label="司机总数" min-width="80" show-overflow-tooltip></el-table-column>
             <el-table-column label="操作" min-width="60" fixed="right" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" icon="el-icon-edit" size="small" @click="detailsClick(scope.row)">
+                    <el-button type="text" icon="el-icon-view" size="small" @click="detailsClick(scope.row)">
                         详情
                     </el-button>
                     <!--<el-button type="text" size="small" @click="editClick(scope.row)">-->
@@ -69,13 +93,22 @@
 
 <script>
     import {loginService} from '../../service/loginService'
+    import axios from "axios";
 
     export default {
         data () {
             return {
                 pageInfo: {
                     query: '',
-                    carName: ''
+                    carName: '1',
+                    startCity: '',
+                    endCity: '',
+                    stateNum: '',
+                    endNum: '',
+                },
+                props: {
+                    lazy: true,
+                    lazyLoad: (node, resolve) => this.loadNode(node, resolve)
                 },
                 carNameList: [{
                     label: '车队名称',
@@ -131,13 +164,37 @@
                     console.log(err);
                 })
             },
+            loadNode(node, resolve) {
+                const { level } = node
+                let code = 0
+                if(level != 0) {
+                    code = node.data.value.split('/')[1]
+                }
+                let apis = process.env.API_ROOT
+                let url = apis + 'citys'
+                if(level > 0) {
+                    url = apis + `citys/${code}`
+                }
+                axios.get(url).then(res => {
+                    let nodes = res.data.datas.map(({ name, cityId }) => {
+                        return {
+                            label: name,
+                            value: `${name}/${cityId}`,
+                            leaf: level >= 1
+                        }
+                    });
+                    resolve(nodes)
+                })
+            },
             // 修改
             editClick(row) {
-                this.$router.push({path: '/editfleet', query: {id: row.id}});
+                this.$router.push({path: '/editFleet', query: {id: row.id}});
             },
             // 详情
             detailsClick(row) {
-                this.$router.push({path: '/fleetDetails', query: {id: row.id}});
+                this.$store.commit('setAddCompanyUrl', '/allCapacity');
+                this.$store.commit('setAddCompanyName', '所有车队');
+                this.$router.push({path: '/detailsFleet', query: {id: row.id}});
             },
             // 分页
             handleSizeChange(val) {

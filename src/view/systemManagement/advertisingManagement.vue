@@ -4,13 +4,9 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/roleManagement' }">系统管理</el-breadcrumb-item>
-                <el-breadcrumb-item>版权管理</el-breadcrumb-item>
+                <el-breadcrumb-item>广告管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <!--<div class="wetuc-page-header">-->
-            <!--<p>版位管理</p>-->
-        <!--</div>-->
-
 
         <el-table :data="tableData" style="width: 100%" element-loading-text="拼命加载中">
             <el-table-column prop="name" label="版位名称" min-width="150"></el-table-column>
@@ -19,10 +15,10 @@
             <el-table-column fixed="right" prop="date" label="详情" min-width="200" align="right">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click.prevent="advertisingList(scope)">
-                        版权列表
+                        广告列表
                     </el-button>
                     <el-button type="text" size="small" @click.prevent="addAd(scope)">
-                        添加版权
+                        添加广告
                     </el-button>
                 </template>
             </el-table-column>

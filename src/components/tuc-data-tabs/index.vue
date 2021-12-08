@@ -16,7 +16,7 @@
                         <span>{{item.allcount}}</span>
                         <p>{{item.text}}</p>
                     </div>
-                    <p class="item-tip">{{item.key}}</p>
+<!--                    <p class="item-tip">{{item.key}}</p>-->
                 </div>
             </el-col>
         </el-row>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    import tucCountUp from '../../components/tuc-count-up/index.vue'
+    import tucCountUp from '../tuc-count-up/index.vue'
 
     export default {
         components: {

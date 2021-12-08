@@ -28,6 +28,14 @@ module.exports = {
                 pathRewrite: {
                     '^/picHead': '/'  //注意名字
                 },
+            },
+            '/frontEndDomainName': {
+                target: 'https://t.tucmedia.com/',  //域名,主要修改这一块
+                secure: false,
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/frontEndDomainName': '/'  //注意名字
+                },
             }
         },
 

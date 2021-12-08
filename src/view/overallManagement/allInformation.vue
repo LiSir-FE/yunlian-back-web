@@ -48,8 +48,8 @@
             </el-table-column>
             <el-table-column label="操作" min-width="100" fixed="right" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)">下载</el-button>
-                    <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)">删除</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.name,scope.row.url)">下载</el-button>
+                    <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="deteleFn(scope.row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -118,8 +118,31 @@
                 })
             },
             // 编辑
-            editText(id) {
-                console.log(id)
+            editText(name,url) {
+                let su = url.substring(url.lastIndexOf('.') + 1)
+                location.href = process.env.API_ROOT + '/downloads/url?urlStr='+ url +'&fileName='+ name +'&form='+su
+            },
+            deteleFn(id) {
+                let that = this;
+                that.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    loginService.deleteDocuments(id).then(function (res) {
+                        if(res.data.success){
+                            that.$message({type: 'success',message: '删除成功!'});
+                            setTimeout(() => {
+                                that.queryData(that.type);
+                            }, 300)
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
 
             // 分页

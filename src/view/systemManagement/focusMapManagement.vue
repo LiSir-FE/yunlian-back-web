@@ -171,8 +171,10 @@ export default {
             let picUrl = ''
             if (that.addContentInfo.imageUrl.indexOf(process.env.IMG_URL) === -1) {
                 picUrl = that.addContentInfo.imageUrl.substring(0, that.addContentInfo.imageUrl.length)
+            } else if (that.imgUrl == '/picHead/') {
+                picUrl = 'd' + that.addContentInfo.imageUrl.split('d')[2];
             } else {
-                picUrl = that.addContentInfo.imageUrl.substring(8, that.addContentInfo.imageUrl.length)
+                picUrl = that.addContentInfo.imageUrl.substring(27, that.addContentInfo.imageUrl.length)
             }
             that.$refs[formName].validate((valid) => {
                 if (valid) {

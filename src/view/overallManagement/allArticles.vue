@@ -63,13 +63,11 @@
                         <el-table-column label="配图（查看大图）" min-width="120">
                             <template slot-scope="scope">
                                 <el-image class="table-td-thumb" :src="imgUrl + scope.row.poster" :preview-src-list="[imgUrl + scope.row.poster]"></el-image>
-<!--                                <el-avatar shape="square" fit="cover" :size="60" :src="imgUrl + scope.row.poster"></el-avatar>-->
-                                <!--<el-image style="width: 108px; height: 72px" :src="imgUrl + scope.row.poster"></el-image>-->
                             </template>
                         </el-table-column>
                         <el-table-column label="标题" min-width="150" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <span class="spanHover">{{scope.row.title}}</span>
+                                <el-button type="text" size="small" class="spanHover" @click="toDetail(scope.row.id)">{{scope.row.title}}</el-button>
                             </template>
                         </el-table-column>
                         <el-table-column label="文章分类" min-width="100">
@@ -87,22 +85,22 @@
                                 <span>{{scope.row.varefyTime | stampFormate4}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" min-width="240" fixed="right" align="right">
+                        <el-table-column label="操作" min-width="240" align="right">
                             <template slot-scope="scope">
                                 <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)">编辑</el-button>
-                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)"
+                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="closeFn(scope.row)"
                                            v-if="scope.row.isClose === '0'">关闭
                                 </el-button>
-                                <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)"
+                                <el-button type="text" icon="el-icon-edit" size="small" @click="openFn(scope.row)"
                                            v-if="scope.row.isClose === '1'">开启
                                 </el-button>
-                                <el-button type="text" icon="el-icon-edit" size="small" @click="editText(scope.row.id)"
+                                <el-button type="text" icon="el-icon-edit" size="small" @click="toppingFn(scope.row)"
                                            v-if="scope.row.position >= 20">置顶
                                 </el-button>
-                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)"
+                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="cancelTopRow(scope.row)"
                                            v-if="scope.row.position <= 20">取消置顶
                                 </el-button>
-                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)">删除</el-button>
+                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="deteleFn(scope.row)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -130,25 +128,30 @@
                                @click="queryReviewData(pageReviewInfo.examine)" style="cursor: pointer"></i>
                         </el-input>
 
-                        <el-select v-model="pageReviewInfo.examine" class="wetuc-input3-col3" @change="examineChange" clearable>
+                        <el-select v-model="pageReviewInfo.examine" class="wetuc-input3-col3" placeholder="审核状态" @change="examineChange" clearable>
                             <el-option
                                 v-for="item in examineList"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
+                                <span style="float: left">{{ item.label }}</span>
+                                <span style="float: right; color: #409EFF; font-size: 13px" v-if="item.value === '0' && pageReviewTotal > 0">{{ pageReviewTotal }}</span>
                             </el-option>
                         </el-select>
                     </el-form>
                     <el-table :data="tableReviewData" style="width: 100%" v-loading="tableReviewLoading"
                               element-loading-text="拼命加载中">
-                        <el-table-column label="配图" min-width="120">
+                        <el-table-column label="配图（查看大图）" min-width="120">
                             <template slot-scope="scope">
-                                <el-image style="width: 108px; height: 72px"
-                                          :src="imgUrl + scope.row.article_poster"></el-image>
+                                <el-image class="table-td-thumb" :src="imgUrl + scope.row.article_poster" :preview-src-list="[imgUrl + scope.row.article_poster]"></el-image>
                             </template>
                         </el-table-column>
                         <el-table-column prop="article_title" label="标题" min-width="150"
-                                         show-overflow-tooltip></el-table-column>
+                                         show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-button type="text" size="small" class="spanHover" @click="toDetail(scope.row.id)">{{scope.row.article_title}}</el-button>
+                            </template>
+                        </el-table-column>
                         <el-table-column label="文章分类" min-width="100" show-overflow-tooltip>
                             <template slot-scope="scope">
                                  <span v-if="scope.row.article_classifications">
@@ -164,10 +167,10 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column label="操作" min-width="150" fixed="right" align="right">
+                        <el-table-column label="操作" min-width="150" align="right">
                             <template slot-scope="scope">
-                                <el-button type="text" size="small" @click="editText(scope.row.id)" v-if="scope.row.varifyResult === '0'">通过</el-button>
-                                <el-button type="text" size="small" @click="editText(scope.row.id)" v-if="scope.row.varifyResult === '0'">驳回</el-button>
+                                <el-button type="text" size="small" icon="el-icon-edit" @click="editText(scope.row.targetId)" v-if="scope.row.varifyResult === '0'">编辑</el-button>
+                                <el-button type="text" size="small" icon="el-icon-scissors" @click="editText(scope.row.targetId)" v-if="scope.row.varifyResult === '0'">预览</el-button>
                                 <el-popover
                                     v-if="scope.row.varifyResult !== '0' && scope.row.varifyResult === '2'"
                                     placement="top-start"
@@ -176,7 +179,7 @@
                                     :content="scope.row.failReason">
                                     <el-button slot="reference" type="text" size="small">驳回原因</el-button>
                                 </el-popover>
-                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="editText(scope.row.id)" v-if="scope.row.varifyResult !== '0'">删除记录</el-button>
+                                <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="deleteRecord(scope.row)" v-if="scope.row.varifyResult !== '0'">删除记录</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -226,9 +229,7 @@
                     <el-table :data="reviewTableData" style="width: 100%" v-loading="reviewLoading" element-loading-text="拼命加载中">
                         <el-table-column label="标题" min-width="220" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <span @click="toDetail(scope.row.id)" class="spanHover">
-                                    {{scope.row.title}}
-                                </span>
+                                <el-button type="text" size="small" class="spanHover" @click="toDetail(scope.row.id)">{{scope.row.title}}</el-button>
                             </template>
                         </el-table-column>
                         <el-table-column prop="readNum" label="阅读量" min-width="60" show-overflow-tooltip></el-table-column>
@@ -244,12 +245,12 @@
                                 <span>{{scope.row.qualified | qualified}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column fixed="right" align="right" label="操作" min-width="120" v-else>
+                        <el-table-column align="right" label="操作" min-width="120" v-else>
                             <template slot-scope="scope">
-                                <el-button type="text" size="small" @click.prevent="qualifiedClick(scope.row)" v-if="scope.row.qualified == '1' || scope.row.qualified == '2'">
+                                <el-button type="text" size="small" icon="el-icon-edit" @click.prevent="qualifiedClick(scope.row)" v-if="scope.row.qualified == '1' || scope.row.qualified == '2'">
                                     合格
                                 </el-button>
-                                <el-button type="text" size="small" @click.prevent="unqualified(scope.row)" v-if="scope.row.qualified != '2' || scope.row.qualified == '3'">
+                                <el-button type="text" size="small" icon="el-icon-scissors" @click.prevent="unqualified(scope.row)" v-if="scope.row.qualified == '1' || scope.row.qualified == '3'">
                                     不合格
                                 </el-button>
                             </template>
@@ -286,6 +287,7 @@
             return {
                 article: 'articleAll',
                 imgUrl: process.env.IMG_URL,
+                pageReviewTotal: 0,
                 pageAllInfo: {
                     query: '',
                     articlesIification: '',
@@ -307,7 +309,7 @@
                 },
                 reviewPageInfo: {
                     time: '',
-                    review: ''
+                    review: 1
                 },
                 reviewPage: {
                     pageNum: 1,
@@ -347,7 +349,17 @@
         filters: {
             qualified
         },
-
+        computed: {
+            apis() {
+                return process.env.API_ROOT
+            },
+            picHead() {
+                return process.env.IMG_URL
+            },
+            pcUrl() {
+                return process.env.PC_URL
+            }
+        },
         mounted () {
             this.queryAllData(this.pageAllInfo.articlesIification, this.pageAllInfo.articleLabel)
             this.getArticlesIification()
@@ -390,6 +402,9 @@
                 }).then(res => {
                     if (res.data.success) {
                         let result = res.data.datas
+                        if(examine === '0') {
+                            that.pageReviewTotal = Number(result.totalCount)
+                        }
                         that.tableReviewData = result.datas
                         that.pageReview.total = Number(result.totalCount)
                     }
@@ -428,6 +443,20 @@
                 })
             },
 
+            // 取消置顶
+            cancelTopRow(row) {
+                let that = this;
+                loginService.disStickArticle({articleId: row.id}).then(function (res) {
+                    if (res.data.success) {
+                        that.queryAllData(that.pageAllInfo.articlesIification, that.pageAllInfo.articleLabel)
+                    } else {
+                        that.$message.error(res.data.message);
+                    }
+                }).catch(function (err) {
+                    that.$router.push({name: 'error'});
+                });
+            },
+
 
             // 文章评审筛选
             screen() {
@@ -451,7 +480,7 @@
                     if (res.data.code == 200) {
                         that.$message.success('合格!');
                         setTimeout(function () {
-                            that.getArticlesList(that.qualified)
+                            that.getArticlesList(row.qualified)
                         }, 800)
                     } else {
                         that.$message.error(res.data.message)
@@ -468,7 +497,7 @@
                     if (res.data.code == 200) {
                         that.$message.warning('不合格!');
                         setTimeout(function () {
-                            that.getArticlesList(that.qualified)
+                            that.getArticlesList(row.qualified)
                         }, 800)
                     } else {
                         that.$message.error(res.data.message)
@@ -486,7 +515,7 @@
 
             // 文章评审新窗口
             toDetail(id) {
-                let href = this.$store.state.frontEndDomainName + 'article/' + id;
+                let href = this.pcUrl + 'article/' + id;
                 window.open(href, '_blank');
             },
 
@@ -572,10 +601,219 @@
                 }
             },
 
+            // 通过
+            adopt(row) {
+                let that = this;
+                that.$confirm('确认通过' + row.article_title + '吗？通过后会立即发布', '通过', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    loginService.agree({varifyId: row.id}).then(function (res) {
+                        if (res.data.success) {
+                            setTimeout(() =>{
+                                that.queryReviewData(that.pageReviewInfo.examine)
+                            }, 300)
+                        } else {
+                            that.$message.error(res.data.message);
+                        }
+                    }).catch(function (err) {
+                        that.$router.push({path: 'error'});
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '已取消通过'
+                    })
+                })
+            },
+            // 驳回
+            reject(row) {
+                let that = this
+                that.$prompt('请输入驳回原因', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPlaceholder: '理由会发送给作者',
+                    inputPattern: /\S/,
+                    inputErrorMessage: '驳回原因不能为空'
+                }).then(({ value }) => {
+                    loginService.refuse({
+                        varifyId: row.id,
+                        reason: value
+                    }).then(function (res) {
+                        if(res.data.success){
+                            setTimeout(() =>{
+                                that.queryReviewData(that.pageReviewInfo.examine)
+                            }, 300)
+                        }else{
+                            that.$message.error(res.data.message);
+                        }
+                    }).catch(function (err) {
+                        that.$router.push({name: 'error'});
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+            // 删除记录
+            deleteRecord(row) {
+                let that = this
+                that.$confirm('确认删除该审核的记录吗？已发布的文章不会被删除。', '删除', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    loginService.deleteVarifys({varifyId: row.id}).then(function (res) {
+                        if (res.data.success) {
+                            setTimeout(() =>{
+                                that.queryReviewData(that.pageReviewInfo.examine)
+                            }, 300)
+                        } else {
+                            that.$message.error(res.data.message);
+                        }
+                    }).catch(function (err) {
+                        that.$router.push({path: 'error'});
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '已取消通过'
+                    })
+                })
+            },
+            // 关闭
+            closeFn(row) {
+                let that = this
+                that.$prompt('请输入关闭的原因', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /\S/,
+                    inputErrorMessage: '关闭原因不能为空'
+                }).then(({ value }) => {
+                    loginService.switchArticle({
+                        articleId: row.id,
+                        close: 1,
+                        reason: value
+                    }).then(function (res) {
+                        if(res.data.success){
+                            setTimeout(() =>{
+                                that.queryAllData(that.pageAllInfo.articlesIification, that.pageAllInfo.articleLabel)
+                            }, 300)
+                        }else{
+                            that.$message.error(res.data.message);
+                        }
+                    }).catch(function (err) {
+                        that.$router.push({name: 'error'});
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+            // 开启
+            openFn(row) {
+                let that = this
+                that.$confirm('确认开启该文章吗？', '开启', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    loginService.switchArticle({
+                        articleId: row.id,
+                        close: 0
+                    }).then(function (res) {
+                        if (res.data.success) {
+                            setTimeout(() =>{
+                                that.queryAllData(that.pageAllInfo.articlesIification, that.pageAllInfo.articleLabel)
+                            }, 300)
+                        } else {
+                            that.$message.error(res.data.message);
+                        }
+                    }).catch(function (err) {
+                        that.$router.push({path: 'error'});
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '已取消开启'
+                    })
+                })
+            },
+            // 删除
+            deteleFn(row) {
+                let that = this
+                that.$prompt('请填写删除的原因', '删除', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /\S/,
+                    inputErrorMessage: '删除原因不能为空'
+                }).then(({ value }) => {
+                    loginService.deleteArticle({
+                        articleId: row.id,
+                        reason: value
+                    }).then(function (res) {
+                        if(res.data.success){
+                            setTimeout(() =>{
+                                that.queryAllData(that.pageAllInfo.articlesIification, that.pageAllInfo.articleLabel)
+                            }, 300)
+                        }else{
+                            that.$message.error(res.data.message);
+                        }
+                    }).catch(function (err) {
+                        that.$router.push({name: 'error'});
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+            // 置顶
+            toppingFn(row) {
+                let that = this
+                that.$prompt('序号越小排名越靠前，最多排序20个', '排序号', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /\S/,
+                    inputType: 'Number',
+                    inputErrorMessage: '序号不能为空'
+                }).then(({ value }) => {
+                    loginService.stickArticle({
+                        articleId: row.id,
+                        position: value
+                    }).then(function (res) {
+                        if(res.data.success){
+                            setTimeout(() =>{
+                                that.queryAllData(that.pageAllInfo.articlesIification, that.pageAllInfo.articleLabel)
+                            }, 300)
+                        }else{
+                            that.$message.error(res.data.message);
+                        }
+                    }).catch(function (err) {
+                        that.$router.push({name: 'error'});
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '取消置顶'
+                    });
+                });
+            },
 
             // 操作
             editText (id) {
-                console.log(id)
+                this.$store.commit('setAddCompanyUrl', '/allArticles');
+                this.$store.commit('setAddCompanyName', '全部文章');
+                let query = {}
+                query.id = id
+                query.flag = true
+                this.$router.push({path: 'editArticle', query: {param: encodeURIComponent(JSON.stringify(query))}}) // 权限参数
             },
             handleClick (tab, event) {
                 if (tab.name === 'reviewArticles') {

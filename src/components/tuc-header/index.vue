@@ -10,8 +10,9 @@
                 <div class="rightHome clearfix">
 <!--                    <a href="https://wetuc.com " target="_blank">网站首页</a>-->
                     <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
-<!--                        <router-link to="/system/message"></router-link>-->
-                        <i class="el-icon-bell"></i>
+                        <router-link :to="{path: '/message'}">
+                            <i class="el-icon-bell"></i>
+                        </router-link>
                     </el-tooltip>
                     <span class="btn-bell-badge" v-if="message"></span>
                 </div>

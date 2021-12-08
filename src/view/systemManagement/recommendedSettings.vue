@@ -108,7 +108,7 @@
                     title: '',
                     active: '',
                     manualValue: [],
-                    endTime: ''
+                    endTime: '',
                 },
                 loadingFlag: false,
                 loadingFlag2: false,
@@ -160,6 +160,7 @@
                         that.options = data.name;
                         that.loadInfo.manualValue = data.data.ids
                         that.loadInfo.id = data.data.id
+                        that.type = data.data.type
                     }
                 });
             },

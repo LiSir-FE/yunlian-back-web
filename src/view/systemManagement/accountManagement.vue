@@ -30,7 +30,7 @@
                         </el-select>
 
                         <el-select v-if="accListInfo.seleList === ''" v-model="accListInfo.seleAll" placeholder="全部"
-                                   @change="seleAllChange(accListInfo.seleAll)" class="wetuc-input3-col3">
+                                   @change="seleAllChange(accListInfo.seleAll)" :clearable="true" class="wetuc-input3-col3">
                             <el-option
                                 v-for="item in seleAllOptionsList"
                                 :key="item.id"
@@ -82,8 +82,8 @@
                         </el-table-column>
                         <el-table-column fixed="right" label="操作" min-width="120" align="right">
                             <template slot-scope="scope">
-                                <el-button type="text" icon="el-icon-edit" size="small" v-if="accListInfo.seleList === '4'">详情</el-button>
-                                <el-button type="text" icon="el-icon-edit" size="small" @click="getAccountsid(scope.row.id)" v-if="accListInfo.seleList !== '4'">编辑</el-button>
+                                <el-button type="text" icon="el-icon-edit" size="small" @click="auditDetailsClick(scope.row.id)" v-if="accListInfo.seleList === '4'">详情</el-button>
+                                <el-button type="text" icon="el-icon-view" size="small" @click="getAccountsid(scope.row.id)" v-if="accListInfo.seleList !== '4'">编辑</el-button>
                                 <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="deleteAccounts(scope.row.id)" v-if="accListInfo.seleList !== '4'">删除</el-button>
                             </template>
                         </el-table-column>
@@ -112,7 +112,7 @@
         </div>
 
 
-        <el-dialog title="新建账号" :visible.sync="addAccDiaload" width="35%" min-width="35%" :close-on-click-modal="false"
+        <el-dialog :title="dialogTitle" :visible.sync="addAccDiaload" width="35%" min-width="35%" :close-on-click-modal="false"
                    :close-on-press-escape="false" @close="addAccDialoadCloseFn">
             <el-form ref="addAccDialogInfo" :model="addAccDialogInfo" label-width="100px" :rules="addAccDialogRules">
                 <el-form-item label="选择角色" prop="roleSele">
@@ -127,15 +127,15 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="账号" prop="accountNum">
+                <el-form-item label="账 号" prop="accountNum">
                     <el-input type="text" v-model="addAccDialogInfo.accountNum" placeholder="请输入账号"
                               class="" :disabled="accountNumFlag"></el-input>
                 </el-form-item>
-                <el-form-item label="名称" prop="name">
+                <el-form-item label="名 称" prop="name">
                     <el-input type="text" v-model="addAccDialogInfo.name" placeholder="请输入名称"
                               class=""></el-input>
                 </el-form-item>
-                <el-form-item label="密码" prop="password">
+                <el-form-item label="密 码" prop="password">
                     <el-input type="password" v-model="addAccDialogInfo.password" placeholder="请输入密码" show-password
                               class=""></el-input>
                 </el-form-item>
@@ -147,10 +147,67 @@
                     <el-input type="text" v-model="addAccDialogInfo.contactsPhone" placeholder="请输入联系人手机号"
                               class=""></el-input>
                 </el-form-item>
-                <el-form-item label="是否启用">
-                    <el-switch v-model="addAccDialogInfo.enabled" active-color="#13ce66" inactive-color="#ff4949">
-                    </el-switch>
+
+                <div class="wetuc-block">
+                    <el-form-item label="是否启用" class="wetuc-twoBlock">
+                        <el-switch v-model="addAccDialogInfo.enabled" active-color="#13ce66" inactive-color="#ff4949">
+                        </el-switch>
+                    </el-form-item>
+
+                    <el-form-item label="是否员工内部" class="wetuc-twoBlock">
+                        <el-switch v-model="addAccDialogInfo.staff" active-color="#13ce66" inactive-color="#ff4949">
+                        </el-switch>
+                    </el-form-item>
+                </div>
+
+                <el-form-item label="区域规则" prop="regionalRules" v-if="addAccDialogInfo.staff">
+                    <el-select v-model="addAccDialogInfo.regionalRules" class="" style="width: 100%">
+                        <el-option
+                            v-for="item in regionalRulesList"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
+
+                <el-form-item label="区域岗位" prop="staffFunction" v-if="addAccDialogInfo.staff && addAccDialogInfo.regionalRules">
+                    <el-select v-model="addAccDialogInfo.staffFunction" class="" style="width: 100%">
+                        <el-option
+                            v-for="item in staffFunctionList"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+
+                <el-form-item label="入职时间" v-if="addAccDialogInfo.staff">
+                    <el-date-picker
+                        style="width: 100%"
+                        v-model="addAccDialogInfo.staffHireTime"
+                        type="date"
+                        format="yyyy-MM-dd 12:00:00"
+                        value-format="yyyy-MM-dd 12:00:00"
+                        placeholder="请选择入职时间">
+                    </el-date-picker>
+                </el-form-item>
+
+                <el-form-item label="生 日" v-if="addAccDialogInfo.staff">
+                    <el-date-picker
+                        style="width: 100%"
+                        v-model="addAccDialogInfo.staffBirthday"
+                        type="date"
+                        format="yyyy-MM-dd 12:00:00"
+                        value-format="yyyy-MM-dd 12:00:00"
+                        placeholder="请选择生日">
+                    </el-date-picker>
+                </el-form-item>
+
+
+
+
                 <el-form-item label="设置启用时间段" prop="time" v-if="addAccDialogInfo.enabled">
                     <el-date-picker
                         style="width: 100%"
@@ -178,6 +235,7 @@
 
 <script>
     import {loginService} from '../../service/loginService'
+    import {common} from "../../common/common";
     import {stampFormate} from '../../filter/index'
     import toExamine from '../../components/toExamine'
 
@@ -201,6 +259,7 @@
                 }
             }
             return {
+                dialogTitle: '新建账号',
                 accountNum: 'accountList',
                 accListInfo: {
                     accName: '',
@@ -237,8 +296,42 @@
                     contacts: '',
                     contactsPhone: '',
                     enabled: true,
-                    time: []
+                    time: [],
+                    staff: false,
+                    staffFunction: '',
+                    regionalRules: '',
+                    staffHireTime: '',
+                    staffBirthday: ''
                 },
+                regionalRulesList: [{
+                    label: '华北',
+                    value: 1
+                },{
+                    label: '华东',
+                    value: 2
+                },{
+                    label: '西南',
+                    value: 3
+                },{
+                    label: '华南',
+                    value: 4
+                }],
+                staffFunctionList: [{
+                    label: '销售',
+                    value: '1'
+                },{
+                    label: '媒体',
+                    value: '2'
+                },{
+                    label: '行业',
+                    value: '3'
+                },{
+                    label: '运营',
+                    value: '4'
+                },{
+                    label: '其他',
+                    value: '0'
+                }],
                 addAccDialogId: '',
                 accountNumFlag: false,
                 roleSeleList: [],
@@ -246,10 +339,16 @@
                     accountNum: [{required: true, message: '请输入账号', trigger: 'blur'},
                         {validator: validatePass, trigger: 'blur'}],
                     name: [{required: true, message: '请输入名称!', trigger: 'blur'}],
-                    password: [{required: true, message: '请输入密码!', trigger: 'blur'}],
+                    // password: [{required: true, message: '请输入密码!', trigger: 'blur'}],
                     contacts: [{required: true, message: '请输入联系人!', trigger: 'blur'}],
                     contactsPhone: [{required: true, message: '请输入联系人手机号!', trigger: 'blur'},
                         {pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号码'}],
+                    regionalRules: [
+                        {required: true, message: '请选择区域', trigger: 'charge'},
+                    ],
+                    staffFunction: [
+                        {required: true, message: '请选择区域岗位', trigger: 'charge'},
+                    ],
                 },
 
                 accountPlaceHolder: '可输入账号/名称/联系人',
@@ -306,7 +405,9 @@
                         that.accListData = result.datas
                         that.page.total = Number(result.totalCount)
                     }
-                    that.tableLoading = false
+                    setTimeout(() => {
+                        that.tableLoading = false
+                    }, 200);
                 }).catch(err => {
                     console.log(err)
                 })
@@ -345,7 +446,12 @@
                     contacts: '',
                     contactsPhone: '',
                     enabled: true,
-                    time: []
+                    time: [],
+                    staff: false,
+                    staffFunction: '',
+                    regionalRules: '',
+                    staffHireTime: '',
+                    staffBirthday: ''
                 }
             },
             // 关闭按钮
@@ -370,7 +476,13 @@
                                 startTime: that.addAccDialogInfo.time[0],
                                 endTime: that.addAccDialogInfo.time[1],
                                 accountStatus: that.addAccDialogInfo.enabled ? 'enabled' : 'disabled',
-                                activeTimeStatus: 'timeOff'
+                                activeTimeStatus: 'timeOff',
+
+                                staff: that.addAccDialogInfo.staff,
+                                staffHireTime: that.addAccDialogInfo.staffHireTime ? that.getTimestamp(that.addAccDialogInfo.staffHireTime) : '',
+                                staffBirthday: that.addAccDialogInfo.staffBirthday ? that.getTimestamp(that.addAccDialogInfo.staffBirthday) : '',
+                                staffArea: that.addAccDialogInfo.regionalRules,
+                                staffFunction: that.addAccDialogInfo.staff ? that.addAccDialogInfo.staffFunction : ''
                             }).then(res => {
                                 if (res.data.success) {
                                     that.$message({
@@ -387,6 +499,7 @@
                         } else {
                             // 新增
                             that.addAccDialogId = ''
+                            that.dialogTitle = '编辑账号';
                             loginService.postAccounts({
                                 roles: that.addAccDialogInfo.roleSele,
                                 account: that.addAccDialogInfo.accountNum,
@@ -397,7 +510,13 @@
                                 startTime: that.addAccDialogInfo.time[0],
                                 endTime: that.addAccDialogInfo.time[1],
                                 accountStatus: that.addAccDialogInfo.enabled ? 'enabled' : 'disabled',
-                                activeTimeStatus: 'timeOff'
+                                activeTimeStatus: 'timeOff',
+
+                                staff: that.addAccDialogInfo.staff,
+                                staffHireTime: that.addAccDialogInfo.staffHireTime ? that.getTimestamp(that.addAccDialogInfo.staffHireTime) : '',
+                                staffBirthday: that.addAccDialogInfo.staffBirthday ? that.getTimestamp(that.addAccDialogInfo.staffBirthday) : '',
+                                staffArea: that.addAccDialogInfo.regionalRules,
+                                staffFunction: that.addAccDialogInfo.staff ? that.addAccDialogInfo.staffFunction : ''
                             }).then(res => {
                                 if (res.data.success) {
                                     that.$message({
@@ -420,6 +539,7 @@
             // 获取单个账户信息
             getAccountsid (id) {
                 let that = this
+                that.dialogTitle = '编辑账号';
                 that.addAccDiaload = true
                 that.accountNumFlag = true
                 loginService.getAccountsid(id, {}).then(res => {
@@ -432,13 +552,32 @@
                         that.addAccDialogInfo.contacts = ruslt.hostCompany
                         that.addAccDialogInfo.contactsPhone = ruslt.hostPhone
                         that.addAccDialogInfo.roleSele = ruslt.roles
-                        // that.addAccDialogInfo.password = ruslt.password
+                        that.addAccDialogInfo.staff = ruslt.staff
+                        that.addAccDialogInfo.staffFunction = String(ruslt.staffFunction)
+                        that.addAccDialogInfo.regionalRules = ruslt.staffArea
                         that.addAccDialogInfo.enabled = ruslt.accountStatus === 'enabled' ? true : false
                         that.addAccDialogInfo.time = [ruslt.startTime, ruslt.endTime]
+
+                        if (ruslt.staffBirthday) {
+                            let staffBirthday = common.getFormatOfDate(ruslt.staffBirthday, 'yyyy-MM-dd 12:00:00')
+                            that.addAccDialogInfo.staffBirthday = new Date(staffBirthday)
+                        } else {
+                            that.addAccDialogInfo.staffBirthday = ''
+                        }
+
+                        if(ruslt.staffHireTime) {
+                            let staffHireTime = common.getFormatOfDate(ruslt.staffHireTime, 'yyyy-MM-dd 12:00:00')
+                            that.addAccDialogInfo.staffHireTime = new Date(staffHireTime)
+                        } else {
+                            that.addAccDialogInfo.staffHireTime = ''
+                        }
                     }
                 }).catch(err => {
                     console.log(err)
                 })
+            },
+            // 详情
+            auditDetailsClick(id) {
             },
             // 删除单个账户信息
             deleteAccounts(id) {
@@ -467,7 +606,10 @@
 
             },
             handleClick (tab, event) {
-                console.log(tab, event)
+                console.log(tab, event, '11111111')
+            },
+            getTimestamp(time) { //把时间日期转成时间戳
+                return (new Date(time)).getTime()
             },
             // 分页
             handleSizeChange (val) {

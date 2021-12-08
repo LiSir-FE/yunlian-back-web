@@ -25,7 +25,7 @@
                        @click="queryData(pageInfo.search)" style="cursor: pointer"></i>
                 </el-input>
                 <el-select v-model="pageInfo.type" placeholder="请选择文章分类" class="wetuc-input3-col3"
-                           v-if="articleName === 'first'" :clearable="true">
+                           v-if="articleName === 'first'" :clearable="true" @change="queryData(pageInfo.search)">
                     <el-option
                         v-for="item in typeOptionsList"
                         :key="item.id"
@@ -33,7 +33,7 @@
                         :value="item.id">
                     </el-option>
                 </el-select>
-                <el-select v-model="pageInfo.status" placeholder="请选择文章状态" class="wetuc-input3-col3" :clearable="true">
+                <el-select v-model="pageInfo.status" placeholder="请选择文章状态" class="wetuc-input3-col3" :clearable="true" @change="queryData(pageInfo.search)">
                     <el-option
                         v-for="item in statusOptionsList"
                         :key="item.value"
@@ -43,10 +43,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="queryData(pageInfo.search)">筛 选</el-button>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="addAccDialoadBtnFn(addAccDialogId)">发布文章</el-button>
+                <el-button type="primary" @click="addAccDialoadBtnFn()">发布文章</el-button>
             </el-form-item>
         </el-form>
 
@@ -72,7 +69,9 @@
             </el-table-column>
             <el-table-column label="标题" min-width="180" show-overflow-tooltip>
                 <template slot-scope="scope">
-                    <span class="spanHover">{{scope.row.title}}</span>
+                        <span @click="toDetail(scope.row.id)" class="spanHover">
+                            {{scope.row.title}}
+                        </span>
                 </template>
             </el-table-column>
             <el-table-column label="文章分类" min-width="180" v-if="articleName === 'first'">
@@ -90,10 +89,11 @@
                     <span>{{scope.row.createDate | stampFormate4}}</span>
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" min-width="120" align="right">
+            <el-table-column label="操作" min-width="120" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" icon="el-icon-edit" size="small">编辑</el-button>
-                    <el-button type="text" icon="el-icon-delete" class="red" size="small">删除</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small" @click.prevent="editFn(scope.row)" v-if="scope.row.status !== '3'">编辑</el-button>
+                    <el-button type="text" icon="el-icon-edit" size="small" @click.prevent="closeRow(scope.row)" v-if="scope.row.status === '3'">撤回</el-button>
+                    <el-button type="text" icon="el-icon-delete" class="red" @click.prevent="detelaFn(scope.row)" size="small" v-if="scope.row.status !== '3'">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -152,7 +152,17 @@
         filters: {
             articleStatus
         },
-
+        computed: {
+            apis() {
+                return process.env.API_ROOT
+            },
+            picHead() {
+                return process.env.IMG_URL
+            },
+            pcUrl() {
+                return process.env.PC_URL
+            }
+        },
         mounted () {
             this.queryData(this.pageInfo.search);
             this.getArticlesType();
@@ -179,6 +189,17 @@
                     console.log(err)
                 })
             },
+            addAccDialoadBtnFn() {
+                this.$router.push({path: 'addArticle'})
+            },
+            editFn(row) {
+                this.$store.commit('setAddCompanyUrl', '/articleManagement');
+                this.$store.commit('setAddCompanyName', '文章列表');
+                let query = {}
+                query.id = row.id
+                query.flag = false
+                this.$router.push({path: 'editArticle', query: {param: encodeURIComponent(JSON.stringify(query))}}) // 权限参数
+            },
             getArticlesType () {
                 loginService.getArticlesType({
                     type: 2
@@ -194,6 +215,63 @@
             },
             handleClick (item) {
                 this.queryData(this.pageInfo.search)
+            },
+            // 撤销
+            closeRow(row) {
+                let that = this;
+                that.$confirm('撤销审核后的文章会进入到草稿中，确定撤销吗？', '撤销', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    loginService.withdraw({articleId: row.id}).then(function (res) {
+                        if (res.data.success) {
+                            setTimeout(() =>{
+                                that.queryData(this.pageInfo.search)
+                            }, 300)
+                        } else {
+                            that.$message.error(res.data.message);
+                        }
+                    }).catch(function (err) {
+                        that.$router.push({path: 'error'});
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '已取消撤销'
+                    })
+                })
+            },
+            // 删除
+            detelaFn(row) {
+                let that = this;
+                that.$confirm('文章删除后不可查看，该操作不能撤销，确定删除吗？', '删除', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    loginService.deleteArticle({articleId: row.id}).then(function (res) {
+                        if (res.data.success) {
+                            setTimeout(() =>{
+                                that.queryData(this.pageInfo.search)
+                            }, 300)
+                        } else {
+                            that.$message.error(res.data.message);
+                        }
+                    }).catch(function (err) {
+                        that.$router.push({path: 'error'});
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    })
+                })
+            },
+            // 文章评审新窗口
+            toDetail(id) {
+                let href = this.pcUrl + 'article/' + id;
+                window.open(href, '_blank');
             },
             // 分页
             handleSizeChange (val) {

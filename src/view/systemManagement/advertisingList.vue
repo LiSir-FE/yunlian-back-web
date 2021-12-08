@@ -3,8 +3,8 @@
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: '/advertisingManagement' }">版权管理</el-breadcrumb-item>
-                <el-breadcrumb-item>版权列表</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/advertisingManagement' }">广告列表</el-breadcrumb-item>
+                <el-breadcrumb-item>广告列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
@@ -24,10 +24,10 @@
             </el-table-column>
             <el-table-column fixed="right" align="right" label="操作" min-width="120" show-overflow-tooltip>
                 <template slot-scope="scope">
-                    <el-button type="text" size="small" @click.prevent="modify(scope)">
+                    <el-button type="text" icon="el-icon-edit" size="small" @click.prevent="modify(scope)">
                         修改
                     </el-button>
-                    <el-button type="text" size="small" @click.prevent="deleteFn(scope)">
+                    <el-button type="text" icon="el-icon-delete" class="red" size="small" @click.prevent="deleteFn(scope)">
                         删除
                     </el-button>
                 </template>

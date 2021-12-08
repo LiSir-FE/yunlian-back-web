@@ -3,13 +3,13 @@
         <div class="breadcrumb-con">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/dashboard' }">主页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: '/advertisingManagement' }">版权管理</el-breadcrumb-item>
-                <el-breadcrumb-item>修改版权</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/advertisingManagement' }">广告管理</el-breadcrumb-item>
+                <el-breadcrumb-item>修改广告</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <div class="wetuc-page-header">
-            <p>修改版权</p>
+            <p>修改广告</p>
         </div>
 
 

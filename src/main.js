@@ -14,6 +14,7 @@ import router from './router'
 import App from './App'
 import Watermark from './watermark';
 import echarts from 'echarts'
+import moment from "moment";
 import de from "element-ui/src/locale/lang/de";
 Vue.use(ElementUI)
 Vue.use(Vuex);
@@ -25,6 +26,7 @@ if (win && win != 'undefined') {
     isClient = true
 }
 Vue.prototype.$echarts = echarts;
+Vue.prototype.$moment = moment;//赋值使用
 // ajax
 Vue.prototype.$http = axios.create({
     timeout: 60000

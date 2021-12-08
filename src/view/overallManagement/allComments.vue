@@ -40,7 +40,7 @@
             </el-table-column>
             <el-table-column fixed="right" min-width="60" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" icon="el-icon-delete" class="red" size="small">删除</el-button>
+                    <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="deteleFn(scope.row.id, scope.row.parentId)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -92,7 +92,7 @@
                     type: type,
                     all: true
                 }).then(res => {
-                    if(res.data.code == 200) {
+                    if(res.data.success) {
                         let result = res.data.datas;
                         that.arrayData = result.datas;
                         that.page.total = Number(result.totalCount)
@@ -116,6 +116,32 @@
                     this.page.pageNum = val;
                     this.getComments(this.type);
                 }
+            },
+            deteleFn(id, parentId) {
+                let that = this;
+                that.$confirm('是否确认删除该评论?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    loginService.delComments({
+                        id: id,
+                        parentId: parentId,
+                        type: that.type
+                    }).then(function (res) {
+                        if(res.data.success){
+                            that.$message({type: 'success',message: '删除成功!'});
+                            setTimeout(() => {
+                                this.getComments(this.type);
+                            }, 300)
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             handleClick(tab) {
                 this.page.pageSize = 5;

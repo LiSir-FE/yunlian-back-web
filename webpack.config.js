@@ -23,7 +23,7 @@ module.exports = {
                     'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
                 }
                 // other vue-loader options go here    小颖在这里http://www.cnblogs.com/yingzi1028/p/6925387.html
-                
+
             }
         },
             {

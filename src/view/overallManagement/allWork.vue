@@ -10,9 +10,13 @@
 
         <el-form ref="pageInfo" :model="pageInfo" label-width="10px" @submit.native.prevent :inline="true">
 
-            <el-input v-model="pageInfo.titleName" @keyup.enter.native="screen" placeholder="请输入关键字搜索" class="wetuc-input3-col3"></el-input>
+            <el-input v-model="pageInfo.titleName" placeholder="请输入关键字搜索" class="wetuc-input3-col3"
+                      @keyup.enter.native="getAdminInfo">
+                <i slot="suffix" class="el-input__icon el-icon-search"
+                   @click="getAdminInfo" style="cursor: pointer"></i>
+            </el-input>
 
-            <el-select v-model="pageInfo.type" placeholder="请选择分类" class="wetuc-input3-col3" clearable>
+            <el-select v-model="pageInfo.type" placeholder="请选择分类" class="wetuc-input3-col3" clearable @change="getAdminInfo">
                 <el-option
                     v-for="item in typeOption"
                     :key="item.value"
@@ -22,7 +26,7 @@
             </el-select>
 
 
-            <el-select v-model="pageInfo.value" placeholder="请选择价值" class="wetuc-input3-col3" clearable>
+            <el-select v-model="pageInfo.value" placeholder="请选择价值" class="wetuc-input3-col3" clearable @change="getAdminInfo">
                 <el-option
                     v-for="item in valueOption"
                     :key="item.value"
@@ -31,7 +35,6 @@
                 </el-option>
             </el-select>
 
-            <el-button type="primary" @click="screen">筛 选</el-button>
         </el-form>
         <el-table :data="tableData" style="width: 100%" v-loading="tableLoading" element-loading-text="拼命加载中">
             <el-table-column prop="name" label="用户姓名" min-width="80" show-overflow-tooltip></el-table-column>
@@ -65,7 +68,7 @@
             </el-table-column>
             <el-table-column label="操作" min-width="60" fixed="right" align="right">
                 <template slot-scope="scope">
-                    <el-button type="text" icon="el-icon-edit" size="small" @click.prevent="details(scope.row)">
+                    <el-button type="text" icon="el-icon-edit" size="small" @click.prevent="detailsFn(scope.row)">
                         详情
                     </el-button>
                 </template>
@@ -194,6 +197,11 @@
                 }).catch(err => {
                     console.log(err);
                 })
+            },
+            detailsFn(row) {
+                this.$store.commit('setAddCompanyUrl', '/allWork');
+                this.$store.commit('setAddCompanyName', '所有工作');
+                this.$router.push({path: 'detailsWork', query: {id: row._id}})
             },
             // 添加工作
             // addWork() {

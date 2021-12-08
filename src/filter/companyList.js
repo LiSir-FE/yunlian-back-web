@@ -798,6 +798,157 @@ export function contractStatus(val) {
     return contractStatus
 }
 
+export function activeState(val) {
+    let activeState = '';
+    switch (val) {
+        case '0': {
+            activeState = '未开始';
+            break;
+        }
+        case '1': {
+            activeState = '进行中';
+            break;
+        }
+        case '2': {
+            activeState = '已结束';
+            break;
+        }
+    }
+    return activeState
+}
+
+export function registrationStatus(val) {
+    let registrationStatus = '';
+    switch (val) {
+        case 0: {
+            registrationStatus = '未开始';
+            break;
+        }
+        case 1: {
+            registrationStatus = '已开始';
+            break;
+        }
+        case 2: {
+            registrationStatus = '已关闭';
+            break;
+        }
+    }
+    return registrationStatus
+}
+
+export function classify(val) {
+    let classify = '';
+    switch (val) {
+        case 1: {
+            classify = '行业';
+            break;
+        }
+        case 2: {
+            classify = '企业';
+            break;
+        }
+        case 3: {
+            classify = '运联';
+            break;
+        }
+        case 4: {
+            classify = '其它';
+            break;
+        }
+    }
+    return classify
+}
+
+
+export function typeCalendar(val) {
+    let typeCalendar = '';
+    switch (val) {
+        case 1: {
+            typeCalendar = '内容';
+            break;
+        }
+        case 2: {
+            typeCalendar = '活动';
+            break;
+        }
+        case 3: {
+            typeCalendar = '内部';
+            break;
+        }
+    }
+    return typeCalendar
+}
+
+export function billStatus(val) {
+    let billStatus = '';
+    switch (val) {
+        case 1: {
+            billStatus = '未开始';
+            break;
+        }
+        case 2: {
+            billStatus = '回款中';
+            break;
+        }
+        case 3: {
+            billStatus = '即将超时';
+            break;
+        }
+        case 4: {
+            billStatus = '已超时';
+            break;
+        }
+    }
+    return billStatus
+}
+
+export function answerIdx(val) {
+    let answerIdx = '';
+    switch (val) {
+        case 1: {
+            answerIdx = 'A';
+            break;
+        }
+        case 2: {
+            answerIdx = 'B';
+            break;
+        }
+        case 3: {
+            answerIdx = 'C';
+            break;
+        }
+        case 4: {
+            answerIdx = 'D';
+            break;
+        }
+    }
+    return answerIdx
+}
+
+export function checkStatus(val) {
+    let checkStatus = '';
+    switch (val) {
+        case 1: {
+            checkStatus = '未签到';
+            break;
+        }
+        case 2: {
+            checkStatus = '已签到';
+            break;
+        }
+        case 3: {
+            checkStatus = '已过期';
+            break;
+        }
+    }
+    return checkStatus
+}
+
+
+
+
+
+
 
 
 

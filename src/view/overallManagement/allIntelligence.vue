@@ -10,10 +10,13 @@
         <el-form ref="pageInfo" :model="pageInfo" label-width="80px" @submit.native.prevent :inline="true">
             <div class="wetuc-page-block">
 
-                <el-input v-model="pageInfo.title" @keyup.enter.native="screen" placeholder="请输入关键字搜索" class="wetuc-input3-col3"></el-input>
+                <el-input v-model="pageInfo.search" placeholder="搜索课程名称" class="wetuc-input3-col3"
+                          @keyup.enter.native="wholeAll">
+                    <i slot="suffix" class="el-input__icon el-icon-search"
+                       @click.prevent="wholeAll" style="cursor: pointer"></i>
+                </el-input>
 
-
-                <el-select v-model="pageInfo.type" placeholder="请选择碎片类型" class="wetuc-input133-col130" clearable>
+                <el-select v-model="pageInfo.type" placeholder="请选择碎片类型" class="wetuc-input133-col130" clearable @change="wholeAll()">
                     <el-option
                         v-for="item in typeOption"
                         :key="item.value"
@@ -22,7 +25,6 @@
                     </el-option>
                 </el-select>
 
-                <el-button type="primary" @click="screen">筛 选</el-button>
             </div>
 
         </el-form>
@@ -166,10 +168,12 @@
             // modify(scope) {
             //     this.$router.push({name: 'editInformation', query: {id: scope.id}})
             // },
-            // // 查看详情
-            // details(scope) {
-            //     this.$router.push({name: 'detailsInformation', query: {id: scope.id}})
-            // },
+            // 查看详情
+            details(scope) {
+                this.$store.commit('setAddCompanyUrl', '/opportunityList');
+                this.$store.commit('setAddCompanyName', '商机列表');
+                this.$router.push({path: 'detailsOpportunity', query: {id: scope.id}})
+            },
             // 分页
             handleSizeChange(val) {
                 this.page.pageSize = val;
