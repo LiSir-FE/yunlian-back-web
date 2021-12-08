@@ -162,13 +162,6 @@ export default new Router({
             meta: {title: '登录'}
         },
         {
-            path: '/notFound',
-            component: notFound,
-            name: 'notFound',
-            hidden: true,
-            redirect: '/notFound'
-        },
-        {
             path: '/passwordrecovery',
             component: passwordrecovery,
             name: 'passwordrecovery',
@@ -809,6 +802,12 @@ export default new Router({
                 name: '消息',
                 hidden: true,
                 meta: {title: '消息'}
+            }, {
+                path: '/notFound',
+                component: notFound,
+                name: 'notFound',
+                hidden: true,
+                meta: {title: '404'}
             },]
         }
     ]
