@@ -1,6 +1,6 @@
 <template>
     <div class="wetuc-page-content">
-        <el-collapse accordion v-model="activeNames" v-for="(item, index) in tableData">
+        <el-collapse accordion v-model="activeNames" v-for="(item, index) in tableData" :key="index">
             <el-collapse-item :name="index">
                 <template slot="title">
                     <span class="title">{{item.content}}</span>
